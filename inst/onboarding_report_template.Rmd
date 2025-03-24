@@ -1,0 +1,92 @@
+---
+title: "`r params$centre` : Digione Onboarding Document"
+author: "`r params$author`"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  word_document: default
+params:
+  centre: "Default Centre"
+  author: "Default Author"
+---
+
+# CDM Details
+
+```{r cdm_details, echo = FALSE}
+cdm_details %>%
+  kable(caption = "Table 1.1 : OMOP Details") %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 1, "OMOP name, date and description" = ncol(cdm_details) - 1))
+
+cdm_record_counts %>% 
+  kable(caption = "Table 1.2 : OMOP record counts") %>%
+  kable_styling() %>%
+  add_header_above(c(" " =1, "Number of records, number of persons and percentage (%) of total persons for each OMOP table within the instance" = 
+                       ncol(cdm_record_counts) - 1))
+
+cdm_snapshot_clinical
+
+cdm_snapshot_obs
+```
+
+# Summary of clinical tables (condition occurrence, drug exposure, measurement)
+
+```{r, echo = FALSE}
+
+cdm_snapshot_clinical
+```
+
+# Summary of observation tables
+
+```{r, echo = FALSE}
+cdm_snapshot_obs
+
+```
+
+# Vocabulary Mapping
+
+```{r vocab_map, echo = FALSE}
+mappingCompleteness %>%
+  kable(caption = "Table 2.1 : Vocabulary mapping completedness") %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 1, "Number and percentage of codes successfully mapped from source to OMOP convention, and number and percentage of records where vocabularly has been successfully mapped to OMOP convention" = ncol(mappingCompleteness) - 1))
+
+
+```
+
+# MEDOC to OMOP mapping - IN PROGRESS
+
+
+# Drug checks
+
+### Immunotherapy drugs
+
+```{r drug_check_1, echo = FALSE}
+summary_immuno_drugs %>%
+  kable(caption = "Table 3.1 : Immunotherapy drug completedness") %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 1, "Number of persons and records exposed to immunotherapy drugs, percentage of records with dose information, median drug exposure (days) per drug, proportion of records where drug exposure is not greater than one day (negative exposure days). Results are obscured where records are below 5 - 'results obscured' indicates whether this is the case" = ncol(summary_immuno_drugs) - 1))
+
+
+```
+
+### Chemotherapy drugs
+
+### Targeted therapy drugs
+
+
+# Radiotherapy treatment checks
+
+```{r rt_check, echo = FALSE}
+summary_radiotherapy %>%
+  kable(caption = "Table 4.1 : Radiotherapy completedness") %>%
+  kable_styling() %>%
+  add_header_above(c(" " = 1, "Number of persons and records undergoing radiotherapy procedures, including counts and percentage of records where procedure end date occurs before procedure start date and number of procedures that occurred after the date of death " = ncol(summary_radiotherapy) - 1))
+
+
+```
+
+
+# Solid tumour / TNM check - IN PROGRESS
+
+# Biomarker check - IN PROGRESS

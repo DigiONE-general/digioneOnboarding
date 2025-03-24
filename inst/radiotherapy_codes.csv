@@ -1,0 +1,13 @@
+﻿name,type,concept_id
+Stereotactic radiotherapy,radiotherapy,4215577
+Intensity modulated radiation therapy,radiotherapy,40480519
+Whole brain radiation therapy,radiotherapy,764407
+Two dimensional external beam radiation therapy,radiotherapy,603132
+External beam radiation therapy using photons,radiotherapy,607996
+Three dimensional conformal radiotherapy,radiotherapy,762950
+X-ray beam therapy,radiotherapy,4060641
+External beam - surgery with preoperative radiotherapy,radiotherapy,4060742
+External beam - surgery with postoperative radiotherapy,radiotherapy,4060743
+External beam radiation therapy with internal radiotherapy,radiotherapy,4061550
+External beam radiation therapy procedure,radiotherapy,4141448
+Gamma Knife,radiotherapy,4277939

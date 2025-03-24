@@ -1,0 +1,64 @@
+﻿drug,class,concept_id
+Cyclophosphamide,chemotherapy,1310317
+Dacarbazine,chemotherapy,1311409
+Docetaxel,chemotherapy,1315942
+Doxorubicin,chemotherapy,1338512
+Etoposide,chemotherapy,1350504
+Fluorouracil,chemotherapy,955632
+Gemcitabine,chemotherapy,1314924
+Ifosfamide,chemotherapy,19078187
+Irinotecan,chemotherapy,1367268
+Methotrexate,chemotherapy,1305058
+Mitomycin,chemotherapy,1389036
+Paclitaxel,chemotherapy,1378382
+Pemetrexed,chemotherapy,1304919
+Raltitrexed,chemotherapy,19038536
+Topotecan,chemotherapy,1378509
+Trofosfamide,chemotherapy,19101677
+Vinblastine,chemotherapy,19008264
+Vincristine,chemotherapy,1308290
+Vindesine,chemotherapy,19008336
+Vinorelbine,chemotherapy,1343346
+Carboplatin,chemotherapy,1344905
+Cisplatin,chemotherapy,1397599
+Oxaliplatin,chemotherapy,1318011
+Atezolizumab,immunotherapy,42629079
+Avelumab,immunotherapy,1593273
+Cemiplimab,immunotherapy,35200783
+Durvalumab,immunotherapy,1594034
+Nivolumab,immunotherapy,45892628
+Pembrolizumab,immunotherapy,45775965
+Ipilimumab,immunotherapy,40238188
+Bevacizumab,targeted therapy,1397141
+Necitumumab,targeted therapy,35606215
+Ramucirumab,targeted therapy,44818489
+Rituximab,targeted therapy,1314273
+Trastuzumab,targeted therapy,1387104
+Afatinib,targeted therapy,43533090
+Alectinib,targeted therapy,35604657
+Brigatinib,targeted therapy,1594187
+Cabozantinib,targeted therapy,43012292
+Ceritinib,targeted therapy,44818466
+Crizotinib,targeted therapy,40242675
+Dabrafenib,targeted therapy,43532299
+Dasatinib,targeted therapy,1358436
+Entrectinib,targeted therapy,37496447
+Erlotinib,targeted therapy,1325363
+Gefitinib,targeted therapy,1319193
+Larotrectinib,targeted therapy,1355705
+Lorlatinib,targeted therapy,35201733
+Nintedanib,targeted therapy,45775396
+Olmutinib,targeted therapy,43009062
+Osimertinib,targeted therapy,35605522
+Pazopanib,targeted therapy,40167554
+Pralsetinib,targeted therapy,37002765
+Selpercatinib,targeted therapy,1145791
+Sotorasib,targeted therapy,1536963
+Tepotinib,targeted therapy,739739
+Trametinib,targeted therapy,43532497
+Vandetanib,targeted therapy,40238052
+Dacomitinib,targeted therapy,35200803
+Amivantamab,targeted therapy,1536935
+Mobocertinib,targeted therapy,701915
+Adagrasib,targeted therapy,1301337
+Capmatinib,targeted therapy,1145637
