@@ -143,8 +143,28 @@ mets_snap <- mets_snapshot %>% mutate(concept_name = sapply(strsplit(additional_
 mets_snap_sliced <- head(mets_snap, 20)
 
 #tnm coding 
-tnm_codes <- read.csv(here::here('inst/code_lists/tnm_codes.csv'))
-tnm_result <- check_tnm(cdm, tnm_codes)
+tnm_codes <- read.csv(tnm_codes_path)
+
+tumour_stage_codes <- tnm_codes$measurement_concept_id
+
+staging_stored_as_value <- cdm$measurement %>%
+  summarise(present = any(measurement_concept_id == 4111627)) %>%
+  pull(present)
+
+value_as_concept_id_contains_tumour_stage <- cdm$measurement %>%
+  filter(measurement_concept_id == 4111627) %>%
+  summarise(present = any(value_as_concept_id %in% tumour_stage_codes)) %>%
+  pull(present)
+
+tumour_stage_stored_in_measurement_concept_id <- cdm$measurement %>%
+  summarise(present = any(measurement_concept_id %in% tumour_stage_codes)) %>%
+  pull(present)
+
+tnm_result <- tibble(
+  `staging stored as value` = staging_stored_as_value,
+  `value_as_concept_id contains tumour stage` = value_as_concept_id_contains_tumour_stage,
+  `tumour stage stored in measurement_concept_id` = tumour_stage_stored_in_measurement_concept_id
+)
 
 
 #3 what is the pattern of primary diagnosis - is it present throughout the treatment period, is it superceded by mets diagnosis 
