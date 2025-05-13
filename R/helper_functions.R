@@ -1,4 +1,42 @@
 
+#################
+
+check_tables <- function(conn, sql_dialect) {
+  # Define the query based on the SQL dialect
+  query <- switch(sql_dialect,
+                           "snowflake" = paste0("SHOW VIEWS IN SCHEMA ", db_name, ".", omop_name),
+                           "mysql" = paste0("SHOW FULL TABLES IN ", db_name, " WHERE TABLE_TYPE LIKE 'VIEW'"),
+                           "postgresql" = paste0("SELECT table_name FROM information_schema.views WHERE table_schema = '", omop_name, "'"),
+                           "sqlite" = "SELECT name FROM sqlite_master WHERE type='view'",
+                           "sqlserver" = paste0("SELECT table_name FROM information_schema.views WHERE table_schema = '", omop_name, "'"),
+                           "redshift" = paste0("SELECT table_name FROM information_schema.views WHERE table_schema = '", omop_name, "'"),
+                           stop("Unsupported SQL dialect"))
+  
+  # Execute the query
+  tables <- dbGetQuery(conn, query)
+  
+  # Extract the table names based on the SQL dialect
+  table_names <- switch(sql_dialect,
+                        "snowflake" = tables$name,
+                        "mysql" = tables[[1]],
+                        "postgresql" = tables$table_name,
+                        "sqlite" = tables$name,
+                        "sqlserver" = tables$table_name)
+  
+  # Check if the tables are present
+  episode_present <- "EPISODE" %in% table_names
+  episode_event_present <- "EPISODE_EVENT" %in% table_names
+  
+  # Create the result messages
+  episode_message <- paste("episode table is present:", toupper(episode_present))
+  episode_event_message <- paste("episode_event table is present:", toupper(episode_event_present))
+  
+  # Return the messages
+  return(list(episode_message, episode_event_message))
+}
+
+
+
 ################ documentation req ###################
 
 get_cdm_details <- function(conn, db_name, omop_name) {
@@ -152,37 +190,67 @@ check_omop_variables <- function(cdm, omop_variables_to_check, medoc_concepts) {
     omop_variable = character(),
     table_name = character(),
     medoc_concept = character(),
+    is_present = logical(),
     stringsAsFactors = FALSE
   )
   
-  # Iterate over each table in the cdm
-  for (table_name in names(cdm)) {
-    table <- cdm[[table_name]]
+  # Iterate over each variable to check
+  for (variable in omop_variables_to_check) {
+    variable_found <- FALSE
     
-    # Iterate over each variable to check
-    for (variable in omop_variables_to_check) {
+    # Iterate over each table in the cdm
+    for (table_name in names(cdm)) {
+      table <- cdm[[table_name]]
+      
       if (variable %in% colnames(table)) {
+        is_present <- TRUE
+        
         # Check if the variable contains any 0 or NA values
         if (all(!is.na(table[[variable]]) & table[[variable]] != 0)) {
           # Check if the variable exists in medoc_concepts
           if (variable %in% names(medoc_concepts)) {
             # Get the corresponding medoc concept
             medoc_concept <- medoc_concepts[[variable]]
+            medoc_concept_str <- paste(medoc_concept, collapse = ", ")
           } else {
-            medoc_concept <- NA
+            medoc_concept_str <- NA
           }
           
           # Add the result to the data frame
           results <- rbind(results, data.frame(
             omop_variable = variable,
             table_name = table_name,
-            medoc_concept = medoc_concept,
+            medoc_concept = medoc_concept_str,
+            is_present = TRUE,
             stringsAsFactors = FALSE
           ))
+          
+          # If medoc_concept is not NA, mark variable as found
+          if (!is.na(medoc_concept_str)) {
+            variable_found <- TRUE
+            break
+          }
         }
+      } else {
+        is_present <- FALSE
+      }
+      
+      # Add the result to the data frame with is_present = FALSE if variable not found
+      if (!variable_found && is_present) {
+        results <- rbind(results, data.frame(
+          omop_variable = variable,
+          table_name = table_name,
+          medoc_concept = NA,
+          is_present = is_present,
+          stringsAsFactors = FALSE
+        ))
       }
     }
   }
+  
+  # Filter out rows where medoc_concept is NA and is_present is FALSE
+  results <- results %>%
+    filter(!(is.na(medoc_concept) & !is_present))
   
   # Order by medoc_concept
   results <- results %>%
@@ -298,47 +366,49 @@ check_tnm <- function(cdm) {
 
 ##########################
 
-check_cancer_codes <- function(df, primary_mets_level, cdm) {
-  df_filtered <- df %>% 
-    filter(primary_mets == primary_mets_level)
-  
-  ids <- df_filtered$id
-  
-  measurement_results <- cdm$measurement %>%
-    filter(measurement_concept_id %in% ids) %>%
-    select(measurement_concept_id) %>%
-    collect() %>%
-    inner_join(df_filtered, by = c("measurement_concept_id" = "id")) %>%
-    mutate(variable_name = "measurement_concept_id") %>%
-    select(vocabulary, variable_name)
-  
-  condition_results <- cdm$condition_occurrence %>%
-    filter(condition_concept_id %in% ids) %>%
-    select(condition_concept_id, condition_status_concept_id, condition_type_concept_id) %>%
-    collect() %>%
-    inner_join(df_filtered, by = c("condition_concept_id" = "id")) %>%
-    mutate(
-      variable_name = "condition_concept_id",
-      diagnosis_type = case_when(
-        condition_status_concept_id == 32902 ~ "primary diagnosis",
-        condition_status_concept_id == 32908 ~ "recurrence",
-        TRUE ~ NA_character_
-      ),
-      diagnosis_method = case_when(
-        condition_type_concept_id == 32879 ~ "ENCR date of diagnosis",
-        condition_type_concept_id == 32835 ~ "EHR pathology report",
-        condition_type_concept_id == 32841 ~ "EHR radiology report",
-        TRUE ~ NA_character_
-      )
-    ) %>%
-    select(vocabulary, variable_name, diagnosis_type, diagnosis_method)
-  
-  result <- bind_rows(measurement_results, condition_results) %>%
-    distinct(vocabulary, variable_name, diagnosis_type, diagnosis_method)
-  
-  return(result)
-}
-
+# check_cancer_codes <- function(df, primary_mets_level, cdm) {
+#   df_filtered <- df %>% 
+#     filter(primary_mets == primary_mets_level)
+#   
+#   ids <- df_filtered$id
+#   
+#   measurement_results <- cdm$measurement %>%
+#     inner_join(df_filtered, by = c("measurement_concept_id" = "id")) %>%
+#     mutate(variable_name = "measurement_concept_id") %>%
+#     select(vocabulary, variable_name) %>%
+#     collect()
+#   
+#   condition_results <- cdm$condition_occurrence %>%
+#     filter(condition_concept_id %in% ids) %>%
+#     select(condition_concept_id, condition_status_concept_id, condition_type_concept_id) %>%
+#     collect() %>%
+#     inner_join(df_filtered, by = c("condition_concept_id" = "id")) %>%
+#     mutate(
+#       variable_name = "condition_concept_id",
+#       diagnosis_type = case_when(
+#         condition_status_concept_id == 32890 ~ "Admission diagnosis",
+#         condition_status_concept_id == 32898 ~ "Postop diagnosis",
+#         condition_status_concept_id == 32893 ~ "Confirmed diagnosis",
+#         condition_status_concept_id == 32892 ~ "Condition to be diagnosed by procedure",
+#         condition_status_concept_id == 32899 ~ "Preliminary diagnosis",
+#         TRUE ~ 'type of diagnosis not specified'
+#       ),
+#       provenance_record = case_when(
+#         condition_type_concept_id == 32878 ~ "ENCR - Registry",
+#         condition_type_concept_id == 32841 ~ "EHR - radiology report",
+#         condition_type_concept_id == 32835 ~ "EHR - pathology report",
+#         
+#         TRUE ~ 'provenance not specified'
+#       )
+#     ) %>%
+#     select(vocabulary, variable_name, diagnosis_type, provenance_record)
+#   
+#   result <- bind_rows(measurement_results, condition_results) %>%
+#     distinct(vocabulary, variable_name, diagnosis_type, provenance_record)
+#   
+#   return(result)
+# }
+# 
 
 ###################
 
@@ -373,28 +443,29 @@ check_cancer_codes <- function(df, primary_mets_level, cdm) {
 
 #####################################
 
-check_diag_pattern <- function(cdm, cancer_codes) {
-  # Filter condition_occurrence table for relevant condition_concept_ids
-  condition_data <- cdm$condition_occurrence %>%
-    filter(condition_concept_id %in% cancer_codes$id)
-  
-  # Check for multiple visit_occurrence_ids
-  visit_occurrence_check <- condition_data %>%
-    group_by(person_id, condition_start_date) %>%
-    summarise(visit_occurrence_id_count = n_distinct(visit_occurrence_id)) %>%
-    mutate(multiple_visits = visit_occurrence_id_count > 1) %>%
-    collect()
-  
-  # Calculate proportions
-  total_person_ids <- n_distinct(visit_occurrence_check$person_id)
-  proportion_multiple_visits <- (n_distinct(visit_occurrence_check$person_id[visit_occurrence_check$multiple_visits]) / total_person_ids) * 100
-  proportion_single_or_less_visits <- (n_distinct(visit_occurrence_check$person_id[!visit_occurrence_check$multiple_visits]) / total_person_ids) * 100
-  
-  # Format the output as a dataframe
-  result_df <- data.frame(
-    proportion_multiple_visits = proportion_multiple_visits,
-    proportion_single_or_less_visits = proportion_single_or_less_visits
-  )
-  
-  return(result_df)
-}
+# check_diag_pattern <- function(cdm, cancer_codes) {
+#   # Filter condition_occurrence table for relevant condition_concept_ids
+#   condition_data <- cdm$condition_occurrence %>%
+#     filter(condition_concept_id %in% cancer_codes$id) %>%
+#     collect()
+#   
+#   # Check for multiple visit_occurrence_ids
+#   visit_occurrence_check <- condition_data %>%
+#     group_by(person_id, condition_start_date) %>%
+#     summarise(visit_occurrence_id_count = n_distinct(visit_occurrence_id)) %>%
+#     mutate(multiple_visits = visit_occurrence_id_count > 1) %>%
+#     collect()
+#   
+#   # Calculate proportions
+#   total_person_ids <- n_distinct(visit_occurrence_check$person_id)
+#   proportion_multiple_visits <- (n_distinct(visit_occurrence_check$person_id[visit_occurrence_check$multiple_visits]) / total_person_ids) * 100
+#   proportion_single_or_less_visits <- (n_distinct(visit_occurrence_check$person_id[!visit_occurrence_check$multiple_visits]) / total_person_ids) * 100
+#   
+#   # Format the output as a dataframe
+#   result_df <- data.frame(
+#     proportion_multiple_visits = proportion_multiple_visits,
+#     proportion_single_or_less_visits = proportion_single_or_less_visits
+#   )
+#   
+#   return(result_df)
+# }

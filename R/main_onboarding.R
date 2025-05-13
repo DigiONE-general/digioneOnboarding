@@ -13,16 +13,15 @@ library(visOmopResults)
 library(flextable)
 library(gt)
 
-
 ### system info
-
 ### get source, name, cdm info
 cdm_details <- get_cdm_details(conn, db_name, omop_name)
-
-### record counts per omop table 
 cdm_record_counts <- get_cdm_counts(cdm)
+cdm_overall_snapshot <- OmopSketch::summariseOmopSnapshot(cdm) |>
+  OmopSketch::tableOmopSnapshot()
 
-cdm_snapshot_clinical <- OmopSketch::summariseClinicalRecords(cdm, c("condition_occurrence", "drug_exposure", "measurement")) |>
+cdm_snapshot_clinical <- OmopSketch::summariseClinicalRecords(cdm, c("condition_occurrence", "drug_exposure", 
+                                                                     "measurement")) |>
   tableClinicalRecords()
 
 #for the above, where we find the source vocab - try to replicate this but find the date associated?
@@ -30,6 +29,8 @@ cdm_snapshot_clinical <- OmopSketch::summariseClinicalRecords(cdm, c("condition_
 
 cdm_snapshot_obs <- OmopSketch::summariseObservationPeriod(cdm$observation_period) |>
   tableObservationPeriod()
+
+OmopSketch::summariseObservationPeriod(cdm$observation_period) %>% plotObservationPeriod(colour = "observation_period_ordinal")
 
 ### mapping completeness (vocab mappings)
 mappings <- list(
@@ -71,71 +72,96 @@ mappingCompleteness <- mappingCompleteness %>%
 ########### MEDOC ##############################
 
 ##### check through which variables are present and where
-results <- check_omop_variables(cdm, omop_variables_to_check, medoc_concepts)
-
+medoc_variable_locations <- check_omop_variables(cdm, omop_variables_to_check, medoc_concepts)
+#this is done BUT cdmconnector doesn't load in episode table
+episode_table <- check_tables(conn, sql_dialect)
 
 ## as with above, do a check for location of primary diagnosis (i.e. how we identify it) and if mets diagnoses are available
-
 #1 search cdm for codes to find: which tables and variables are concept ids stored for: primary malig, metastasis/ secondary malig
 
-cancer_codes <- read.csv(here::here('/inst/cancer_diag_codes.csv'))
-
-primary_result <- check_cancer_codes(cancer_codes, "primary", cdm)
-
-cancer <- CodelistGenerator::getCandidateCodes(
+cancer_codelist <- CodelistGenerator::getCandidateCodes(
   cdm = cdm,
-  keywords = c("cancer", "primary malignancy", "neoplasm"),
+  keywords = c("cancer", "primary malignancy", "neoplasm", "lymphoma", "carcinoma", "melanoma", "leukemia", "panmyelosis",
+               "tumor", "adamantinoma", "adenocarcinoma", "sarcoma", "astrocytoma", "astroblastoma", "carcinofibroma", "chordoma",
+               "malignant", "blastoma", "seminoma", "paraganglioma", "neoplasia", "glioma", "Dysgerminoma", "Ectomesenchymoma", "carcinoid", "Ependymoma", "hemangioendothelioma",
+               "thrombocythemia", "paraganglioma", "tumour", "ganglioma", "seminoma", "germinona", "gastrioma", "gliomatosis", "Glucagonoma", "Hodgkin", "lymphoproliferative",
+               "Insulinoma", "Langerhans", "Medulloepithelioma", "Mycosis fungoides", "Myelodysplastic", "neurocytoma", "Oligodendroglioma", "Paget", "Paraganglioma",
+               "Pheochromocytoma", "myeloma", "Plasmacytoma", "Polyembryoma", "mesothelioma", "myelofibrosis", "oligodendroglioma", "Sezary syndrome", "Somatostatinoma",
+               "Vipoma", "macroglobulinemia", "paraganglioma", "hemangioendothelioma", "thrombocythemia", "Gastrinoma", "heavy chain disease", "Medulloepithelioma"),
   domains = "Condition",
   includeDescendants = TRUE
 ) |>
   dplyr::pull("concept_id")
+
+
+
+primary_snapshot <- OmopSketch::summariseConceptSetCounts(cdm, 
+                          conceptSet = list("cancer" = cancer_codelist),
+                          countBy = "person") 
+ # plotConceptSetCounts()
 
 mets <- CodelistGenerator::getCandidateCodes(
   cdm = cdm,
-  keywords = c("metastases"),
-  domains = "Condition",
-  includeDescendants = TRUE
-) |>
-  dplyr::pull("concept_id")
-
-primary_snapshot <- OmopSketch::summariseConceptSetCounts(cdm, 
-                          conceptSet = list("cancer" = cancer),
-                          countBy = "person") %>%
- # plotConceptSetCounts()
-  
-
-
-####
-metastasis_result <- check_cancer_codes(cancer_codes, "metastasis", cdm)
-acetaminophen <- getCandidateCodes(
-  cdm = cdm,
-  keywords = "acetaminophen",
-  domains = "Drug",
+  keywords = c("metastasis", "metastatic", "mets", "metastases"),
+  domains = "Measurement",
   includeDescendants = TRUE
 ) |>
   dplyr::pull("concept_id")
 
 
+
+mets_snapshot <- OmopSketch::summariseConceptSetCounts(cdm, 
+                                                          conceptSet = list("mets" = mets),
+                                                          countBy = "person") 
+
+
+cancer_codes <- read.csv(here::here('inst/code_lists/cancer_diag_codes.csv'))
+cancer_codes <- cancer_codes %>% filter(grepl('Ameloblast', name)) 
+
+#primary_result <- check_cancer_codes(cancer_codes, "primary", cdm)  
+#metastasis_result <- check_cancer_codes(cancer_codes, "metastasis", cdm)
+
+primary_snap <- primary_snapshot %>% mutate(concept_name = sapply(strsplit(additional_level, " &&& "), function(x) x[1]),
+                                            domain = sapply(strsplit(additional_level, " &&& "), function(x) x[5]),
+                                            concept_id = sapply(strsplit(additional_level, " &&& "), function(x) x[2])) %>%
+                                     group_by(concept_name, domain, concept_id) %>%
+                                     summarise(total_patient_count = sum(as.numeric(estimate_value))) %>%
+                                     filter(concept_name != 'overall') %>%
+                                     arrange(desc(total_patient_count)) %>%
+                                     mutate(total_patient_count = ifelse(total_patient_count < 5, '>5', as.character(total_patient_count)))
+primary_snap_sliced <- head(primary_snap, 20)
+
+
+mets_snap <- mets_snapshot %>% mutate(concept_name = sapply(strsplit(additional_level, " &&& "), function(x) x[1]),
+                                      domain = sapply(strsplit(additional_level, " &&& "), function(x) x[5]),
+                                      concept_id = sapply(strsplit(additional_level, " &&& "), function(x) x[2])) %>%
+                               group_by(concept_name, domain, concept_id) %>%
+                               summarise(total_patient_count = sum(as.numeric(estimate_value))) %>%
+                               filter(concept_name != 'overall') %>%
+                               arrange(desc(total_patient_count)) %>%
+                               mutate(total_patient_count = ifelse(total_patient_count < 5, '>5', as.character(total_patient_count)))
+mets_snap_sliced <- head(mets_snap, 20)
 
 #tnm coding 
-tnm_codes <- read.csv(here::here('/inst/tnm_codes.csv'))
+tnm_codes <- read.csv(here::here('inst/code_lists/tnm_codes.csv'))
 tnm_result <- check_tnm(cdm, tnm_codes)
+
 
 #3 what is the pattern of primary diagnosis - is it present throughout the treatment period, is it superceded by mets diagnosis 
 #4 what is the frequency of diagnosis - is it only present at one time point per year, or at each visit 
-diag_pattern_result <- check_diag_pattern(cdm, cancer_codes)
+#diag_pattern_result <- check_diag_pattern(cdm, cancer_codes)
 # this is not functional yet
 
 
 ### drug therapy - number and % with dosage info, & where date of death comes before end date of treatment 
-drugs_file_path <- here::here('/inst/drug_list.csv')
+drugs_file_path <- here::here('inst/code_lists/drug_list.csv')
 drug_code_list <- read.csv(drugs_file_path)
 summary_immuno_drugs <- execute_drug_checks('immunotherapy')
 summary_chemo_drugs <- execute_drug_checks('chemotherapy')
 summary_therapy_drugs <- execute_drug_checks('targeted therapy')
 
 ### radiotherapy - number and % with valid RT treatment
-radiotherapy_codes_path <- here::here('/inst/radiotherapy_codes.csv')
+radiotherapy_codes_path <- here::here('inst/code_lists/radiotherapy_codes.csv')
 summary_radiotherapy <- execute_rt_checks(cdm, radiotherapy_codes_path) 
 
 #### radiotherapy dosage availability
@@ -143,11 +169,32 @@ radiotherapy_dose_result <- check_radiation_dose_info(cdm)
 
 ### patients with results of biomarker (use common cancer ones from MEDOC)
 
+genomic_codes <- CodelistGenerator::getCandidateCodes(
+  cdm = cdm,
+  keywords = c("mutation", "genetic", "gene", "deletion", "duplication"),
+  domains = "Measurement",
+  includeDescendants = FALSE
+) |>
+  dplyr::pull("concept_id")
 
-### genomic readiness? how to measure this 
-timestamp <- Sys.Date()
-rmarkdown::render("/inst/onboarding_report_template.Rmd", 
+genetic_snapshot <- OmopSketch::summariseConceptSetCounts(cdm, 
+                                                       conceptSet = list("genomic_codes" = genomic_codes),
+                                                       countBy = "person") 
+
+gene_snap <- genetic_snapshot %>% mutate(concept_name = sapply(strsplit(additional_level, " &&& "), function(x) x[1]),
+                                      domain = sapply(strsplit(additional_level, " &&& "), function(x) x[5]),
+                                      concept_id = sapply(strsplit(additional_level, " &&& "), function(x) x[2])) %>%
+  group_by(concept_name, domain, concept_id) %>%
+  summarise(total_patient_count = sum(as.numeric(estimate_value))) %>%
+  filter(concept_name != 'overall', !(grepl('pyogenes', concept_name)), !(grepl('general', concept_name))) %>%
+  arrange(desc(total_patient_count)) %>%
+  mutate(total_patient_count = ifelse(total_patient_count < 5, '>5', as.character(total_patient_count)))
+gene_snap_sliced <- head(gene_snap, 20)
+
+timestamp <- format(Sys.time(), "%Y-%m-%d %H:%M")
+
+rmarkdown::render("inst/onboarding_report_template.Rmd", 
                   output_format = "html_document",
                   output_file = paste0("MEDOC_cdm_report_", centre, "_", timestamp, ".html"),
-                  output_dir = here::here("/inst/output_report/"),
+                  output_dir = here::here("inst/output_report/"),
                   params = list(centre = centre, author = author))
