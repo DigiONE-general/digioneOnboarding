@@ -331,37 +331,6 @@ check_radiation_dose_info <- function(cdm) {
 }
 
 
-######################## doc req 
-
-check_tnm <- function(cdm) {
-  # Define the range of codes to check
-  tumour_stage_codes <- 1633268:1635896
-  
-  # Check if measurement_concept_id is 4111627
-  staging_stored_as_value <- cdm$measurement %>%
-    summarise(present = any(measurement_concept_id == 4111627)) %>%
-    pull(present)
-  
-  # Check if value_as_concept_id contains tumour stage codes when measurement_concept_id is 4111627
-  value_as_concept_id_contains_tumour_stage <- cdm$measurement %>%
-    filter(measurement_concept_id == 4111627) %>%
-    summarise(present = any(value_as_concept_id %in% tumour_stage_codes)) %>%
-    pull(present)
-  
-  # Check if measurement_concept_id contains tumour stage codes
-  tumour_stage_stored_in_measurement_concept_id <- cdm$measurement %>%
-    summarise(present = any(measurement_concept_id %in% tumour_stage_codes)) %>%
-    pull(present)
-  
-  # Create the result dataframe
-  result <- tibble(
-    `staging stored as value` = staging_stored_as_value,
-    `value_as_concept_id contains tumour stage` = value_as_concept_id_contains_tumour_stage,
-    `tumour stage stored in measurement_concept_id` = tumour_stage_stored_in_measurement_concept_id
-  )
-  
-  return(result)
-}
 
 
 ##########################
