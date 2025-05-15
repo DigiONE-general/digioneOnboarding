@@ -7,7 +7,7 @@ cdmSchema = "" # omop instance name
 writeSchema = "" # schema to write to
 tablePrefix <- "" # table prefix - will be written to write schema
 db_name <- "" # 
-omop_name <- ""
+omop_schema_name <- ""
 centre <- ""
 author <- ""
 sql_dialect <- "" #either: 'snowflake', 'mysql', 'postgresql', 'sqlite', 'sqlserver', 'redshift'
@@ -29,4 +29,16 @@ cdm <- CDMConnector::cdmFromCon(con = conn,
                                 writeSchema = writeSchema,
                                 writePrefix  = tablePrefix)
 
-source(here::here('/main_onboarding.R'))
+source(here::here('R/helper_functions.R'))
+source(here::here('inst/concepts_list.R'))
+source(here::here('R/main_onboarding.R'))
+
+
+resultsFolder <- here::here("inst/output_report/instance_codelists")
+if (!dir.exists(resultsFolder)) {
+  dir.create(resultsFolder, recursive = TRUE)
+}
+
+write.csv(primary_snap, paste0(resultsFolder, "/primary_diagnosis_codes.csv"))
+write.csv(mets_snap, paste0(resultsFolder, "/metastasis_diagnosis_codes.csv"))
+write.csv(gene_snap, paste0(resultsFolder, "/genetic_codes.csv"))

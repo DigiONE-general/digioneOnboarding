@@ -15,7 +15,7 @@ library(gt)
 
 ### system info
 ### get source, name, cdm info
-cdm_details <- get_cdm_details(conn, db_name, omop_name)
+cdm_details <- get_cdm_details(conn, db_name, omop_schema_name)
 cdm_record_counts <- get_cdm_counts(cdm)
 cdm_overall_snapshot <- OmopSketch::summariseOmopSnapshot(cdm) |>
   OmopSketch::tableOmopSnapshot()
