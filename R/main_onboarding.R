@@ -30,7 +30,7 @@ cdm_snapshot_clinical <- OmopSketch::summariseClinicalRecords(cdm, c("condition_
 cdm_snapshot_obs <- OmopSketch::summariseObservationPeriod(cdm$observation_period) |>
   tableObservationPeriod()
 
-OmopSketch::summariseObservationPeriod(cdm$observation_period) %>% plotObservationPeriod(colour = "observation_period_ordinal")
+# OmopSketch::summariseObservationPeriod(cdm$observation_period) %>% plotObservationPeriod(colour = "observation_period_ordinal")
 
 ### mapping completeness (vocab mappings)
 mappings <- list(
@@ -79,19 +79,19 @@ episode_table <- check_tables(conn, sql_dialect)
 ## as with above, do a check for location of primary diagnosis (i.e. how we identify it) and if mets diagnoses are available
 #1 search cdm for codes to find: which tables and variables are concept ids stored for: primary malig, metastasis/ secondary malig
 
-cancer_codelist <- CodelistGenerator::getCandidateCodes(
-  cdm = cdm,
-  keywords = c("cancer", "primary malignancy", "neoplasm", "lymphoma", "carcinoma", "melanoma", "leukemia", "panmyelosis",
-               "tumor", "adamantinoma", "adenocarcinoma", "sarcoma", "astrocytoma", "astroblastoma", "carcinofibroma", "chordoma",
-               "malignant", "blastoma", "seminoma", "paraganglioma", "neoplasia", "glioma", "Dysgerminoma", "Ectomesenchymoma", "carcinoid", "Ependymoma", "hemangioendothelioma",
-               "thrombocythemia", "paraganglioma", "tumour", "ganglioma", "seminoma", "germinona", "gastrioma", "gliomatosis", "Glucagonoma", "Hodgkin", "lymphoproliferative",
-               "Insulinoma", "Langerhans", "Medulloepithelioma", "Mycosis fungoides", "Myelodysplastic", "neurocytoma", "Oligodendroglioma", "Paget", "Paraganglioma",
-               "Pheochromocytoma", "myeloma", "Plasmacytoma", "Polyembryoma", "mesothelioma", "myelofibrosis", "oligodendroglioma", "Sezary syndrome", "Somatostatinoma",
-               "Vipoma", "macroglobulinemia", "paraganglioma", "hemangioendothelioma", "thrombocythemia", "Gastrinoma", "heavy chain disease", "Medulloepithelioma"),
-  domains = "Condition",
-  includeDescendants = TRUE
-) |>
-  dplyr::pull("concept_id")
+# cancer_codelist <- CodelistGenerator::getCandidateCodes(
+#   cdm = cdm,
+#   keywords = c("cancer", "primary malignancy", "neoplasm", "lymphoma", "carcinoma", "melanoma", "leukemia", "panmyelosis",
+#                "tumor", "adamantinoma", "adenocarcinoma", "sarcoma", "astrocytoma", "astroblastoma", "carcinofibroma", "chordoma",
+#                "malignant", "blastoma", "seminoma", "paraganglioma", "neoplasia", "glioma", "Dysgerminoma", "Ectomesenchymoma", "carcinoid", "Ependymoma", "hemangioendothelioma",
+#                "thrombocythemia", "paraganglioma", "tumour", "ganglioma", "seminoma", "germinona", "gastrioma", "gliomatosis", "Glucagonoma", "Hodgkin", "lymphoproliferative",
+#                "Insulinoma", "Langerhans", "Medulloepithelioma", "Mycosis fungoides", "Myelodysplastic", "neurocytoma", "Oligodendroglioma", "Paget", "Paraganglioma",
+#                "Pheochromocytoma", "myeloma", "Plasmacytoma", "Polyembryoma", "mesothelioma", "myelofibrosis", "oligodendroglioma", "Sezary syndrome", "Somatostatinoma",
+#                "Vipoma", "macroglobulinemia", "paraganglioma", "hemangioendothelioma", "thrombocythemia", "Gastrinoma", "heavy chain disease", "Medulloepithelioma"),
+#   domains = "Condition",
+#   includeDescendants = TRUE
+# ) |>
+#   dplyr::pull("concept_id")
 
 
 summarise_concept_counts <- function(cdm_table, concept_id_col, concept_table, codelist) {
@@ -106,13 +106,13 @@ summarise_concept_counts <- function(cdm_table, concept_id_col, concept_table, c
     collect()
 }
 
-
-primary_snapshot <- summarise_concept_counts(
-  cdm_table = cdm$condition_occurrence,
-  concept_id_col = "condition_concept_id",
-  concept_table = cdm$concept,
-  codelist = cancer_codelist
-)
+# 
+# primary_snapshot <- summarise_concept_counts(
+#   cdm_table = cdm$condition_occurrence,
+#   concept_id_col = "condition_concept_id",
+#   concept_table = cdm$concept,
+#   codelist = cancer_codelist
+# )
 
 
 # primary_snapshot <- summariseConceptSetCountsdigi(cdm, 
@@ -143,18 +143,7 @@ mets_snapshot <- summarise_concept_counts(
 cancer_codes <- read.csv(here::here('inst/code_lists/cancer_diag_codes.csv'))
 cancer_codes <- cancer_codes %>% filter(grepl('Ameloblast', name)) 
 
-#primary_result <- check_cancer_codes(cancer_codes, "primary", cdm)  
-#metastasis_result <- check_cancer_codes(cancer_codes, "metastasis", cdm)
-
-# primary_snap <- primary_snapshot %>% mutate(concept_name = sapply(strsplit(additional_level, " &&& "), function(x) x[1]),
-#                                             domain = sapply(strsplit(additional_level, " &&& "), function(x) x[5]),
-#                                             concept_id = sapply(strsplit(additional_level, " &&& "), function(x) x[2])) %>%
-#                                      group_by(concept_name, domain, concept_id) %>%
-#                                      summarise(total_patient_count = sum(as.numeric(estimate_value))) %>%
-#                                      filter(concept_name != 'overall') %>%
-#                                      arrange(desc(total_patient_count)) %>%
-#                                      mutate(total_patient_count = ifelse(total_patient_count < 5, '>5', as.character(total_patient_count)))
-primary_snap_sliced <- head(primary_snapshot, 20)
+# primary_snap_sliced <- head(primary_snapshot, 20)
 
 
 # mets_snap <- mets_snapshot %>% mutate(concept_name = sapply(strsplit(additional_level, " &&& "), function(x) x[1]),
@@ -168,7 +157,7 @@ primary_snap_sliced <- head(primary_snapshot, 20)
 mets_snap_sliced <- head(mets_snapshot, 20)
 
 #tnm coding 
-tnm_codes <- read.csv(tnm_codes_path)
+tnm_codes <- read.csv(here::here('inst/code_lists/tnm_codes.csv'))
 
 tumour_stage_codes <- tnm_codes$measurement_concept_id
 
@@ -213,35 +202,25 @@ radiotherapy_dose_result <- check_radiation_dose_info(cdm)
 
 ### patients with results of biomarker (use common cancer ones from MEDOC)
 
-genomic_codes <- CodelistGenerator::getCandidateCodes(
-  cdm = cdm,
-  keywords = c("mutation", "genetic", "gene", "deletion", "duplication"),
-  domains = "Measurement",
-  includeDescendants = FALSE
-) |>
-  dplyr::pull("concept_id")
+# genomic_codes <- CodelistGenerator::getCandidateCodes(
+#   cdm = cdm,
+#   keywords = c("mutation", "genetic", "gene", "deletion", "duplication"),
+#   domains = "Measurement",
+#   includeDescendants = FALSE
+# ) |>
+#   dplyr::pull("concept_id")
 
-# genetic_snapshot <- OmopSketch::summariseConceptSetCounts(cdm, 
-#                                                        conceptSet = list("genomic_codes" = genomic_codes),
-#                                                        countBy = "person") 
 
-# gene_snap <- genetic_snapshot %>% mutate(concept_name = sapply(strsplit(additional_level, " &&& "), function(x) x[1]),
-#                                       domain = sapply(strsplit(additional_level, " &&& "), function(x) x[5]),
-#                                       concept_id = sapply(strsplit(additional_level, " &&& "), function(x) x[2])) %>%
-#   group_by(concept_name, domain, concept_id) %>%
-#   summarise(total_patient_count = sum(as.numeric(estimate_value))) %>%
-#   filter(concept_name != 'overall', !(grepl('pyogenes', concept_name)), !(grepl('general', concept_name))) %>%
-#   arrange(desc(total_patient_count)) %>%
-#   mutate(total_patient_count = ifelse(total_patient_count < 5, '>5', as.character(total_patient_count)))
-gene_snap <- summarise_concept_counts(
-  cdm_table = cdm$measurement,
-  concept_id_col = "measurement_concept_id",
-  concept_table = cdm$concept,
-  codelist = genomic_codes
-)
 
-gene_snap <- gene_snap %>% filter(concept_name != 'overall', !(grepl('pyogenes', concept_name)), !(grepl('general', concept_name)), !(grepl('Stool', concept_name))) %>% arrange(desc(person_id_count))
-gene_snap_sliced <- head(gene_snap, 20)
+# gene_snap <- summarise_concept_counts(
+#   cdm_table = cdm$measurement,
+#   concept_id_col = "measurement_concept_id",
+#   concept_table = cdm$concept,
+#   codelist = genomic_codes
+# )
+# 
+# gene_snap <- gene_snap %>% filter(concept_name != 'overall', !(grepl('pyogenes', concept_name)), !(grepl('general', concept_name)), !(grepl('Stool', concept_name))) %>% arrange(desc(person_id_count))
+# gene_snap_sliced <- head(gene_snap, 20)
 
 timestamp <- format(Sys.time(), "%Y-%m-%d %H:%M")
 
@@ -250,3 +229,12 @@ rmarkdown::render("inst/onboarding_report_template.Rmd",
                   output_file = paste0("MEDOC_cdm_report_", centre, "_", timestamp, ".html"),
                   output_dir = here::here("inst/output_report/"),
                   params = list(centre = centre, author = author))
+
+
+rmarkdown::render("inst/onboarding_report_template.Rmd", 
+                  output_format = "word_document",
+                  output_file = paste0("MEDOC_cdm_report_", centre, "_", timestamp, ".docx"),
+                  output_dir = here::here("inst/output_report/"),
+                  params = list(centre = centre, author = author))
+
+

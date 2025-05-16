@@ -6,7 +6,7 @@ cdmSchema = c("EXT_OMOPV5_USA_ONCEMR", "FULL_M202112_OMOP_V5")
 writeSchema = c("PA_USA_ONCEMR", "STUDY_REFERENCE")
 tablePrefix <- "test_"
 db_name <- "EXT_OMOPV5_USA_ONCEMR"
-omop_name <- "FULL_M202112_OMOP_V5"
+omop_schema_name <- "FULL_M202112_OMOP_V5"
 centre <- 'Example Centre'
 author <- 'Example Author'
 sql_dialect <- "snowflake" #either: 'snowflake', 'mysql', 'postgresql', 'sqlite', 'sqlserver', 'redshift'
