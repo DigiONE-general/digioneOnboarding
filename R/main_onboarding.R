@@ -94,10 +94,30 @@ cancer_codelist <- CodelistGenerator::getCandidateCodes(
   dplyr::pull("concept_id")
 
 
+summarise_concept_counts <- function(cdm_table, concept_id_col, concept_table, codelist) {
+  concept_id_sym <- sym(concept_id_col)
+  
+  cdm_table %>%
+    filter(!!concept_id_sym %in% codelist) %>%
+    group_by(!!concept_id_sym) %>%
+    summarise(person_id_count = n_distinct(person_id), .groups = "drop") %>%
+    left_join(concept_table, by = setNames("concept_id", concept_id_col)) %>%
+    select(concept_name, concept_id = !!concept_id_sym, person_id_count) %>%
+    collect()
+}
 
-primary_snapshot <- OmopSketch::summariseConceptSetCounts(cdm, 
-                          conceptSet = list("cancer" = cancer_codelist),
-                          countBy = "person") 
+
+primary_snapshot <- summarise_concept_counts(
+  cdm_table = cdm$condition_occurrence,
+  concept_id_col = "condition_concept_id",
+  concept_table = cdm$concept,
+  codelist = cancer_codelist
+)
+
+
+# primary_snapshot <- summariseConceptSetCountsdigi(cdm, 
+#                           conceptSet = list("cancer" = cancer_codelist),
+#                           countBy = "person") 
  # plotConceptSetCounts()
 
 mets <- CodelistGenerator::getCandidateCodes(
@@ -109,10 +129,15 @@ mets <- CodelistGenerator::getCandidateCodes(
   dplyr::pull("concept_id")
 
 
-
-mets_snapshot <- OmopSketch::summariseConceptSetCounts(cdm, 
-                                                          conceptSet = list("mets" = mets),
-                                                          countBy = "person") 
+mets_snapshot <- summarise_concept_counts(
+  cdm_table = cdm$measurement,
+  concept_id_col = "measurement_concept_id",
+  concept_table = cdm$concept,
+  codelist = mets
+)
+# mets_snapshot <- OmopSketch::summariseConceptSetCounts(cdm, 
+#                                                           conceptSet = list("mets" = mets),
+#                                                           countBy = "person") 
 
 
 cancer_codes <- read.csv(here::here('inst/code_lists/cancer_diag_codes.csv'))
@@ -121,26 +146,26 @@ cancer_codes <- cancer_codes %>% filter(grepl('Ameloblast', name))
 #primary_result <- check_cancer_codes(cancer_codes, "primary", cdm)  
 #metastasis_result <- check_cancer_codes(cancer_codes, "metastasis", cdm)
 
-primary_snap <- primary_snapshot %>% mutate(concept_name = sapply(strsplit(additional_level, " &&& "), function(x) x[1]),
-                                            domain = sapply(strsplit(additional_level, " &&& "), function(x) x[5]),
-                                            concept_id = sapply(strsplit(additional_level, " &&& "), function(x) x[2])) %>%
-                                     group_by(concept_name, domain, concept_id) %>%
-                                     summarise(total_patient_count = sum(as.numeric(estimate_value))) %>%
-                                     filter(concept_name != 'overall') %>%
-                                     arrange(desc(total_patient_count)) %>%
-                                     mutate(total_patient_count = ifelse(total_patient_count < 5, '>5', as.character(total_patient_count)))
-primary_snap_sliced <- head(primary_snap, 20)
+# primary_snap <- primary_snapshot %>% mutate(concept_name = sapply(strsplit(additional_level, " &&& "), function(x) x[1]),
+#                                             domain = sapply(strsplit(additional_level, " &&& "), function(x) x[5]),
+#                                             concept_id = sapply(strsplit(additional_level, " &&& "), function(x) x[2])) %>%
+#                                      group_by(concept_name, domain, concept_id) %>%
+#                                      summarise(total_patient_count = sum(as.numeric(estimate_value))) %>%
+#                                      filter(concept_name != 'overall') %>%
+#                                      arrange(desc(total_patient_count)) %>%
+#                                      mutate(total_patient_count = ifelse(total_patient_count < 5, '>5', as.character(total_patient_count)))
+primary_snap_sliced <- head(primary_snapshot, 20)
 
 
-mets_snap <- mets_snapshot %>% mutate(concept_name = sapply(strsplit(additional_level, " &&& "), function(x) x[1]),
-                                      domain = sapply(strsplit(additional_level, " &&& "), function(x) x[5]),
-                                      concept_id = sapply(strsplit(additional_level, " &&& "), function(x) x[2])) %>%
-                               group_by(concept_name, domain, concept_id) %>%
-                               summarise(total_patient_count = sum(as.numeric(estimate_value))) %>%
-                               filter(concept_name != 'overall') %>%
-                               arrange(desc(total_patient_count)) %>%
-                               mutate(total_patient_count = ifelse(total_patient_count < 5, '>5', as.character(total_patient_count)))
-mets_snap_sliced <- head(mets_snap, 20)
+# mets_snap <- mets_snapshot %>% mutate(concept_name = sapply(strsplit(additional_level, " &&& "), function(x) x[1]),
+#                                       domain = sapply(strsplit(additional_level, " &&& "), function(x) x[5]),
+#                                       concept_id = sapply(strsplit(additional_level, " &&& "), function(x) x[2])) %>%
+#                                group_by(concept_name, domain, concept_id) %>%
+#                                summarise(total_patient_count = sum(as.numeric(estimate_value))) %>%
+#                                filter(concept_name != 'overall') %>%
+#                                arrange(desc(total_patient_count)) %>%
+#                                mutate(total_patient_count = ifelse(total_patient_count < 5, '>5', as.character(total_patient_count)))
+mets_snap_sliced <- head(mets_snapshot, 20)
 
 #tnm coding 
 tnm_codes <- read.csv(tnm_codes_path)
@@ -196,18 +221,26 @@ genomic_codes <- CodelistGenerator::getCandidateCodes(
 ) |>
   dplyr::pull("concept_id")
 
-genetic_snapshot <- OmopSketch::summariseConceptSetCounts(cdm, 
-                                                       conceptSet = list("genomic_codes" = genomic_codes),
-                                                       countBy = "person") 
+# genetic_snapshot <- OmopSketch::summariseConceptSetCounts(cdm, 
+#                                                        conceptSet = list("genomic_codes" = genomic_codes),
+#                                                        countBy = "person") 
 
-gene_snap <- genetic_snapshot %>% mutate(concept_name = sapply(strsplit(additional_level, " &&& "), function(x) x[1]),
-                                      domain = sapply(strsplit(additional_level, " &&& "), function(x) x[5]),
-                                      concept_id = sapply(strsplit(additional_level, " &&& "), function(x) x[2])) %>%
-  group_by(concept_name, domain, concept_id) %>%
-  summarise(total_patient_count = sum(as.numeric(estimate_value))) %>%
-  filter(concept_name != 'overall', !(grepl('pyogenes', concept_name)), !(grepl('general', concept_name))) %>%
-  arrange(desc(total_patient_count)) %>%
-  mutate(total_patient_count = ifelse(total_patient_count < 5, '>5', as.character(total_patient_count)))
+# gene_snap <- genetic_snapshot %>% mutate(concept_name = sapply(strsplit(additional_level, " &&& "), function(x) x[1]),
+#                                       domain = sapply(strsplit(additional_level, " &&& "), function(x) x[5]),
+#                                       concept_id = sapply(strsplit(additional_level, " &&& "), function(x) x[2])) %>%
+#   group_by(concept_name, domain, concept_id) %>%
+#   summarise(total_patient_count = sum(as.numeric(estimate_value))) %>%
+#   filter(concept_name != 'overall', !(grepl('pyogenes', concept_name)), !(grepl('general', concept_name))) %>%
+#   arrange(desc(total_patient_count)) %>%
+#   mutate(total_patient_count = ifelse(total_patient_count < 5, '>5', as.character(total_patient_count)))
+gene_snap <- summarise_concept_counts(
+  cdm_table = cdm$measurement,
+  concept_id_col = "measurement_concept_id",
+  concept_table = cdm$concept,
+  codelist = genomic_codes
+)
+
+gene_snap <- gene_snap %>% filter(concept_name != 'overall', !(grepl('pyogenes', concept_name)), !(grepl('general', concept_name)), !(grepl('Stool', concept_name))) %>% arrange(desc(person_id_count))
 gene_snap_sliced <- head(gene_snap, 20)
 
 timestamp <- format(Sys.time(), "%Y-%m-%d %H:%M")

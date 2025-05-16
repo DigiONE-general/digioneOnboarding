@@ -4,12 +4,12 @@
 check_tables <- function(conn, sql_dialect) {
   # Define the query based on the SQL dialect
   query <- switch(sql_dialect,
-                           "snowflake" = paste0("SHOW VIEWS IN SCHEMA ", db_name, ".", omop_name),
+                           "snowflake" = paste0("SHOW VIEWS IN SCHEMA ", db_name, ".", omop_schema_name),
                            "mysql" = paste0("SHOW FULL TABLES IN ", db_name, " WHERE TABLE_TYPE LIKE 'VIEW'"),
-                           "postgresql" = paste0("SELECT table_name FROM information_schema.views WHERE table_schema = '", omop_name, "'"),
+                           "postgresql" = paste0("SELECT table_name FROM information_schema.views WHERE table_schema = '", omop_schema_name, "'"),
                            "sqlite" = "SELECT name FROM sqlite_master WHERE type='view'",
-                           "sqlserver" = paste0("SELECT table_name FROM information_schema.views WHERE table_schema = '", omop_name, "'"),
-                           "redshift" = paste0("SELECT table_name FROM information_schema.views WHERE table_schema = '", omop_name, "'"),
+                           "sqlserver" = paste0("SELECT table_name FROM information_schema.views WHERE table_schema = '", omop_schema_name, "'"),
+                           "redshift" = paste0("SELECT table_name FROM information_schema.views WHERE table_schema = '", omop_schema_name, "'"),
                            stop("Unsupported SQL dialect"))
   
   # Execute the query
@@ -39,15 +39,15 @@ check_tables <- function(conn, sql_dialect) {
 
 ################ documentation req ###################
 
-get_cdm_details <- function(conn, db_name, omop_name) {
+get_cdm_details <- function(conn, db_name, omop_schema_name) {
   
-  cdm_name <- dbGetQuery(conn, paste0("SELECT CDM_SOURCE_NAME FROM ", db_name, ".", omop_name, ".CDM_SOURCE;")) %>% collect()
+  cdm_name <- dbGetQuery(conn, paste0("SELECT CDM_SOURCE_NAME FROM ", db_name, ".", omop_schema_name, ".CDM_SOURCE;")) %>% collect()
   
-  cdm_date <- dbGetQuery(conn, paste0("SELECT CDM_RELEASE_DATE FROM ", db_name, ".", omop_name, ".CDM_SOURCE;")) %>% collect()
+  cdm_date <- dbGetQuery(conn, paste0("SELECT CDM_RELEASE_DATE FROM ", db_name, ".", omop_schema_name, ".CDM_SOURCE;")) %>% collect()
   
-  cdm_info <- dbGetQuery(conn, paste0("SELECT SOURCE_DESCRIPTION FROM ", db_name, ".", omop_name, ".CDM_SOURCE;")) %>% collect()
+  cdm_info <- dbGetQuery(conn, paste0("SELECT SOURCE_DESCRIPTION FROM ", db_name, ".", omop_schema_name, ".CDM_SOURCE;")) %>% collect()
   
-  cdm_vocab <- dbGetQuery(conn, paste0("SELECT VOCABULARY_VERSION FROM ", db_name, ".", omop_name, ".CDM_SOURCE;")) %>% collect()
+  cdm_vocab <- dbGetQuery(conn, paste0("SELECT VOCABULARY_VERSION FROM ", db_name, ".", omop_schema_name, ".CDM_SOURCE;")) %>% collect()
   
   cdm_desc <- cbind(cdm_name, cdm_date, cdm_info, cdm_vocab)
   
