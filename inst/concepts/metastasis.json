@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "concept": {
+        "CONCEPT_CLASS_ID": "Metastasis",
+        "CONCEPT_CODE": "OMOP4997805",
+        "CONCEPT_ID": 36768130,
+        "CONCEPT_NAME": "Generalized metastases",
+        "DOMAIN_ID": "Measurement",
+        "INVALID_REASON": "V",
+        "INVALID_REASON_CAPTION": "Valid",
+        "STANDARD_CONCEPT": "S",
+        "STANDARD_CONCEPT_CAPTION": "Standard",
+        "VOCABULARY_ID": "Cancer Modifier",
+        "VALID_START_DATE": "2020-09-23",
+        "VALID_END_DATE": "2099-12-31"
+      },
+      "isExcluded": false,
+      "includeDescendants": true,
+      "includeMapped": false
+    }
+  ]
+}

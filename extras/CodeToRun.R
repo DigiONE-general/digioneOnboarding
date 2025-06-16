@@ -39,6 +39,7 @@ if (!dir.exists(resultsFolder)) {
   dir.create(resultsFolder, recursive = TRUE)
 }
 
-write.csv(primary_snap, paste0(resultsFolder, "/primary_diagnosis_codes.csv"))
-write.csv(mets_snap, paste0(resultsFolder, "/metastasis_diagnosis_codes.csv"))
-write.csv(gene_snap, paste0(resultsFolder, "/genetic_codes.csv"))
+write.csv(primary_snapshot, paste0(resultsFolder, "/primary_diagnosis_codes.csv"))
+write.csv(mets_snapshot, paste0(resultsFolder, "/metastasis_diagnosis_codes_conditions.csv"))
+write.csv(mets_snapshot_meas, paste0(resultsFolder, "/metastasis_diagnosis_codes_measurement.csv"))
+write.csv(gene_snapshot, paste0(resultsFolder, "/genetic_codes.csv"))

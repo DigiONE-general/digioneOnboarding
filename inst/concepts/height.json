@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "concept": {
+        "CONCEPT_CLASS_ID": "Clinical Observation",
+        "CONCEPT_CODE": "8302-2",
+        "CONCEPT_ID": 3036277,
+        "CONCEPT_NAME": "Body height",
+        "DOMAIN_ID": "Measurement",
+        "INVALID_REASON": "V",
+        "INVALID_REASON_CAPTION": "Valid",
+        "STANDARD_CONCEPT": "S",
+        "STANDARD_CONCEPT_CAPTION": "Standard",
+        "VOCABULARY_ID": "LOINC",
+        "VALID_START_DATE": "1996-09-06",
+        "VALID_END_DATE": "2099-12-31"
+      },
+      "isExcluded": false,
+      "includeDescendants": false,
+      "includeMapped": false
+    }
+  ]
+}

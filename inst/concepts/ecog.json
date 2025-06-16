@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "concept": {
+        "CONCEPT_CLASS_ID": "Clinical Observation",
+        "CONCEPT_CODE": "89247-1",
+        "CONCEPT_ID": 36305384,
+        "CONCEPT_NAME": "ECOG Performance Status score",
+        "DOMAIN_ID": "Measurement",
+        "INVALID_REASON": "V",
+        "INVALID_REASON_CAPTION": "Valid",
+        "STANDARD_CONCEPT": "S",
+        "STANDARD_CONCEPT_CAPTION": "Standard",
+        "VOCABULARY_ID": "LOINC",
+        "VALID_START_DATE": "2018-06-15",
+        "VALID_END_DATE": "2099-12-31"
+      },
+      "isExcluded": false,
+      "includeDescendants": false,
+      "includeMapped": false
+    }
+  ]
+}

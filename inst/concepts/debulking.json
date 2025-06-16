@@ -1,0 +1,61 @@
+{
+  "items": [
+    {
+      "concept": {
+        "CONCEPT_CLASS_ID": "Staging/Grading",
+        "CONCEPT_CODE": "R0",
+        "CONCEPT_ID": 1634643,
+        "CONCEPT_NAME": "R0: No residual tumor",
+        "DOMAIN_ID": "Measurement",
+        "INVALID_REASON": "V",
+        "INVALID_REASON_CAPTION": "Valid",
+        "STANDARD_CONCEPT": "S",
+        "STANDARD_CONCEPT_CAPTION": "Standard",
+        "VOCABULARY_ID": "Cancer Modifier",
+        "VALID_START_DATE": "2022-05-09",
+        "VALID_END_DATE": "2099-12-31"
+      },
+      "isExcluded": false,
+      "includeDescendants": true,
+      "includeMapped": false
+    },
+    {
+      "concept": {
+        "CONCEPT_CLASS_ID": "Staging/Grading",
+        "CONCEPT_CODE": "R1",
+        "CONCEPT_ID": 1633801,
+        "CONCEPT_NAME": "R1: Microscopic residual tumor",
+        "DOMAIN_ID": "Measurement",
+        "INVALID_REASON": "V",
+        "INVALID_REASON_CAPTION": "Valid",
+        "STANDARD_CONCEPT": "S",
+        "STANDARD_CONCEPT_CAPTION": "Standard",
+        "VOCABULARY_ID": "Cancer Modifier",
+        "VALID_START_DATE": "2022-05-09",
+        "VALID_END_DATE": "2099-12-31"
+      },
+      "isExcluded": false,
+      "includeDescendants": true,
+      "includeMapped": false
+    },
+    {
+      "concept": {
+        "CONCEPT_CLASS_ID": "Staging/Grading",
+        "CONCEPT_CODE": "R2",
+        "CONCEPT_ID": 1634484,
+        "CONCEPT_NAME": "R2: Macroscopic residual tumor",
+        "DOMAIN_ID": "Measurement",
+        "INVALID_REASON": "V",
+        "INVALID_REASON_CAPTION": "Valid",
+        "STANDARD_CONCEPT": "S",
+        "STANDARD_CONCEPT_CAPTION": "Standard",
+        "VOCABULARY_ID": "Cancer Modifier",
+        "VALID_START_DATE": "2022-05-09",
+        "VALID_END_DATE": "2099-12-31"
+      },
+      "isExcluded": false,
+      "includeDescendants": true,
+      "includeMapped": false
+    }
+  ]
+}

@@ -59,7 +59,12 @@ if (is_word) {
 
 ```{r cdm_details, echo = FALSE}
 
-cdm_overall_snapshot
+
+render_table(
+ cdm_overall_snapshot,
+ "Table 1.1 : CDM overview",
+ c(" " = 1, "Summary of cdm details" = ncol(cdm_overall_snapshot) - 1)
+)
 
 ```
 
@@ -67,13 +72,39 @@ cdm_overall_snapshot
 
 ```{r, echo = FALSE}
 
-cdm_snapshot_clinical
+render_table(
+ cdm_snapshot_clinical_condition,
+ "Table 2.1 : Condition occurrence",
+ c(" " = 1, "Summary of condition occurrence table" = ncol(cdm_snapshot_clinical_condition) - 1)
+)
+```
+
+```{r, echo = FALSE}
+
+render_table(
+ cdm_snapshot_clinical_drug,
+ "Table 2.2 : Drug exposure",
+ c(" " = 1, "Summary of drug exposure table" = ncol(cdm_snapshot_clinical_drug) - 1)
+)
+```
+
+```{r, echo = FALSE}
+
+render_table(
+ cdm_snapshot_clinical_meas,
+ "Table 2.3 : Measurement table summary",
+ c(" " = 1, "Summary of measurement table" = ncol(cdm_snapshot_clinical_meas) - 1)
+)
 ```
 
 # Summary of observation tables
 
 ```{r, echo = FALSE}
-cdm_snapshot_obs
+render_table(
+ cdm_snapshot_obs,
+ "Table 3.1 : Observation table summary",
+ c(" " = 1, "Summary of observation table" = ncol(cdm_snapshot_obs) - 1)
+)
 
 ```
 
@@ -83,7 +114,7 @@ cdm_snapshot_obs
 ```{r vocab_map, echo = FALSE}
 render_table(
  mappingCompleteness,
- "Table 1.1 : Vocabulary mapping completedness",
+ "Table 4.1 : Vocabulary mapping completedness",
  c(" " = 1, "Number and percentage of codes successfully mapped from source to OMOP convention, and number and percentage of records where vocabulary has been successfully mapped to OMOP convention" = ncol(mappingCompleteness) - 1)
 )
 
@@ -94,69 +125,90 @@ render_table(
 
 ```{r, echo = FALSE}
 render_table(
-  medoc_variable_locations,
-  "Table 2.1 : MEDOC concept has valid concept id and locations",
-  c(" " = 1, "Indicates the OMOP variable required for MEDOC concepts has a valid concept id, and their presence and location in the database (T/F). Currently excludes episode table. *denotes non-compulsory variables" = ncol(medoc_variable_locations) - 1)
+  medoc_concept_table,
+  "Table 5.1 : MEDOC concept has valid concept id and locations",
+  c(" " = 1, "Indicates the OMOP variable required for MEDOC concepts has a valid concept id, and their presence and location in the database (T/F)." = ncol(medoc_concept_table) - 1)
 )
 
-print(episode_table[1])
-print(episode_table[2])
+render_table(
+  episode_table,
+  "Table 5.2 : Episode table checks",
+  c(" " = 1, "Are episode and event tables present and populated" = ncol(episode_table) - 1)
+)
 
 ```
+# Cancer phenotype
 
-### Metastasis diagnoses
+## Cancer diagnosis
 ```{r, echo = FALSE}
 render_table(
-  mets_snap_sliced,
-  "Table 3.2: Metastasis diagnosis",
-  c(" " = 1, "Metastasis diagnosis by number of patients and domain (full list as csv in results folder)" = ncol(mets_snap_sliced) - 1)
+  primary_snap_sliced,
+  "Table 6.1 : Primary diagnosis -  concept ids",
+  c(" " = 1, "Diagnosis by number of patients and domain (full list as csv in results folder)" = ncol(mets_snap_sliced_meas) - 1)
 )
 
 ```
 
+## Metastasis diagnosis
+```{r, echo = FALSE}
+render_table(
+  mets_snap_sliced_meas,
+  "Table 6.2 : Metastasis diagnosis - Measurement concept ids",
+  c(" " = 1, "Metastasis diagnosis by number of patients and domain (full list as csv in results folder)" = ncol(mets_snap_sliced_meas) - 1)
+)
+
+```
+
+```{r, echo = FALSE}
+render_table(
+  mets_snap_sliced_condition,
+  "Table 6.3 : Metastasis diagnosis - Condition Occurrence concept ids",
+  c(" " = 1, "Metastasis diagnosis by number of patients and domain (full list as csv in results folder)" = ncol(mets_snap_sliced_condition) - 1)
+)
+
+```
 
 # Treatment checks
 
-### Immunotherapy drugs
-
+## Immunotherapy drugs
 
 ```{r drug_check_1, echo = FALSE}
 render_table(
  summary_immuno_drugs,
- "Table 4.1 : Immunotherapy drug completedness",
+ "Table 7.1 : Immunotherapy drug completedness",
  c(" " = 1, "Number of persons and records exposed to immunotherapy drugs, percentage of records with dose information, median drug exposure (days) per drug, proportion of records where drug exposure is not greater than one day (negative exposure days). Results are obscured where records are below 5 - 'results obscured' indicates whether this is the case" = ncol(summary_immuno_drugs) - 1)
 )
 
 
 ```
 
-### Chemotherapy drugs
+## Chemotherapy drugs
 
 ```{r drug_check_2, echo = FALSE}
 
 render_table(
   summary_chemo_drugs,
-  "Table 4.2 : Chemotherapy drug completedness",
+  "Table 7.2 : Chemotherapy drug completedness",
   c(" " = 1, "Number of persons and records exposed to chemotherapy drugs, percentage of records with dose information, median drug exposure (days) per drug, proportion of records where drug exposure is not greater than one day (negative exposure days). Results are obscured where records are below 5 - 'results obscured' indicates whether this is the case" = ncol(summary_chemo_drugs) - 1)
 )
 ```
 
-### Targeted therapy drugs
+## Targeted therapy drugs
 
 ```{r drug_check_3, echo = FALSE}
 render_table(
   summary_therapy_drugs,
-  "Table 4.3 : Targeted therapy drug completedness",
+  "Table 7.3 : Targeted therapy drug completedness",
   c(" " = 1, "Number of persons and records exposed to targeted therapy drugs, percentage of records with dose information, median drug exposure (days) per drug, proportion of records where drug exposure is not greater than one day (negative exposure days). Results are obscured where records are below 5 - 'results obscured' indicates whether this is the case" = ncol(summary_therapy_drugs) - 1)
 )
 ```
 
-### Radiotherapy treatment checks
+## Radiotherapy treatment checks
 
 ```{r rt_check, echo = FALSE}
 render_table(
   summary_radiotherapy,
-  "Table 4.4 : Radiotherapy completedness",
+  "Table 7.4 : Radiotherapy completedness",
   c(" " = 1, "Number of persons and records undergoing radiotherapy procedures, including counts and percentage of records where procedure end date occurs before procedure start date and number of procedures that occurred after the date of death" = ncol(summary_radiotherapy) - 1)
 )
 
@@ -168,14 +220,22 @@ render_table(
 
 ```
 
+# Procedures check
+```{r procedure_check, echo = FALSE}
+render_table(
+  summary_procedure,
+  "Table 8.1 : All procedures check",
+  c(" " = 1, "Number of cancer patients undergoing all procedures, including counts and percentage of records where procedure end date occurs before procedure start date and number of procedures that occurred after the date of death" = ncol(summary_procedure) - 1)
+)
 
+
+```
 # TNM check
-
 
 ```{r, echo = FALSE}
 render_table(
  tnm_result,
- "Table 5.1 : TNM code check",
+ "Table 9.1 : TNM code check",
  c(" " = 1, "Add TNM check info" = ncol(tnm_result) - 1)
 )
 
