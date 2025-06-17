@@ -199,6 +199,7 @@ mets_snap_sliced_meas <- head(mets_snapshot, 20) %>%
                     arrange(desc(person_id_count)) %>%
                     mutate(total_patient_count = ifelse(person_id_count < 5, '<5', as.character(person_id_count)))%>%
                     select(-person_id_count)
+mets_snapshot_meas <- mets_snapshot
 
 mets <- CodelistGenerator::getCandidateCodes(
   cdm = cdm,

@@ -24,34 +24,39 @@ library(dplyr)
 
 is_word <- knitr::is_latex_output() == FALSE && knitr::pandoc_to() == "docx"
 
-
 render_table <- function(df, caption, header = NULL) {
-if (is_word) {
+  if (is_word) {
+    max_col_width <- 1
+    col_widths <- rep(max_col_width, ncol(df))
 
- max_col_width <- 1
- col_widths <- rep(max_col_width, ncol(df))
+    ft <- flextable::flextable(df) %>%
+      flextable::set_caption(caption) %>%
+      flextable::set_table_properties(layout = "fixed", width = 0.9) %>%
+      flextable::width(j = seq_along(col_widths), width = col_widths) %>%
+      flextable::fontsize(size = 6, part = "all") %>%
+      flextable::padding(padding = 3, part = "all") %>%
+      flextable::align(align = "center", part = "all") %>%
+      flextable::valign(valign = "top", part = "all")
 
- ft <- flextable::flextable(df) %>%
- flextable::set_caption(caption) %>%
- flextable::set_table_properties(layout = "fixed", width = 0.9) %>%
- flextable::width(j = seq_along(col_widths), width = col_widths) %>%
- flextable::fontsize(size = 6, part = "all") %>%
- flextable::padding(padding = 3, part = "all") %>%
- flextable::align(align = "center", part = "all") %>%
- flextable::valign(valign = "top", part = "all")
+    # Remove comma separators from numeric columns
+    numeric_cols <- sapply(df, is.numeric)
+    if (any(numeric_cols)) {
+      ft <- flextable::colformat_num(ft, j = which(numeric_cols), big.mark = "")
+    }
 
- return(ft)
+    return(ft)
 
- } else {
- kbl <- kable(df, caption = caption) %>%
- kable_paper("hover", full_width = F) %>%
- kable_styling(position = "center")
- if (!is.null(header)) {
- kbl <- kbl %>% add_header_above(header)
- }
- return(kbl)
- }
+  } else {
+    kbl <- kable(df, caption = caption) %>%
+      kable_paper("hover", full_width = F) %>%
+      kable_styling(position = "center")
+    if (!is.null(header)) {
+      kbl <- kbl %>% add_header_above(header)
+    }
+    return(kbl)
+  }
 }
+
 
 ```
 
