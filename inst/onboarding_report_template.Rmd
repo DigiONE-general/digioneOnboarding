@@ -173,6 +173,16 @@ render_table(
 
 ```
 
+## Genomic check 
+```{r, echo = FALSE}
+render_table(
+  gene_snap_sliced,
+  "Table 6.4 : Genomic readiness - genes of interest present",
+  c(" " = 1, "Genes of interest by number of patients and domain (full list as csv in results folder)" = ncol(gene_snap_sliced) - 1)
+)
+
+```
+
 # Treatment checks
 
 ## Immunotherapy drugs
