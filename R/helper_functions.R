@@ -1,8 +1,18 @@
 
-#################
+###############################################################################
 
+#' check_tables
+#'
+#' @param conn connection to the sql database built in CodeToRun using dbConnect
+#' @param sql_dialect assigned in CodeToRun, one of 'snowflake', 'mysql', 'postgresql', 'sqlite', 'sqlserver', 'redshift'
+#'
+#' @returns results
+#' @export
+#'
+#' @details returns summary of cdm details table including full person count, vocab an cdm versions, 
+#' observation period dates and source type sql
+#' 
 check_tables <- function(conn, sql_dialect) {
-  # Define the query based on the SQL dialect
   query <- switch(sql_dialect,
                   "snowflake" = paste0("SHOW VIEWS IN SCHEMA ", db_name, ".", omop_schema_name),
                   "mysql" = paste0("SHOW FULL TABLES IN ", db_name, " WHERE TABLE_TYPE LIKE 'VIEW'"),
@@ -12,10 +22,8 @@ check_tables <- function(conn, sql_dialect) {
                   "redshift" = paste0("SELECT table_name FROM information_schema.views WHERE table_schema = '", omop_schema_name, "'"),
                   stop("Unsupported SQL dialect"))
   
-  # Execute the query
   tables <- dbGetQuery(conn, query)
   
-  # Extract the table names based on the SQL dialect
   table_names <- switch(sql_dialect,
                         "snowflake" = tables$name,
                         "mysql" = tables[[1]],
@@ -24,7 +32,7 @@ check_tables <- function(conn, sql_dialect) {
                         "sqlserver" = tables$table_name,
                         "redshift" = tables$table_name)
   
-  # Check for presence of specific tables
+  # check for presence of specific tables
   results <- data.frame(
     Table = c("EPISODE", "EPISODE_EVENT"),
     Present = c("EPISODE" %in% table_names, "EPISODE_EVENT" %in% table_names)
@@ -33,10 +41,18 @@ check_tables <- function(conn, sql_dialect) {
   return(results)
 }
 
+###############################################################################
 
-
-
-################ documentation req ###################
+#' get_cdm_details
+#'
+#' @param conn connection to the sql database built in CodeToRun using dbConnect
+#' @param db_name assigned in CodeToRun.R
+#' @param omop_schema_name assigned in CodeToRun.R
+#'
+#' @returns cdm_desc
+#' @export
+#'
+#' @details provides cdm source information from database
 
 get_cdm_details <- function(conn, db_name, omop_schema_name) {
   
@@ -53,7 +69,17 @@ get_cdm_details <- function(conn, db_name, omop_schema_name) {
   return(cdm_desc)
 }
 
-################ documentation req #################
+###############################################################################
+#' get_cdm_counts 
+#'
+#' @param cdm cdm reference object built in CodeToRun
+#'
+#' @returns result
+#' @export
+#'
+#' @details counts the unique person ids in each omop table of interest and identifies the
+#' presence of episode table
+
 get_cdm_counts <- function(cdm) {
 
   tables <- list(
@@ -151,62 +177,99 @@ get_cdm_counts <- function(cdm) {
   return(result)
 }
 
-################## histological cell check
+###############################################################################
+
+
+#' check_icod3_matches
+#'
+#' @param cdm cdm reference object built in CodeToRun, uses cdm$main_cohort which requires 
+#' create subsetted cohort to be run in main_onboarding.R
+#'
+#' @returns bound dataframe 
+#' @export
+#'
+#' @details checks main_cohort person_ids for ICDO3 observation records as per MEDOC 
+#' data guide to define MEDOC histological cell type. Calculates % of patients with 
+#' histological cell type information. Designed to bind into main medoc_concept_table
+#' 
 
 check_icdo3_matches <- function(cdm) {
+  cohort_ids <- cdm$main_cohort %>% select(subject_id)
+  total <- cohort_ids %>% collect() %>% nrow()
+  
   icdo3_concepts <- cdm$concept %>%
     filter(vocabulary_id == "ICDO3") %>%
     select(concept_id)
   
-  observation_has_match <- cdm$observation %>%
+  observation_matches <- cdm$observation %>%
+    inner_join(cohort_ids, by = c("person_id" = "subject_id")) %>%
     semi_join(icdo3_concepts, by = c("observation_concept_id" = "concept_id")) %>%
-    summarise(n = n()) %>%
-    mutate(has_match = n > 0) %>%
-    select(has_match)
-
-  condition_has_match <- cdm$condition_occurrence %>%
+    distinct(person_id) %>%
+    collect()
+  
+  obs_percent <- if (total > 0) round(100 * nrow(observation_matches) / total, 2) else NA
+  
+  observation_result <- tibble(
+    medoc_concept = "histological cell type",
+    omop_table = "observation",
+    check = "concepts present in omop tables",
+    result = !is.na(obs_percent) && obs_percent > 0,
+    percent_pass = obs_percent
+  )
+  
+  condition_matches <- cdm$condition_occurrence %>%
+    inner_join(cohort_ids, by = c("person_id" = "subject_id")) %>%
     semi_join(icdo3_concepts, by = c("condition_concept_id" = "concept_id")) %>%
-    summarise(n = n()) %>%
-    mutate(has_match = n > 0) %>%
-    select(has_match)
+    distinct(person_id) %>%
+    collect()
   
-  observation_result <- observation_has_match %>%
-    collect() %>%
-    mutate(
-      medoc_concept = "histological cell type",
-      omop_table = "observation",
-      check = "concepts present in omop tables",
-      result = ifelse(is.na(has_match), FALSE, has_match)
-    ) %>%
-    select(medoc_concept, omop_table, check, result)
+  cond_percent <- if (total > 0) round(100 * nrow(condition_matches) / total, 2) else NA
   
-  condition_result <- condition_has_match %>%
-    collect() %>%
-    mutate(
-      medoc_concept = "histological cell type",
-      omop_table = "condition_occurrence",
-      check = "concepts present in omop tables",
-      result = ifelse(is.na(has_match), FALSE, has_match)
-    ) %>%
-    select(medoc_concept, omop_table, check, result)
-
-  result <- bind_rows(observation_result, condition_result)
+  condition_result <- tibble(
+    medoc_concept = "histological cell type",
+    omop_table = "condition_occurrence",
+    check = "concepts present in omop tables",
+    result = !is.na(cond_percent) && cond_percent > 0,
+    percent_pass = cond_percent
+  )
   
-  return(result)
+  bind_rows(observation_result, condition_result)
 }
 
 
-################## MEDOC CONCEPT CHECKS ##################################
+
+
+###############################################################################
+
+
+#' evaluate_concept
+#'
+#' @param concept individual concept to check or list of concepts from lookup
+#' @param visited empty character vector to track whether the concept has already been 
+#' checked in the function - if true, there is a warning for dependency, due to the dependencies
+#' of some concepts on each other
+#' 
+#' Depends on the generation of cdm$main_cohort
+#'
+#' @returns tibble
+#' @export
+#'
+#' @details uses lookup to check through all medoc concepts provided, assigning the correct check 
+#' either checking whether the concepts required to define the variable are present and 
+#' calculates % of cancer subcohort, OR check whether the concept is present in the omop database
+#' Concepts where information is provided from other functions such as radiotherapy or drugs
+#' are not summarised in this table but referred to later in the document
+#' 
 
 evaluate_concept <- function(concept, visited = character()) {
   if (concept %in% visited) {
     warning(paste("Circular dependency detected for:", concept))
-    return(tibble(medoc_concept = concept, omop_table = NA, check = "circular dependency", result = NA))
+    return(tibble(medoc_concept = concept, omop_table = NA, check = "circular dependency", result = NA, percent_pass = NA))
   }
   
   rows <- lookup %>% filter(medoc_concept == concept)
   if (nrow(rows) == 0) {
-    return(tibble(medoc_concept = concept, omop_table = NA, check = NA, result = NA))
+    return(tibble(medoc_concept = concept, omop_table = NA, check = NA, result = NA, percent_pass = NA))
   }
   
   check_type <- rows$check[!is.na(rows$check)][1]
@@ -215,9 +278,12 @@ evaluate_concept <- function(concept, visited = character()) {
   concept_set <- rows$concept_set[!is.na(rows$concept_set)][1]
   
   result <- FALSE
+  percent_pass <- NA
   check_label <- NA
   
   visited <- c(visited, concept)
+  cohort_ids <- cdm$main_cohort %>% select(subject_id)
+  total <- cohort_ids %>% collect() %>% nrow()
   
   if (!is.na(filter_level)) {
     filter_result <- evaluate_concept(filter_level, visited)
@@ -226,47 +292,55 @@ evaluate_concept <- function(concept, visited = character()) {
         medoc_concept = concept,
         omop_table = omop_table,
         check = paste0("filtered by ", filter_level),
-        result = FALSE
+        result = FALSE,
+        percent_pass = 0
       ))
     }
   }
   
-  if (!is.na(omop_table) && (startsWith(omop_table, "see_") | startsWith(omop_table, "derived"))) {
-    return(tibble(medoc_concept = concept, omop_table = omop_table, check = NA, result = NA))
+  if (!is.na(omop_table) && (startsWith(omop_table, "see_") || startsWith(omop_table, "derived"))) {
+    return(tibble(medoc_concept = concept, omop_table = omop_table, check = NA, result = NA, percent_pass = NA))
   }
   
   if (!is.na(check_type) && check_type == "present") {
     check_label <- "variable is present in cdm"
-    present_rows <- rows %>% filter(check == "present")
+    present_rows <- rows %>% filter(check == "present", !is.na(omop_variable))
     
-    if (!is.na(filter_level)) {
-      filter_rows <- lookup %>% filter(medoc_concept == filter_level)
-      filter_table <- filter_rows$omop_table[!is.na(filter_rows$omop_table)][1]
-      filter_var <- filter_rows$omop_variable[!is.na(filter_rows$omop_variable)][1]
+    if (concept == "biomarker_measure") {
+      biomarker_name_rows <- lookup %>% filter(medoc_concept == "biomarker_name", check == "concept")
+      biomarker_var <- biomarker_name_rows$omop_concept_variable[!is.na(biomarker_name_rows$omop_concept_variable)][1]
+      concept_codes <- genomic_codes
       
-      if (!is.null(cdm[[filter_table]]) && filter_var %in% colnames(cdm[[filter_table]])) {
-        filter_pass <- cdm[[filter_table]] %>%
-          filter(!is.na(.data[[filter_var]])) %>%
-          head(1) %>%
-          collect() %>%
-          nrow() > 0
-        
-        if (filter_pass) {
-          if (any(present_rows$omop_variable == "omop_table")) {
-            result <- omop_table %in% names(cdm)
-          } else {
-            result <- any(present_rows$omop_variable %in% colnames(cdm[[omop_table]]))
-          }
-        }
-      }
+      joined <- cdm[[omop_table]] %>%
+        inner_join(cdm$main_cohort, by = c("person_id" = "subject_id")) %>%
+        filter(measurement_concept_id %in% concept_codes) %>% collect()
+      
+      passed <- joined %>%
+        filter(if_any(all_of(present_rows$omop_variable), ~ !is.na(.))) %>%
+        distinct(person_id) %>%
+        nrow()
+      
+      result <- passed > 0
+      percent_pass <- if (total > 0) round(100 * passed / total, 2) else NA
     } else {
       if (any(present_rows$omop_variable == "omop_table")) {
         result <- omop_table %in% names(cdm)
-      } else {
-        result <- any(present_rows$omop_variable %in% colnames(cdm[[omop_table]]))
+        percent_pass <- if (result) 100 else 0
+      } else if (!is.null(cdm[[omop_table]]) &&
+                 all(present_rows$omop_variable %in% colnames(cdm[[omop_table]]))) {
+        joined <- cdm[[omop_table]] %>%
+          inner_join(cohort_ids, by = c("person_id" = "subject_id"))
+        
+        passed <- joined %>%
+          filter(if_any(all_of(present_rows$omop_variable), ~ !is.na(.))) %>%
+          distinct(person_id) %>%
+          collect() %>%
+          nrow()
+        
+        result <- passed > 0
+        percent_pass <- if (total > 0) round(100 * passed / total, 2) else NA
       }
     }
-    
   } else if (!is.na(check_type) && check_type == "concept") {
     check_label <- "concepts present in omop tables"
     
@@ -282,27 +356,120 @@ evaluate_concept <- function(concept, visited = character()) {
     
     concept_var <- rows$omop_concept_variable[!is.na(rows$omop_concept_variable)][1]
     
-    if (!is.null(concept_codes) && length(concept_codes) > 0 &&
-        !is.null(cdm[[omop_table]]) && concept_var %in% colnames(cdm[[omop_table]])) {
+    if (!is.null(concept_codes) &&
+        !is.null(cdm[[omop_table]]) &&
+        concept_var %in% colnames(cdm[[omop_table]])) {
+      joined <- cdm[[omop_table]] %>%
+        inner_join(cohort_ids, by = c("person_id" = "subject_id"))
       
-      result <- cdm[[omop_table]] %>%
-        filter(.data[[concept_var]] %in% !!concept_codes) %>%
-        head(1) %>%
+      passed <- joined %>%
+        filter(.data[[concept_var]] %in% concept_codes) %>%
+        distinct(person_id) %>%
         collect() %>%
-        nrow() > 0
+        nrow()
+      
+      result <- passed > 0
+      percent_pass <- if (total > 0) round(100 * passed / total, 2) else NA
     }
+  }
+  
+  if (!is.na(percent_pass) && percent_pass == 0) {
+    result <- FALSE
   }
   
   tibble(
     medoc_concept = concept,
     omop_table = omop_table,
     check = check_label,
-    result = result
+    result = result,
+    percent_pass = percent_pass
   )
 }
 
 
-################# documentation re ##################
+
+###############################################################################
+
+#' Post-process concept table
+#'
+#' @param medoc_concept_table generated in evaluate_concept
+#'
+#' @returns summary table
+#' @export
+#'
+#' @details processes the medoc_concept_table to ensure formatting is consistent and
+#' make ammendments for any non sensical results for dependent concepts such as 
+#' metastasis location and presence
+
+
+postprocess_concept_table <- function(medoc_concept_table) {
+  summary_table <- medoc_concept_table %>%
+    group_by(medoc_concept) %>%
+    summarise(
+      result = any(result %in% TRUE, na.rm = TRUE),
+      percent_pass = if (all(is.na(percent_pass))) NA_real_ else max(percent_pass, na.rm = TRUE),
+      omop_table = first(na.omit(omop_table)),
+      check = first(na.omit(check)),
+      .groups = "drop"
+    ) %>%
+    mutate(percent_pass = ifelse(is.infinite(percent_pass), NA, percent_pass))
+  
+  all_concepts <- tibble(medoc_concept = unique(lookup$medoc_concept))
+  summary_table <- all_concepts %>%
+    left_join(summary_table, by = "medoc_concept")
+  
+  location_row <- summary_table %>% filter(medoc_concept == "metastasis_location")
+  presence_row <- summary_table %>% filter(medoc_concept == "metastasis_presence")
+  
+  if (nrow(location_row) == 1 && nrow(presence_row) == 1) {
+    combined_percent <- sum(
+      c(location_row$percent_pass, presence_row$percent_pass),
+      na.rm = TRUE
+    )
+    combined_percent <- min(combined_percent, 100)
+    
+    summary_table <- summary_table %>%
+      mutate(
+        percent_pass = ifelse(
+          medoc_concept == "metastasis_presence",
+          combined_percent,
+          percent_pass
+        ),
+        result = ifelse(
+          medoc_concept == "metastasis_presence" & combined_percent > 0,
+          TRUE,
+          result
+        )
+      )
+  }
+  
+  summary_table <- summary_table %>%
+    mutate(medoc_concept = factor(medoc_concept, levels = unique(lookup$medoc_concept))) %>%
+    arrange(medoc_concept) %>%
+    select(medoc_concept, check, omop_table, result, percent_pass) %>%
+    rename(`MEDOC concept` = medoc_concept, Check = check, `OMOP Table`= omop_table, Result = result, `Percentage of patients` = percent_pass)
+  
+  return(summary_table)
+}
+
+
+###############################################################################
+
+#' process_vocab_table
+#'
+#' @param table one of the cdm reference object omop tables created in mappings 
+#' @param source_value_col identifies source value column in omop table for the cdm table specified
+#' specified in mappings 
+#' @param concept_id_col identifies concept id columns in omop table for cdm table specified
+#' specified in mappings
+#' @param domain_name provides description of the domain 
+#'
+#' @returns
+#' @export
+#'
+#' @details function to check all omop tables of interest and identify the proportion
+#' of which records for medoc concepts are mapped to standard vocabulary
+#' 
 
 process_vocab_table <- function(table, source_value_col, concept_id_col, domain_name) {
   table %>%
@@ -330,85 +497,21 @@ process_vocab_table <- function(table, source_value_col, concept_id_col, domain_
     collect()
 }
 
-################ documentation req #############
+###############################################################################
 
-check_omop_variables <- function(cdm, omop_variables_to_check, medoc_concepts) {
-  # Create an empty data frame to store results
-  results <- data.frame(
-    omop_variable = character(),
-    table_name = character(),
-    medoc_concept = character(),
-    is_present = logical(),
-    stringsAsFactors = FALSE
-  )
-  
-  # Iterate over each variable to check
-  for (variable in omop_variables_to_check) {
-    variable_found <- FALSE
-    
-    # Iterate over each table in the cdm
-    for (table_name in names(cdm)) {
-      table <- cdm[[table_name]]
-      
-      if (variable %in% colnames(table)) {
-        is_present <- TRUE
-        
-        # Check if the variable contains any 0 or NA values
-        if (all(!is.na(table[[variable]]) & table[[variable]] != 0)) {
-          # Check if the variable exists in medoc_concepts
-          if (variable %in% names(medoc_concepts)) {
-            # Get the corresponding medoc concept
-            medoc_concept <- medoc_concepts[[variable]]
-            medoc_concept_str <- paste(medoc_concept, collapse = ", ")
-          } else {
-            medoc_concept_str <- NA
-          }
-          
-          # Add the result to the data frame
-          results <- rbind(results, data.frame(
-            omop_variable = variable,
-            table_name = table_name,
-            medoc_concept = medoc_concept_str,
-            is_present = TRUE,
-            stringsAsFactors = FALSE
-          ))
-          
-          # If medoc_concept is not NA, mark variable as found
-          if (!is.na(medoc_concept_str)) {
-            variable_found <- TRUE
-            break
-          }
-        }
-      } else {
-        is_present <- FALSE
-      }
-      
-      # Add the result to the data frame with is_present = FALSE if variable not found
-      if (!variable_found && is_present) {
-        results <- rbind(results, data.frame(
-          omop_variable = variable,
-          table_name = table_name,
-          medoc_concept = NA,
-          is_present = is_present,
-          stringsAsFactors = FALSE
-        ))
-      }
-    }
-  }
-  
-  # Filter out rows where medoc_concept is NA and is_present is FALSE
-  results <- results %>%
-    filter(!(is.na(medoc_concept) & !is_present))
-  
-  # Order by medoc_concept
-  results <- results %>%
-    arrange(medoc_concept)
-  
-  return(results)
-}
-
-
-################# documentation re #############
+#' execute_drug_checks
+#'
+#' @param drug_class drug class as identified in drug_code_list
+#'
+#'dependent on DrugExposureDiagnostics
+#'
+#' @returns checks$diagnosticsSummary
+#' @export
+#'
+#' @details checks through the class of drugs to determine coverage in patients
+#' and identify QA issues such as drugs received before diagnosis 
+#' 
+#' 
 
 execute_drug_checks <- function(drug_class) {
   drug_codes <- drug_code_list %>% filter(class == drug_class)
@@ -421,8 +524,20 @@ execute_drug_checks <- function(drug_class) {
   return(checks$diagnosticsSummary)
 }
 
+###############################################################################
 
-############### documentation req ################
+#' execute_rt_checks
+#'
+#' @param cdm cdm reference object built in CodeToRun.R
+#' @param radiotherapy_codes_path concept ids for radiotherapy provided via csv file
+#'
+#' @returns rt_checks
+#' @export
+#'
+#' @details checks the presence on radiotherapy treatment codes in main_cohort and identifies 
+#' proportion of patients with the treatment including any patients where the radiotherapy
+#' was given after date of death
+#' 
 
 execute_rt_checks <- function(cdm, radiotherapy_codes_path) {
   radiotherapy_codes <- read.csv(radiotherapy_codes_path)
@@ -459,7 +574,18 @@ execute_rt_checks <- function(cdm, radiotherapy_codes_path) {
   return(rt_checks)
 }
 
-############### all procedures check ###############  
+###############################################################################
+
+#' execute_procedure_checks
+#'
+#' @param cdm cdm reference object built in CodeToRun.R
+#'
+#' @returns checks
+#' @export
+#'
+#' @details checks the proportion of main_cohort who have any procedure, and the 
+#' validity of that procedure record 
+#' 
 
 execute_procedure_checks <- function(cdm) {
   
@@ -491,8 +617,20 @@ execute_procedure_checks <- function(cdm) {
   return(checks)
 }
 
+###############################################################################
 
-############################## doc req
+#' Title
+#'
+#' @param cdm cdm reference object built in CodeToRun.R
+#'
+#' @returns result
+#' @export
+#'
+#' @details provides the concept ids which are currently recommended by MEDOC
+#' to represent radiation dose information and summarises whether this information is present 
+#' 
+#' 
+#' 
 
 check_radiation_dose_info <- function(cdm) {
 
@@ -511,8 +649,21 @@ check_radiation_dose_info <- function(cdm) {
   return(result)
 }
 
+###############################################################################
 
-################# surgery checks 
+#' Title
+#'
+#' @param cdm cdm reference object built in CodeToRun.R
+#' @param medoc_concept_codes concept set lists including surgery concept set
+#'
+#' @returns rt_checks
+#' @export
+#'
+#' @details checks main_cohort person_ids against cancer surgery concept ids. Concept
+#' set is based on MEDOC recommendation. Proportion of after death procedures or 
+#' negative procedure days is also included as a QA check 
+#' 
+
 execute_surgery_checks <- function(cdm, medoc_concept_codes) {
   surgery_codes <- medoc_concept_codes[["surgery"]]
   
@@ -548,54 +699,19 @@ execute_surgery_checks <- function(cdm, medoc_concept_codes) {
   return(rt_checks)
 }
 
+###############################################################################
 
-##########################
-
-# check_cancer_codes <- function(df, primary_mets_level, cdm) {
-#   df_filtered <- df %>% 
-#     filter(primary_mets == primary_mets_level)
-#   
-#   ids <- df_filtered$id
-#   
-#   measurement_results <- cdm$measurement %>%
-#     inner_join(df_filtered, by = c("measurement_concept_id" = "id")) %>%
-#     mutate(variable_name = "measurement_concept_id") %>%
-#     select(vocabulary, variable_name) %>%
-#     collect()
-#   
-#   condition_results <- cdm$condition_occurrence %>%
-#     filter(condition_concept_id %in% ids) %>%
-#     select(condition_concept_id, condition_status_concept_id, condition_type_concept_id) %>%
-#     collect() %>%
-#     inner_join(df_filtered, by = c("condition_concept_id" = "id")) %>%
-#     mutate(
-#       variable_name = "condition_concept_id",
-#       diagnosis_type = case_when(
-#         condition_status_concept_id == 32890 ~ "Admission diagnosis",
-#         condition_status_concept_id == 32898 ~ "Postop diagnosis",
-#         condition_status_concept_id == 32893 ~ "Confirmed diagnosis",
-#         condition_status_concept_id == 32892 ~ "Condition to be diagnosed by procedure",
-#         condition_status_concept_id == 32899 ~ "Preliminary diagnosis",
-#         TRUE ~ 'type of diagnosis not specified'
-#       ),
-#       provenance_record = case_when(
-#         condition_type_concept_id == 32878 ~ "ENCR - Registry",
-#         condition_type_concept_id == 32841 ~ "EHR - radiology report",
-#         condition_type_concept_id == 32835 ~ "EHR - pathology report",
-#         
-#         TRUE ~ 'provenance not specified'
-#       )
-#     ) %>%
-#     select(vocabulary, variable_name, diagnosis_type, provenance_record)
-#   
-#   result <- bind_rows(measurement_results, condition_results) %>%
-#     distinct(vocabulary, variable_name, diagnosis_type, provenance_record)
-#   
-#   return(result)
-# }
-# 
-
-###################
+#' Check TNM
+#'
+#' @param cdm cdm reference object built in CodeToRun.R
+#' @param tnm_codes codes referring to concept_ids for T,N,M cancer measurements
+#'
+#' @returns result
+#' @export
+#'
+#' @details checks for person_ids in main_cohorts, what the format of TNM codes are:
+#' either stored as measurement_concept_id, value_as_concept_id or value
+#'
 
   check_tnm <- function(cdm, tnm_codes) {
 
@@ -629,8 +745,22 @@ execute_surgery_checks <- function(cdm, medoc_concept_codes) {
     return(result)
   }
 
+###############################################################################
+#' summarise_concept_counts
+#'
+#' @param cdm_table a table from cdm object
+#' @param concept_id_col the concept id column relating to that cdm table
+#' @param concept_table the cdm$concept table 
+#' @param codelist list of concept ids, generated by CodeListGenerator 
+#'
+#' @returns
+#' @export
+#'
+#' @details creates a summary table for all the relavant concept codes generated for 
+#' a particular check, for example primary cancer diagnosis codes are checked against and summarised, 
+#' including the concept ids, for future reference of diagnostic coverage
+#' 
 
-####################################
 summarise_concept_counts <- function(cdm_table, concept_id_col, concept_table, codelist) {
   concept_id_sym <- sym(concept_id_col)
   
@@ -644,31 +774,5 @@ summarise_concept_counts <- function(cdm_table, concept_id_col, concept_table, c
     collect()
 }
 
-#####################################
+###############################################################################
 
-# check_diag_pattern <- function(cdm, cancer_codes) {
-#   # Filter condition_occurrence table for relevant condition_concept_ids
-#   condition_data <- cdm$condition_occurrence %>%
-#     filter(condition_concept_id %in% cancer_codes$id) %>%
-#     collect()
-#   
-#   # Check for multiple visit_occurrence_ids
-#   visit_occurrence_check <- condition_data %>%
-#     group_by(person_id, condition_start_date) %>%
-#     summarise(visit_occurrence_id_count = n_distinct(visit_occurrence_id)) %>%
-#     mutate(multiple_visits = visit_occurrence_id_count > 1) %>%
-#     collect()
-#   
-#   # Calculate proportions
-#   total_person_ids <- n_distinct(visit_occurrence_check$person_id)
-#   proportion_multiple_visits <- (n_distinct(visit_occurrence_check$person_id[visit_occurrence_check$multiple_visits]) / total_person_ids) * 100
-#   proportion_single_or_less_visits <- (n_distinct(visit_occurrence_check$person_id[!visit_occurrence_check$multiple_visits]) / total_person_ids) * 100
-#   
-#   # Format the output as a dataframe
-#   result_df <- data.frame(
-#     proportion_multiple_visits = proportion_multiple_visits,
-#     proportion_single_or_less_visits = proportion_single_or_less_visits
-#   )
-#   
-#   return(result_df)
-# }

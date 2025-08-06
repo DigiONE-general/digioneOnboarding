@@ -14,9 +14,11 @@ library(flextable)
 library(gt)
 library(purrr)
 library(cli)
+library(tidyr)
 
-########################### SYSTEM INFO #######################################
-### get source, name, cdm info
+###############################################################################
+# GET CDM DETAILS FROM CDM_SOURCE
+
 cli::cli_alert("Gathering CDM details - {Sys.time()}")
 
 cdm_details <- get_cdm_details(conn, db_name, omop_schema_name)
@@ -31,6 +33,7 @@ colnames(cdm_overall_snapshot) <- c("Level", "Variable", "Value")
 cli::cli_alert("Gathering CDM details - complete! - {Sys.time()}")
 
 ###############################################################################
+# CREATE SUMMARIES OF CLINICAL AND OBSERVATION TABLES
 
 cli::cli_alert("Creating clinical snapshot tables - {Sys.time()}")
 
@@ -56,6 +59,7 @@ colnames(cdm_snapshot_obs) <- c("Observation Period", "Variable", "Measurement",
 cli::cli_alert("Creating clinical snapshot tables - complete! - {Sys.time()}")
 
 ###############################################################################
+# CHECK VOCABULARY MAPPING COMPLETEDNESS FOR ALL MEDOC VARIABLES
 
 cli::cli_alert("Assessing vocabulary mapping completedness - {Sys.time()}")
 
@@ -95,7 +99,29 @@ mappingCompleteness <- mappingCompleteness %>%
 
 cli::cli_alert("Assessing vocabulary mapping completedness - complete! - {Sys.time()}")
 
-########################### MEDOC CONCEPT MAPPING #############################
+
+###############################################################################
+# CREATE SUBSETTED CANCER COHORT
+
+cli::cli_alert("Create subsetted cohort - {Sys.time()}")
+
+path_to_json <- here::here("inst/cohorts/")
+
+cohort_details <- CDMConnector::readCohortSet(path_to_json) |>
+  dplyr::mutate(cohort_name = snakecase::to_snake_case(cohort_name))
+
+cdm <- CDMConnector::generateCohortSet(
+  cdm = cdm,
+  cohortSet = cohort_details,
+  name = "main_cohort")
+
+cdm$main_cohort <- cdm$main_cohort %>% PatientProfiles::addCohortName() %>%
+  select(1,cohort_name, everything())
+
+cli::cli_alert("Create subsetted cohort - complete! - {Sys.time()}")
+
+###############################################################################
+# ASSESS MEDOC CONCEPT COVERAGE 
 
 cli::cli_alert("Assessing MEDOC concept coverage - {Sys.time()}")
 
@@ -103,7 +129,7 @@ genomic_codes <- CodelistGenerator::getCandidateCodes(
   cdm = cdm,
   keywords = c("PD-L1", "PDL1", "EGFR", "KRAS", "ALK1", "ROS1", "BRAF", "NTRK",
                "ERBB2", "TP53", "BRCA1", "BRCA2", "CDH1", "PALB2", "PTEN", "TP53",
-               "PIK3CA", "AKT", "ESR1", "STK11"),
+               "PIK3CA", "AKT", "ESR1", "STK11", "HER2"),
   domains = "Measurement",
   includeDescendants = FALSE
 ) |>
@@ -124,41 +150,37 @@ episode_table <- check_tables(conn, sql_dialect)
 
 medoc_concept_table <- medoc_concept_table %>% rbind(histological_cell_type)
 
+
+medoc_concept_table <- postprocess_concept_table(medoc_concept_table)
+
+
 cli::cli_alert("Assessing MEDOC concept coverage - complete! - {Sys.time()}")
 
 
-########################## CREATE CANCER COHORT ###############################
-
-cli::cli_alert("Create subsetted cohort - {Sys.time()}")
-
-path_to_json <- here::here("inst/cohorts/")
-
-cohort_details <- CDMConnector::readCohortSet(path_to_json) |>
-  dplyr::mutate(cohort_name = snakecase::to_snake_case(cohort_name))
-
-cdm <- CDMConnector::generateCohortSet(
-  cdm = cdm,
-  cohortSet = cohort_details,
-  name = "main_cohort")
-
-cdm$main_cohort <- cdm$main_cohort %>% PatientProfiles::addCohortName() %>%
-  select(1,cohort_name, everything())
-
-cli::cli_alert("Create subsetted cohort - complete! - {Sys.time()}")
-
-########################## CANCER CONCEPTS CHECK ###############################
+###############################################################################
+# GENERATE SUMMARY OF PRIMARY DIAGNOSIS CONCEPTS 
 
 cli::cli_alert("Summarising diagnosis codes - {Sys.time()}")
 
 cancer_codelist <- CodelistGenerator::getCandidateCodes(
   cdm = cdm,
-  keywords = c("cancer", "primary malignancy", "neoplasm", "lymphoma", "carcinoma", "melanoma", "leukemia", "panmyelosis",
-               "tumor", "adamantinoma", "adenocarcinoma", "sarcoma", "astrocytoma", "astroblastoma", "carcinofibroma", "chordoma",
-               "malignant", "blastoma", "seminoma", "paraganglioma", "neoplasia", "glioma", "Dysgerminoma", "Ectomesenchymoma", "carcinoid", "Ependymoma", "hemangioendothelioma",
-               "thrombocythemia", "paraganglioma", "tumour", "ganglioma", "seminoma", "germinona", "gastrioma", "gliomatosis", "Glucagonoma", "Hodgkin", "lymphoproliferative",
-               "Insulinoma", "Langerhans", "Medulloepithelioma", "Mycosis fungoides", "Myelodysplastic", "neurocytoma", "Oligodendroglioma", "Paget", "Paraganglioma",
-               "Pheochromocytoma", "myeloma", "Plasmacytoma", "Polyembryoma", "mesothelioma", "myelofibrosis", "oligodendroglioma", "Sezary syndrome", "Somatostatinoma",
-               "Vipoma", "macroglobulinemia", "paraganglioma", "hemangioendothelioma", "thrombocythemia", "Gastrinoma", "heavy chain disease", "Medulloepithelioma"),
+  keywords = c("cancer", "Primary Malignancy", "Neoplasm", "Lymphoma", "Carcinoma", 
+               "Melanoma", "Leukemia", "Panmyelosis", "Primary malignant neoplasm",
+               "Cancer", "Malignant", "neoplasm", "Tumor", "tumor", 
+               "adamantinoma", "adenocarcinoma", "sarcoma", "astrocytoma", 
+               "astroblastoma", "carcinofibroma", "chordoma",
+               "malignant", "blastoma", "seminoma", "paraganglioma", "neoplasia", 
+               "glioma", "Dysgerminoma", "Ectomesenchymoma", "carcinoid", 
+               "Ependymoma", "hemangioendothelioma",
+               "thrombocythemia", "paraganglioma", "tumour", "ganglioma", 
+               "seminoma", "germinona", "gastrioma", "gliomatosis", "Glucagonoma", "Hodgkin", "lymphoproliferative",
+               "Insulinoma", "Langerhans", "Medulloepithelioma", "Mycosis fungoides", 
+               "Myelodysplastic", "neurocytoma", "Oligodendroglioma", "Paget", 
+               "Paraganglioma", "Pheochromocytoma", "myeloma", "Plasmacytoma", 
+               "Polyembryoma", "mesothelioma", "myelofibrosis", "oligodendroglioma", 
+               "Sezary syndrome", "Somatostatinoma", "Vipoma", "macroglobulinemia", 
+               "paraganglioma", "hemangioendothelioma", "thrombocythemia", "Gastrinoma", 
+               "heavy chain disease", "Medulloepithelioma"),
   domains = "Condition",
   includeDescendants = TRUE
 ) |>
@@ -178,6 +200,7 @@ primary_snap_sliced <- head(primary_snapshot, 20) %>%
 cli::cli_alert("Summarising diagnosis codes - complete! - {Sys.time()}")
 
 ###############################################################################
+# GENERATE SUMMARY OF METASTASIS CONCEPTS
 
 cli::cli_alert("Summarising metastasis codes - {Sys.time()}")
 
@@ -222,7 +245,8 @@ mets_snap_sliced_condition <- head(mets_snapshot, 20) %>%
 
 cli::cli_alert("Summarising metastasis codes - complete! - {Sys.time()}")
 
-############################# TNM CODING ######################################
+###############################################################################
+# ASSESS CANCER STAGING CODES 
 
 cli::cli_alert("Summarising Cancer staging checks - {Sys.time()}")
 
@@ -251,8 +275,8 @@ tnm_result <- tibble(
 cli::cli_alert("Summarising Cancer staging checks - complete! - {Sys.time()}")
 
 
-############################ DRUG THERAPY #####################################
-# number and % with dosage info, & where date of death comes before end date of treatment 
+###############################################################################
+# ASSESS CANCER DRUG CONCEPTS AND COVERAGE
 
 cli::cli_alert("Summarising cancer drug therapies - {Sys.time()}")
 
@@ -264,8 +288,8 @@ summary_therapy_drugs <- execute_drug_checks('targeted therapy')
 
 cli::cli_alert("Summarising cancer drug therapies - complete! - {Sys.time()}")
 
-########################### RADIOTHERAPY ######################################
-# number and % with valid RT treatment
+###############################################################################
+# ASSESS RADIOTHERAPY CONCEPTS AND COVERAGE
 
 cli::cli_alert("Summarising radiotherapy concept checks - {Sys.time()}")
 
@@ -276,7 +300,8 @@ radiotherapy_dose_result <- check_radiation_dose_info(cdm)
 
 cli::cli_alert("Summarising radiotherapy concept checks - complete! - {Sys.time()}")
 
-######################### PROCEDURE ##########################################
+###############################################################################
+# ASSESS PROCEDURES COVERAGE 
 
 cli::cli_alert("Summarising all procedure concept checks - {Sys.time()}")
 
@@ -284,8 +309,8 @@ summary_procedure <- execute_procedure_checks(cdm)
 
 cli::cli_alert("Summarising all procedure concept checks - complete! - {Sys.time()}")
 
-########################## BIOMARKERS ##############################
-# patients with results of biomarker (use common cancer ones from MEDOC)
+###############################################################################
+# ASSESS GENOMIC CONCEPT COVERAGE
 
 cli::cli_alert("Summarising genomic concept coverage - {Sys.time()}")
 
@@ -305,8 +330,9 @@ cli::cli_alert("Summarising genomic concept coverage - {Sys.time()}")
  
  cli::cli_alert("Summarising genomic concept coverage - complete! - {Sys.time()}")
  
-########################## REPORT ##############################
-
+###############################################################################
+# CREATE OUTPUT REPORT AND CODELISTS 
+ 
 cli::cli_alert("Rendering output report and generating full codelists - {Sys.time()}")
 
 timestamp <- format(Sys.time(), "%Y-%m-%d %H:%M")
