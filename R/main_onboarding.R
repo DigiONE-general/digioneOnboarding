@@ -182,7 +182,7 @@ cancer_codelist <- CodelistGenerator::getCandidateCodes(
                "paraganglioma", "hemangioendothelioma", "thrombocythemia", "Gastrinoma", 
                "heavy chain disease", "Medulloepithelioma"),
   domains = "Condition",
-  includeDescendants = TRUE
+  includeDescendants = FALSE
 ) |>
   dplyr::pull("concept_id")
 
@@ -192,10 +192,13 @@ primary_snapshot <- summarise_concept_counts(
   concept_table = cdm$concept,
   codelist = cancer_codelist
 )
-primary_snap_sliced <- head(primary_snapshot, 20) %>%
-                       arrange(desc(person_id_count)) %>%
-                       mutate(total_patient_count = ifelse(person_id_count < 5, '<5', as.character(person_id_count)))%>%
-                       select(-person_id_count)
+
+primary_snap_sliced <- primary_snapshot %>%
+  arrange(desc(person_id_count)) %>%
+  head(20) %>%
+  mutate(total_patient_count = ifelse(person_id_count < 5, '<5', as.character(person_id_count))) %>%
+  select(-person_id_count)
+
 
 cli::cli_alert("Summarising diagnosis codes - complete! - {Sys.time()}")
 
@@ -218,11 +221,13 @@ mets_snapshot <- summarise_concept_counts(
   concept_table = cdm$concept,
   codelist = mets
 )
-mets_snap_sliced_meas <- head(mets_snapshot, 20) %>%
-                    arrange(desc(person_id_count)) %>%
-                    mutate(total_patient_count = ifelse(person_id_count < 5, '<5', as.character(person_id_count)))%>%
-                    select(-person_id_count)
-mets_snapshot_meas <- mets_snapshot
+mets_snapshot_meas <- mets_snapshot %>%
+  arrange(desc(person_id_count)) %>%
+  head(20) %>%
+  mutate(total_patient_count = ifelse(person_id_count < 5, '<5', as.character(person_id_count))) %>%
+  select(-person_id_count)
+
+#mets_snapshot_meas <- mets_snapshot
 
 mets <- CodelistGenerator::getCandidateCodes(
   cdm = cdm,
@@ -238,9 +243,10 @@ mets_snapshot <- summarise_concept_counts(
   concept_table = cdm$concept,
   codelist = mets
 )
-mets_snap_sliced_condition <- head(mets_snapshot, 20) %>%
+mets_snap_sliced_condition <- mets_snapshot %>%
   arrange(desc(person_id_count)) %>%
-  mutate(total_patient_count = ifelse(person_id_count < 5, '<5', as.character(person_id_count)))%>%
+  head(20) %>%
+  mutate(total_patient_count = ifelse(person_id_count < 5, '<5', as.character(person_id_count))) %>%
   select(-person_id_count)
 
 cli::cli_alert("Summarising metastasis codes - complete! - {Sys.time()}")
@@ -323,10 +329,11 @@ cli::cli_alert("Summarising genomic concept coverage - {Sys.time()}")
 
  gene_snapshot <- gene_snap %>% filter(concept_name != 'overall', !(grepl('pyogenes', concept_name)), !(grepl('general', concept_name)), !(grepl('Stool', concept_name))) 
 
- gene_snap_sliced <- head(gene_snap, 20) %>%
-                     arrange(desc(person_id_count)) %>%
-                     mutate(total_patient_count = ifelse(person_id_count < 5, '<5', as.character(person_id_count)))%>%
-                     select(-person_id_count)
+ gene_snap_sliced <- gene_snapshot %>%
+   arrange(desc(person_id_count)) %>%
+   head(20) %>%
+   mutate(total_patient_count = ifelse(person_id_count < 5, '<5', as.character(person_id_count))) %>%
+   select(-person_id_count)
  
  cli::cli_alert("Summarising genomic concept coverage - complete! - {Sys.time()}")
  

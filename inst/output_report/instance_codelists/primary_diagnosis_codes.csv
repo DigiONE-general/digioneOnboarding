@@ -1,0 +1,1178 @@
+"","concept_name","concept_id","person_id_count"
+"1","Squamous cell carcinoma of skin of lower lip",4109067,1426
+"2","Disseminated malignancy of unknown primary",438701,2826
+"3","Malignant hypertensive end stage renal disease",43020455,771
+"4","Malignant hypertensive chronic kidney disease",43021852,8553
+"5","Cervical intraepithelial neoplasia grade 2",196165,412
+"6","Squamous cell carcinoma of skin of upper lip",4115027,5654
+"7","Cervical intraepithelial neoplasia grade 1",192676,599
+"8","Subacute leukemia",315497,1151
+"9","Malignant tumor of soft tissue of head, face and neck",4118989,909
+"10","Multiple endocrine neoplasia, type 1",28127,120
+"11","Follicular non-Hodgkin's lymphoma",4147411,4397
+"12","Primary central nervous system lymphoma",373152,641
+"13","Malignant neoplasm of upper eyelid",4197474,2
+"14","Malignant neoplasm of lower eyelid",4197475,1
+"15","Chorioretinal tumor",4194462,11
+"16","Adult pulmonary Langerhans cell histiocytosis",46270492,50
+"17","Benign neoplasm of left choroid",37109301,544
+"18","Benign neoplasm of left breast",37208024,852
+"19","Benign neoplasm of left conjunctiva",37208027,25
+"20","Benign neoplasm of right testis",36684810,11
+"21","Neoplasm of uncertain behavior of left kidney",37208031,485
+"22","Neoplasm of uncertain behavior of left ovary",37208032,295
+"23","Neoplasm of uncertain behavior of right ureter",37208037,46
+"24","Neoplasm of uncertain behavior of right ovary",37208033,276
+"25","Neoplasm of uncertain behavior of left ureter",37208034,36
+"26","Benign neoplasm of left adrenal gland",37117095,583
+"27","Benign neoplasm of right breast",37208028,779
+"28","Neoplasm of uncertain behavior of right kidney",37208036,549
+"29","Benign neoplasm of right ureter",37310596,2
+"30","Neoplasm of uncertain behavior of right adrenal gland",37208035,49
+"31","Benign neoplasm of right retina",37310595,3
+"32","Neoplasm of uncertain behavior of right breast",37208038,301
+"33","Neoplasm of uncertain behavior of left adrenal gland",37208029,73
+"34","Neoplasm of uncertain behavior of left breast",37208030,264
+"35","Benign neoplasm of left ovary",37208043,269
+"36","Benign neoplasm of right renal pelvis",37310612,4
+"37","Benign neoplasm of left renal pelvis",37310611,10
+"38","Primary malignant neoplasm of axillary tail of left female breast",36684817,989
+"39","Secondary malignant neoplasm of right lung",46270513,7073
+"40","Secondary malignant neoplasm of left lung",46273652,6111
+"41","Benign neoplasm of left kidney",36684823,225
+"42","Benign neoplasm of left testis",36684824,11
+"43","Benign neoplasm of right kidney",36684822,282
+"44","Benign neoplasm of right epididymis",37310603,2
+"45","Lobular carcinoma in situ of left breast",37208045,1015
+"46","Kaposi sarcoma of right lung",601153,5
+"47","Primary malignant neoplasm of axillary tail of right female breast",36684820,844
+"48","Benign neoplasm of left retina",37310608,1
+"49","Benign neoplasm of right conjunctiva",37208044,32
+"50","Benign neoplasm of left ureter",37310609,2
+"51","Benign neoplasm of left epididymis",37310605,3
+"52","Kaposi sarcoma of left lung",601151,5
+"53","Benign neoplasm of right ovary",37208040,285
+"54","Lobular carcinoma in situ of right breast",37208046,893
+"55","Carcinoid syndrome",199771,2260
+"56","Malignant tumor of ascending colon",435754,142
+"57","Malignant neoplasm of eye",4181477,21
+"58","Secondary malignant neoplasm of left ovary",4281027,333
+"59","Primary malignant neoplasm of intestinal tract",195482,557
+"60","Primary malignant neoplasm of palate",134290,380
+"61","Primary malignant neoplasm of parotid gland",434588,3305
+"62","Primary malignant neoplasm of the peritoneum",197799,2790
+"63","Primary malignant neoplasm of ribs and/or sternum and/or clavicle",438977,387
+"64","Malignant neoplasm of skin of upper limb",4162994,4662
+"65","Primary malignant neoplasm of breast lower outer quadrant",4188545,5580
+"66","Tumor stage finding",4300140,225
+"67","Basal cell carcinoma of ear",4294416,5184
+"68","Benign neoplasm of autonomic nerve",4252861,790
+"69","Secondary malignant neoplasm of right ovary",4281030,354
+"70","Primary malignant neoplasm of adrenal medulla",4162859,123
+"71","Primary malignant neoplasm of fallopian tube",201801,1711
+"72","Primary malignant neoplasm of vermilion border of lower lip",132565,1308
+"73","Malignant neoplasm of skin of lower limb",4162993,3406
+"74","Primary malignant neoplasm of upper limb bones and scapula",81237,364
+"75","Basal cell carcinoma of skin of lip",4298740,2569
+"76","Squamous cell carcinoma of skin of ear",4295624,3949
+"77","Angioimmunoblastic T-cell lymphoma",4184976,215
+"78","Malignant tumor of sigmoid colon",443381,102
+"79","Malignant tumor of thymus",443380,24
+"80","Primary malignant neoplasm of cervical esophagus",441224,516
+"81","Primary malignant neoplasm of pancreas",199754,22145
+"82","Primary malignant neoplasm of uterine cervix",196359,20205
+"83","Reticulosarcoma",436920,2505
+"84","Lymphoma involves spleen",4287493,101
+"85","Neoplasm of uncertain behavior of stomach",201529,183
+"86","Basal cell carcinoma of lower eyelid",4291143,9
+"87","Squamous cell carcinoma",4300118,1259
+"88","Squamous cell carcinoma of skin of face",4298026,11235
+"89","Malignant hyperthermia",440285,28
+"90","Primary malignant neoplasm of glans penis",438370,254
+"91","Primary malignant neoplasm of gum",140950,250
+"92","Primary malignant neoplasm of lacrimal gland",372567,75
+"93","Primary malignant neoplasm of upper third of esophagus",432260,909
+"94","Primary malignant neoplasm of vertebral column",75488,1002
+"95","Primary malignant neoplasm of lower lobe, bronchus or lung",4157454,45583
+"96","Primary malignant neoplasm of gallbladder",197806,3119
+"97","Basal cell carcinoma of lower extremity",4299418,3607
+"98","Primary cutaneous follicular center B-cell lymphoma",4301668,265
+"99","Acute monocytic leukemia",135768,138
+"100","Mast cell neoplasm",443736,10
+"101","Plasmacytoma",4216139,835
+"102","Primary malignant neoplasm of adrenal cortex",4162115,304
+"103","Primary malignant neoplasm of body of uterus",4162860,4133
+"104","Primary malignant neoplasm of commissure of lip",255192,25
+"105","Primary malignant neoplasm of larynx",26052,6086
+"106","Primary malignant neoplasm of oral cavity",439404,3645
+"107","Primary malignant neoplasm of scrotum",79758,184
+"108","Primary malignant neoplasm of soft tissues of upper limb",436357,553
+"109","Primary malignant neoplasm of spermatic cord",193719,67
+"110","Primary malignant neoplasm of tonsil",31509,7327
+"111","Primary malignant neoplasm",439392,34530
+"112","Primary malignant neoplasm of pelvic bones, sacrum and coccyx",72566,446
+"113","Primary malignant neoplasm of breast lower inner quadrant",4187851,4376
+"114","Squamous cell carcinoma of skin of trunk",4300557,2274
+"115","Basal cell carcinoma of upper eyelid",4297185,2
+"116","Malignant tumor of cecum",443391,160
+"117","Malignant tumor of transverse colon",443384,23
+"118","Primary malignant neoplasm of ampulla of Vater",441225,1787
+"119","Primary malignant neoplasm of anterior two-thirds of tongue",436042,840
+"120","Primary malignant neoplasm of clitoris",197225,86
+"121","Primary malignant neoplasm of hard palate",438694,611
+"122","Primary malignant neoplasm of middle third of esophagus",437805,1564
+"123","Primary malignant neoplasm of stomach",196044,10236
+"124","Primary malignant neoplasm of vermilion border of upper lip",138074,442
+"125","Primary malignant neoplasm of skin head and neck",4157456,10658
+"126","Primary malignant neoplasm of breast",4162253,22580
+"127","Primary malignant neoplasm of breast upper outer quadrant",4187850,26369
+"128","Basal cell carcinoma of face",4299417,26591
+"129","Basal cell carcinoma of upper extremity",4297667,6036
+"130","Basal cell carcinoma of nose",4291454,8929
+"131","Squamous cell carcinoma of skin of lower extremity",4298028,4686
+"132","Acute monocytic/monoblastic leukemia",4189938,185
+"133","Extranodal NK/T-cell lymphoma, nasal type",4212994,81
+"134","Plasma cell neoplasm",443743,394
+"135","Relapsing chronic myeloid leukemia",443719,297
+"136","Estrogen receptor positive tumor",4167696,20437
+"137","Malignant neoplastic disease",443392,21784
+"138","Primary malignant neoplasm of biliary tract",194589,1932
+"139","Primary malignant neoplasm of border of tongue",4156114,632
+"140","Primary malignant neoplasm of buccal mucosa",134579,785
+"141","Primary malignant neoplasm of endocrine gland",133420,199
+"142","Primary malignant neoplasm of lip",4155171,229
+"143","Primary malignant neoplasm of soft tissues",376647,8248
+"144","Primary malignant neoplasm of upper gum",435478,206
+"145","Primary malignant neoplasm of vagina",196048,1360
+"146","Basal cell carcinoma of truncal skin",4297668,8790
+"147","Squamous cell carcinoma of upper extremity",4301427,2425
+"148","Anaplastic large T-cell systemic malignant lymphoma",4299149,279
+"149","Diffuse large B-cell lymphoma (nodal/systemic with skin involvement)",4300704,19479
+"150","Malignant hypertensive heart disease without congestive heart failure",314369,2034
+"151","Neoplasm of extremity",4180312,60
+"152","Malignant tumor of descending colon",443382,30
+"153","Primary malignant neoplasm of gastrointestinal tract",4179720,650
+"154","Primary malignant neoplasm of abdominal esophagus",193971,3029
+"155","Primary malignant neoplasm of cecum",432837,15636
+"156","Primary malignant neoplasm of esophagus",26638,10591
+"157","Primary malignant neoplasm of eye",374874,484
+"158","Primary malignant neoplasm of lower gum",440335,428
+"159","Primary malignant neoplasm of lower third of esophagus",193138,9327
+"160","Primary malignant neoplasm of penis",195483,956
+"161","Primary malignant neoplasm of prepuce",440339,119
+"162","Primary malignant neoplasm of thoracic esophagus",135476,1206
+"163","Primary malignant neoplasm of axillary tail of breast",441513,1729
+"164","Primary malignant neoplasm of head of pancreas",440649,18163
+"165","Primary malignant neoplasm of breast upper inner quadrant",4158563,8322
+"166","Melanocytic neoplasm",4290837,195
+"167","Carcinoma-in-situ of oral mucosa",4291452,30
+"168","Subcutaneous panniculitis-like T-cell lymphoma",4301666,22
+"169","Cervicovaginal cytology: High grade squamous intraepithelial lesion or carcinoma",443571,216
+"170","Endometrial intraepithelial neoplasia",4303970,825
+"171","Mature T-cell AND/OR NK cell neoplasm",4225982,262
+"172","Tumor progression",4168352,9786
+"173","Gastrointestinal stromal tumor",4170421,230
+"174","Benign neoplasm of mouth region",137813,239
+"175","Basal cell carcinoma of chest wall",4313634,171
+"176","Primary malignant neoplasm of lacrimal drainage system",4313056,4
+"177","Carcinoid tumor of ileum",432271,1008
+"178","Subacute myeloid leukemia in remission",4143382,8
+"179","Acute promyelocytic leukemia, FAB M3, in remission",4137687,469
+"180","Subacute lymphoid leukemia in remission",4139054,3
+"181","Immunoproliferative neoplasm in remission",4142878,24
+"182","Subacute leukemia in remission",4143848,198
+"183","Erythroleukemia, FAB M6 in remission",4139358,12
+"184","Carcinoid tumor of gastrointestinal tract",443565,123
+"185","Increased cancer antigen 125",4331508,3894
+"186","Disorder of optic chiasm due to neoplasm",4329511,11
+"187","Malignant neoplasm of lower respiratory tract",4334322,1763
+"188","Neoplasm of upper aerodigestive tract",4232106,16
+"189","Vaginal Papanicolaou smear positive for malignant neoplasm",443712,8
+"190","Cervical Papanicolaou smear positive for malignant neoplasm",443708,20
+"191","Mantle cell lymphoma of spleen",40479608,557
+"192","Estrogen receptor negative neoplasm",4261933,3660
+"193","Large cell lymphoma of intrapelvic lymph nodes",40481357,362
+"194","Malignant neoplasm of anorectum",40481902,2
+"195","Carcinoid tumor",40481907,798
+"196","Malignant neoplasm of skeletal system",40482784,1366
+"197","Hepatosplenic T-cell lymphoma",40483374,27
+"198","Acute myeloid leukemia with t(9:11)(p22;q23); MLLT3-MLL",40481524,89
+"199","Mantle cell lymphoma",40481901,3558
+"200","Juvenile myelomonocytic leukemia",40482847,5
+"201","Malignant carcinoid tumor",40482859,2970
+"202","Primary mediastinal (thymic) large B-cell lymphoma",40481522,408
+"203","Acute myeloid leukemia with myelodysplasia-related changes",40483761,410
+"204","Leiomyosarcoma",40482829,11
+"205","Malignant adenomatous neoplasm",40484156,3570
+"206","Blastic plasmacytoid dendritic cell neoplasm",40482072,50
+"207","Extranodal marginal zone B-cell lymphoma of mucosa-associated lymphoid tissue (MALT-lymphoma)",40482893,2586
+"208","Gastrointestinal stromal tumor of stomach",40492266,497
+"209","Marginal zone lymphoma",40490918,2021
+"210","Non-Hodgkin's lymphoma of extranodal site",40487528,4210
+"211","Primary malignant neoplasm of extrahepatic bile duct",40486896,2453
+"212","Primary malignant neoplasm of intrahepatic bile duct",40490929,2200
+"213","Gastrointestinal stromal tumor of large intestine",40490328,33
+"214","Gastrointestinal stromal tumor of small intestine",40492267,236
+"215","Gastrointestinal stromal tumor of esophagus",40486465,6
+"216","Anaplastic large cell lymphoma, ALK negative",40488896,419
+"217","Myelodysplastic/myeloproliferative disease",40492268,996
+"218","Tumor of respiratory system",40491439,2157
+"219","Diffuse follicle center lymphoma",40486171,512
+"220","Primary malignant neoplasm of dome of urinary bladder",42709931,2503
+"221","Squamous cell carcinoma of nose",40492482,1631
+"222","Neoplasm of uncertain behavior of digestive organ",40492458,2599
+"223","Pathologic fracture of tibia at site of neoplasm",45766967,20
+"224","Pathologic fracture of fibula at site of neoplasm",45766973,9
+"225","Malignant epithelial neoplasm",36716620,152
+"226","Malignant essential hypertension",317898,168539
+"227","Pleural effusion due to malignant neoplastic disease",3655266,8182
+"228","Pathologic fracture of ulna at site of neoplasm",45766966,6
+"229","Cancer-related fatigue",37396808,9667
+"230","Metastatic carcinoid tumor",45767695,2844
+"231","Malignant carcinoid tumor of small intestine",46271402,2652
+"232","Multiple endocrine neoplasia type 2A",36717452,16
+"233","Primary malignant epithelial neoplasm of nasopharynx",36716501,1
+"234","Benign neoplasm of right adrenal gland",37204169,347
+"235","Malignant hypertensive heart AND renal disease",442603,980
+"236","Mycosis fungoides of inguinal lymph node",602073,99
+"237","Pathologic fracture of humerus at site of neoplasm",45766970,181
+"238","Malignant carcinoid tumor of kidney",37017321,50
+"239","Multiple endocrine neoplasia, type 3",199775,15
+"240","Pathologic fracture of radius at site of neoplasm",45766969,11
+"241","Pathologic fracture of ankle at site of neoplasm",45766976,1
+"242","Malignant carcinoid tumor of rectum",37018934,537
+"243","Malignant carcinoid tumor of thymus",37111618,21
+"244","Myelofibrosis",133169,1884
+"245","Hypercortisolism due to nonpituitary tumor",4269053,21
+"246","Follicular non-Hodgkin's lymphoma diffuse follicle center sub-type grade 1",45765770,733
+"247","Benign carcinoid tumor",37018338,1912
+"248","Neuroendocrine carcinoma of appendix",36713545,465
+"249","Primary malignant neoplasm of placenta",36715801,77
+"250","Multiple endocrine neoplasia, type 2",24612,50
+"251","Autoimmune lymphoproliferative syndrome",45765493,81
+"252","Pathologic fracture of femur at site of neoplasm",45766974,281
+"253","Disorder of visual pathways associated with neoplasm",259827,14
+"254","Diffuse large B-cell lymphoma",44808122,24
+"255","Malignant hypertensive heart disease",4183981,1
+"256","Heavy chain disease",4288751,44
+"257","Malignant carcinoid tumor of stomach",46271647,582
+"258","Benign carcinoid tumor of gastrointestinal tract",37018339,359
+"259","Primary malignant neuroendocrine neoplasm of duodenum",36717179,187
+"260","Neoplasm of uncertain behavior of bone and articular cartilage",36716624,940
+"261","Malignant carcinoid tumor of colon",37111620,944
+"262","Malignant hypertensive heart disease with congestive heart failure",316994,659
+"263","Overlapping malignant neoplasm of nasopharynx",432558,202
+"264","Kaposi's sarcoma of palate",140958,18
+"265","Primary malignant neoplasm of cloacogenic zone",4003675,28
+"266","Overlapping malignant neoplasm of male genital organs",196645,14
+"267","Overlapping malignant neoplasm of female genital organs",196051,159
+"268","Benign neoplasm of meninges",4003171,2695
+"269","Neoplasm of uncertain behavior of meninges",438997,193
+"270","Multiple myeloma",437233,36419
+"271","Essential thrombocythemia",438383,10669
+"272","Pathologic fracture of pelvis at site of neoplasm",45757298,66
+"273","Dendritic cell sarcoma",607994,37
+"274","Non-Hodgkin's lymphoma (clinical)",4038838,19772
+"275","Hodgkin's sarcoma (clinical)",4038840,8
+"276","Chronic monocytic leukemia in relapse",760932,21
+"277","Neoplasm of accessory sinus",4054513,272
+"278","Neoplasm of placenta",4131761,98
+"279","Merkel cell carcinoma of upper limb",37016170,349
+"280","Primary malignant neoplasm of abdomen",36684472,566
+"281","Melanoma in situ of face",4031107,1
+"282","Primary malignant neoplasm of laryngeal cartilage",436352,364
+"283","Mesothelioma (malignant, clinical disorder)",4033891,213
+"284","Overlapping malignant neoplasm of small intestine",199747,118
+"285","Overlapping malignant neoplasm of rectum, anus and anal canal",438090,919
+"286","Overlapping malignant neoplasm of biliary tract",198695,260
+"287","Overlapping malignant neoplasm of retroperitoneum and peritoneum",198092,175
+"288","Primary malignant neoplasm of descended testis",4003028,1416
+"289","Overlapping malignant neoplasm of vulva",4003029,286
+"290","Overlapping malignant neoplasm of brain",4003693,694
+"291","Overlapping malignant neoplasm of peripheral nerves and autonomic nervous system",4002343,5
+"292","Overlapping malignant neoplasm of eye and adnexa (primary)",438095,12
+"293","B-cell lymphoma (clinical)",434592,5093
+"294","Overlapping malignant neoplasm of tonsil",4002498,472
+"295","Malignant lymphoma",432571,22902
+"296","Hodgkin's disease, mixed cellularity (clinical)",4038843,214
+"297","Langerhans cell histiocytosis, disseminated (clinical)",4038846,69
+"298","Mycosis fungoides (clinical)",4040380,855
+"299","Malignant neuroendocrine tumor",37018875,5598
+"300","Benign neoplasm of skin of left eyelid",37208308,41
+"301","Overlapping malignant neoplasm of skin",133974,563
+"302","Melanoma in situ of skin (clinical)",4031756,979
+"303","Melanoma in situ of skin of breast",4033300,61
+"304","Melanoma in situ of upper limb",4031111,859
+"305","Malignant mesothelioma of pericardium",4032870,4
+"306","Overlapping malignant neoplasm of tongue",436043,275
+"307","Overlapping malignant neoplasm of floor of mouth",140955,221
+"308","Overlapping malignant neoplasm of esophagus",25748,639
+"309","Hepatoblastoma",4001172,71
+"310","Mesothelioma of peritoneum",4001666,98
+"311","Overlapping malignant neoplasm of penis",4003027,34
+"312","Lobular carcinoma in situ of breast",4001315,482
+"313","Intraductal carcinoma in situ of breast",4001670,2411
+"314","Benign neoplasm of peripheral nerves of abdomen",4003177,10
+"315","Primary malignant neoplasm of peripheral nerves of trunk",4003179,7
+"316","Mast cell leukemia (clinical)",4002496,15
+"317","Small cell carcinoma",36712771,310
+"318","Lymphoid leukemia in relapse",760934,161
+"319","Neoplasm of bladder",200680,2205
+"320","Primary basal cell carcinoma of right eyelid",36712715,3
+"321","Intraductal carcinoma in situ of left breast",759930,7178
+"322","Melanoma in situ of lip",4033835,25
+"323","Overlapping malignant neoplasm of bone and articular cartilage of limbs",4033318,43
+"324","Overlapping malignant neoplasm of soft tissues",378081,119
+"325","Carcinoma in situ",433435,4225
+"326","Overlapping malignant neoplasm of larynx",22839,583
+"327","Overlapping malignant neoplasm of bronchus and lung",258375,7033
+"328","Kaposi's sarcoma of lung",254583,34
+"329","Kaposi's sarcoma of lymph nodes",312846,36
+"330","Overlapping malignant neoplasm of palate",4001170,20
+"331","Overlapping malignant neoplasm of oropharynx",438691,412
+"332","Benign neoplasm of peripheral nerve of head, face AND/OR neck",4002344,40
+"333","Benign neoplasm of peripheral nerves of lower limb",4002349,316
+"334","Benign neoplasm of peripheral nerve of pelvic region",4003178,3
+"335","Diffuse non-Hodgkin's lymphoma",4003830,2081
+"336","Follicular non-Hodgkin's lymphoma, large cell (clinical)",4003833,1890
+"337","Acute promyelocytic leukemia, FAB M3",4002497,485
+"338","Adult T-cell leukemia/lymphoma",4003188,246
+"339","Myeloid leukemia in relapse",760933,22
+"340","Acute lymphoid leukemia relapse",36712834,119
+"341","Neoplasm of urinary system",79768,167
+"342","Neoplasm of brain",373724,2349
+"343","Neoplasm of multiple endocrine glands",4130672,6
+"344","Neoplasm of digestive system",4028253,4750
+"345","Merkel cell carcinoma of lower limb",37016171,244
+"346","Primary malignant neoplasm of uterus",45770892,8574
+"347","Benign neoplasm of skin of right eyelid",37208309,36
+"348","Melanoma in situ of trunk",4031109,911
+"349","Melanoma in situ of lower limb",4031113,463
+"350","Benign neoplasm of mesothelial tissue of pleura",4031134,14
+"351","Kaposi's sarcoma of gastrointestinal tract",198085,35
+"352","Liver cell carcinoma",4001171,8896
+"353","Benign neoplasm of mesothelial tissue of peritoneum",4001665,4
+"354","Overlapping malignant neoplasm of body of uterus",198082,584
+"355","Neoplasm of uncertain behavior of peripheral nerves and peripheral autonomic nervous system",4002341,12
+"356","Benign neoplasm of peripheral nerves of upper limb",4002346,20
+"357","Malignant immunoproliferative disease (clinical)",4003834,300
+"358","Marginal zone lymphoma of spleen",36684461,156
+"359","Burkitt's lymphoma (clinical)",4041800,603
+"360","Malignant poorly differentiated neuroendocrine carcinoma",37018672,2088
+"361","Langerhans cell histiocytosis, unifocal (clinical)",4044708,442
+"362","Malignant neoplastic disease in mother complicating childbirth",45757101,1
+"363","Overlapping malignant melanoma of skin",133419,402
+"364","Overlapping malignant neoplasm of heart, mediastinum and pleura",321234,33
+"365","Overlapping malignant neoplasm of lip",133710,19
+"366","Overlapping malignant neoplasm of lip, oral cavity and pharynx",444224,322
+"367","Primary malignant neoplasm of branchial cleft",4003674,12
+"368","Intrahepatic bile duct carcinoma",4001664,3801
+"369","Angiosarcoma of liver",4003021,44
+"370","Overlapping malignant neoplasm of pancreas",192261,884
+"371","Overlapping malignant neoplasm of female breast",133711,23226
+"372","Overlapping malignant neoplasm of male breast",4003684,158
+"373","Primary malignant neoplasm of meninges",4002340,342
+"374","Primary malignant neoplasm of peripheral nerves of upper limb",4003175,54
+"375","Benign neoplasm of peripheral nerves of thorax",4002351,9
+"376","Diffuse non-Hodgkin's lymphoma, lymphoblastic (clinical)",4001328,501
+"377","Diffuse non-Hodgkin's lymphoma, small cell (clinical)",4002356,2211
+"378","Peripheral T-cell lymphoma (clinical)",434881,1799
+"379","Histiocytic sarcoma (clinical)",4002494,249
+"380","Acute panmyelosis with myelofibrosis",4003184,101
+"381","Hodgkin's disease, nodular sclerosis (clinical)",4038842,1313
+"382","Hodgkin's disease, lymphocytic depletion (clinical)",4041798,36
+"383","Chronic myelomonocytic leukemia",4133599,1378
+"384","Neoplasm of spleen",4133600,14
+"385","Neoplasm of intra-abdominal lymph nodes",4131422,6216
+"386","Neoplasm of digestive tract",196931,2111
+"387","Secondary malignant neoplastic disease",432851,16205
+"388","Primary cutaneous CD30+ large T-cell lymphoma",4029188,269
+"389","Neuroleptic malignant syndrome",379802,22
+"390","Follicular lymphoma, cutaneous follicle centre",35610325,97
+"391","Overlapping malignant neoplasm of accessory sinuses",253977,41
+"392","Overlapping malignant neoplasm of hypopharynx",440044,215
+"393","Kaposi's sarcoma (clinical)",434584,520
+"394","Overlapping malignant neoplasm of stomach",197803,699
+"395","Carcinoma in situ of digestive organ",196064,66
+"396","Hematologic neoplasm of uncertain behavior",438111,683
+"397","Follicular non-Hodgkin's lymphoma, small cleaved cell (clinical)",4002357,3207
+"398","Follicular non-Hodgkin's lymphoma, mixed small cleaved cell and large cell (clinical)",4001329,2558
+"399","Myelodysplastic syndrome (clinical)",138994,20789
+"400","Osteitis deformans without bone tumor",444219,394
+"401","Hodgkin's granuloma (clinical)",4041797,59
+"402","Hodgkin lymphoma, nodular lymphocyte predominance (clinical)",4038839,774
+"403","Lymphocyte-rich classical Hodgkin lymphoma",4038841,304
+"404","Hairy cell leukemia (clinical)",4038845,1366
+"405","Malignant mast cell tumor (clinical)",4040379,311
+"406","Plasma cell leukemia in relapse",760936,35
+"407","Neoplasm of lymph node",4130839,9892
+"408","Neoplasm of lymph nodes of upper limb",4130842,6444
+"409","Neoplasm of lymph node of lower limb",4131938,1147
+"410","Primary malignant neoplasm of articular cartilage",444203,60
+"411","Malignant neoplastic disease in pregnancy",45757107,120
+"412","Primary basal cell carcinoma of left eyelid",36712713,8
+"413","Intraductal carcinoma in situ of right breast",759931,7175
+"414","B-cell Hodgkin's lymphoma",35610328,101
+"415","Melanoma in situ of eyelid, including canthus",4033836,49
+"416","Kaposi's sarcoma of skin",258981,485
+"417","Overlapping malignant neoplasm of colon",79740,1750
+"418","Benign neoplasm of peripheral nerves of trunk",4001322,27
+"419","Hodgkin's disease (clinical)",4038835,6536
+"420","Neoplasm of respiratory tract",252280,705
+"421","Neoplasm of breast",81251,417
+"422","Neoplasm of intrathoracic lymph nodes",4131304,4167
+"423","Neoplasm of intrapelvic lymph node",4131428,1667
+"424","Neoplasm of lymph nodes of multiple sites",4133007,5082
+"425","Malignant secondary hypertension",318437,285
+"426","Acute myeloid leukemia in remission",135762,1491
+"427","Acute leukemia",138708,1579
+"428","Acute monocytic leukemia in remission",140672,27
+"429","Acute lymphoid leukemia in remission",141816,2733
+"430","Acute myeloid leukemia, disease",140352,10665
+"431","Acute lymphoid leukemia",134305,4015
+"432","Acute leukemia in remission",135496,2612
+"433","Benign neoplasm of anus",4240913,79
+"434","Benign neoplasm of cerebral meninges",376063,2856
+"435","Benign neoplasm of soft tissue",442105,2166
+"436","Benign neoplasm of duodenum",436062,303
+"437","Benign neoplasm of extrahepatic bile ducts",4241648,179
+"438","Benign neoplasm of floor of mouth",132573,9
+"439","Benign neoplasm of large intestine",442099,46
+"440","Benign neoplasm of mandible",373166,92
+"441","Benign neoplasm of nervous system",373432,22
+"442","Benign neoplasm of penis",201823,24
+"443","Benign neoplasm of short bone of upper limb",433981,55
+"444","Benign neoplasm of spinal cord",138117,161
+"445","Benign neoplasm of spinal meninges",135767,158
+"446","Benign neoplasm of vertebral column",40651279,26
+"447","Benign neoplasm of testis",436366,165
+"448","Carcinoma in situ of floor of mouth",4241778,16
+"449","Carcinoma in situ of skin of lower limb",134308,1534
+"450","Carcinoma in situ of urinary system",81247,133
+"451","Chronic lymphoid leukemia in remission",133438,3596
+"452","Benign neoplasm of carotid body",24884,40
+"453","Benign neoplasm of choroid",436948,1102
+"454","Benign neoplasm of craniopharyngeal duct",4241026,145
+"455","Benign neoplasm of eye",381252,110
+"456","Benign neoplasm of mediastinum",438105,30
+"457","Benign neoplasm of oropharynx",435205,37
+"458","Benign neoplasm of paraganglion",444463,21
+"459","Benign neoplasm of skin of ear",4242514,470
+"460","Benign neoplasm of skin of lip",141248,244
+"461","Benign neoplasm of small intestine",4242962,411
+"462","Benign neoplasm of soft tissues of lower limb",444453,249
+"463","Benign neoplasm of uterus",195500,74
+"464","Benign neoplasm of vulva",438390,139
+"465","Burkitt's tumor of lymph nodes of axilla AND/OR upper limb",433426,14
+"466","Burkitt's tumor of lymph nodes of head, face AND/OR neck",437504,161
+"467","Carcinoma in situ of endocervix",4243120,102
+"468","Carcinoma in situ of endometrium",4241777,53
+"469","Carcinoma in situ of exocervix",4243874,49
+"470","Carcinoma in situ of eye",373732,19
+"471","Carcinoma in situ of female genital organ",192577,215
+"472","Carcinoma in situ of intestinal tract",192291,25
+"473","Carcinoma in situ of male genital organ",196068,13
+"474","Carcinoma in situ of skin of face",133726,5198
+"475","Carcinoma in situ of soft palate",4241909,5
+"476","Carcinoma in situ of tongue",4241919,135
+"477","Carcinoma in situ of uterus",192581,36
+"478","Chronic leukemia",140057,843
+"479","Chronic lymphoid leukemia, disease",138379,18568
+"480","Benign neoplasm of adrenal gland",192273,1724
+"481","Benign neoplasm of appendix",4239729,150
+"482","Benign neoplasm of bone",74606,306
+"483","Benign neoplasm of cecum",442108,758
+"484","Benign neoplasm of ciliary body",4239873,77
+"485","Benign neoplasm of cornea",373160,13
+"486","Benign neoplasm of ileum",442098,48
+"487","Benign neoplasm of liver",4243427,195
+"488","Benign neoplasm of orbit",433987,58
+"489","Benign neoplasm of parathyroid gland",134304,882
+"490","Benign neoplasm of pituitary gland",4242816,1842
+"491","Benign neoplasm of pleura",77819,21
+"492","Benign neoplasm of rectosigmoid junction",4243575,129
+"493","Benign neoplasm of soft tissues of pelvis",194607,45
+"494","Benign neoplasm of retroperitoneum",4242974,30
+"495","Benign neoplasm of tongue",440668,155
+"496","Benign neoplasm of transverse colon",444444,1307
+"497","Benign neoplasm of urinary system",78706,19
+"498","Carcinoma in situ of anal canal",436671,120
+"499","Carcinoma in situ of buccal mucosa",4241769,5
+"500","Carcinoma in situ of mouth",4243266,104
+"501","Carcinoma in situ of pharynx",4244639,27
+"502","Carcinoma in situ of rectosigmoid junction",4241890,7
+"503","Carcinoma in situ of stomach",200974,44
+"504","Benign neoplasm of ascending colon",442111,1661
+"505","Benign neoplasm of brain",379769,742
+"506","Benign neoplasm of central nervous system",4239871,3
+"507","Benign neoplasm of conjunctiva",373982,34
+"508","Benign neoplasm of heart",317814,196
+"509","Benign neoplasm of renal pelvis",200671,40
+"510","Benign neoplasm of sigmoid colon",444459,1249
+"511","Benign neoplasm of skin",138102,23053
+"512","Benign neoplasm of soft tissues of trunk",200060,103
+"513","Benign neoplasm of stomach",196061,2098
+"514","Benign neoplasm of urethra",196377,27
+"515","Carcinoma in situ of uterine cervix",194611,2208
+"516","Carcinoma in situ of colon",75512,423
+"517","Carcinoma in situ of esophagus",28109,55
+"518","Carcinoma in situ of hard palate",4241786,1
+"519","Carcinoma in situ of penis",193162,79
+"520","Carcinoma in situ of skin of ear",444410,1557
+"521","Carcinoma in situ of trachea",439772,8
+"522","Carcinoma in situ of vagina",195513,224
+"523","Chronic myeloid leukemia in remission",132572,2495
+"524","Benign neoplasm of female genital organ",201817,33
+"525","Benign neoplasm of ovary",199764,1493
+"526","Benign neoplasm of tonsil",26060,86
+"527","Benign neoplasm of scrotum",74322,61
+"528","Benign neoplasm of skin of eyelid",4242957,379
+"529","Benign neoplasm of skin of trunk",136057,6887
+"530","Benign neoplasm of trachea",439763,15
+"531","Cancer in situ of urinary bladder",192855,1163
+"532","Carcinoma in situ of thyroid gland",4241917,32
+"533","Chronic myeloid leukemia",134603,8480
+"534","Benign neoplasm of bladder",201824,292
+"535","Benign neoplasm of descending colon",442104,810
+"536","Benign neoplasm of kidney",195498,595
+"537","Benign neoplasm of major salivary gland",30679,579
+"538","Benign neoplasm of parotid gland",4242814,297
+"539","Benign neoplasm of prostate",197237,399
+"540","Benign neoplasm of skin of face",140966,11386
+"541","Benign neoplasm of skin of lower limb",444445,1551
+"542","Benign neoplasm of soft tissues of abdomen",201256,357
+"543","Benign neoplasm of thyroid gland",141249,1258
+"544","Benign neoplasm of ureter",198103,9
+"545","Benign neoplasm of vagina",201244,49
+"546","Carcinoma in situ of larynx",24897,173
+"547","Carcinoma in situ of respiratory tract",261528,15
+"548","Carcinoma in situ of skin of upper limb",4241908,3191
+"549","Benign neoplasm of uterine cervix",196364,52
+"550","Benign neoplasm of colon",77234,35572
+"551","Benign neoplasm of cranial nerve",436936,1060
+"552","Benign neoplasm of epididymis",73723,10
+"553","Benign neoplasm of hypopharynx",433978,11
+"554","Benign neoplasm of intrathoracic organs",4242348,9
+"555","Benign neoplasm of lip",135208,59
+"556","Benign neoplasm of pancreas",4243445,344
+"557","Benign neoplasm of pineal gland",28115,27
+"558","Benign neoplasm of rectum",444457,509
+"559","Benign neoplasm of retina",372272,8
+"560","Benign neoplasm of soft tissues of thorax",444450,53
+"561","Benign neoplasm of thymus",438107,254
+"562","Burkitt's tumor of extranodal AND/OR solid organ site",435758,92
+"563","Carcinoma in situ of anus",78110,291
+"564","Carcinoma in situ of skin",138996,2139
+"565","Benign neoplasm of body of uterus",193439,74
+"566","Benign neoplasm of endocrine gland",136937,17
+"567","Benign neoplasm of esophagus",24602,83
+"568","Benign neoplasm of intra-abdominal organs",4239897,114
+"569","Benign neoplasm of jejunum",442100,2
+"570","Benign neoplasm of lacrimal gland",134604,9
+"571","Benign neoplasm of larynx",23731,165
+"572","Benign neoplasm of lymph node",315505,282
+"573","Benign neoplasm of male genital organ",200670,16
+"574","Benign neoplasm of pharynx",30356,22
+"575","Benign neoplasm of skin of upper limb",4243587,1333
+"576","Benign neoplasm of soft tissues of upper limb",444449,156
+"577","Benign neoplasm of spermatic cord",4243593,53
+"578","Carcinoma in situ of prostate",200970,920
+"579","Carcinoma in situ of rectum",75210,194
+"580","Carcinoma in situ of scrotum",4245568,6
+"581","Carcinoma in situ of skin of lip",133725,251
+"582","Carcinoma in situ of skin of trunk",444411,2067
+"583","Carcinoma in situ of vulva",438386,1219
+"584","Chronic leukemia in remission",134597,149
+"585","Malignant histiocytosis of lymph nodes of head, face AND/OR neck",441525,17
+"586","Malignant histiocytosis of lymph nodes of multiple sites",321815,10
+"587","Malignant lymphoma of intrathoracic lymph nodes",435753,3405
+"588","Malignant mast cell tumor of lymph nodes of axilla AND/OR upper limb",441245,1
+"589","Malignant melanoma of skin of eyelid",434590,334
+"590","Hodgkin's disease, lymphocytic-histiocytic predominance of intrathoracic lymph nodes",440351,203
+"591","Hodgkin's disease, mixed cellularity of extranodal AND/OR solid organ site",435203,36
+"592","Hodgkin's disease, nodular sclerosis of lymph nodes of head, face AND/OR neck",442158,1410
+"593","Hodgkin's disease of intrathoracic lymph nodes",440965,1119
+"594","Hodgkin's disease of extranodal AND/OR solid organ site",436651,352
+"595","Hodgkin's paragranuloma of lymph nodes of axilla AND/OR upper limb",442152,24
+"596","Hodgkin's paragranuloma of lymph nodes of head, face AND/OR neck",435494,103
+"597","Hodgkin's sarcoma of lymph nodes of axilla AND/OR upper limb",320049,3
+"598","Primary malignant neoplasm of accessory sinus",259748,308
+"599","Primary malignant neoplasm of anterior aspect of epiglottis",436643,302
+"600","Primary malignant neoplasm of body of pancreas",434293,5720
+"601","Primary malignant neoplasm of choroid",378696,485
+"602","Primary malignant neoplasm of ciliary body (primary)",4246808,105
+"603","Primary malignant neoplasm of colon",197500,51817
+"604","Primary malignant neoplasm of descending colon",441800,7285
+"605","Primary malignant neoplasm of epididymis",80340,24
+"606","Primary malignant neoplasm of female genital organ",201238,796
+"607","Primary malignant neoplasm of hypopharynx",439746,1331
+"608","Primary malignant neoplasm of ileum",4311480,1542
+"609","Primary malignant neoplasm of junctional zone of tongue",440036,16
+"610","Malignant histiocytosis of intra-abdominal lymph nodes",198098,2
+"611","Malignant lymphoma of intrapelvic lymph nodes",195195,972
+"612","Malignant mast cell tumor of lymph nodes of head, face AND/OR neck",435495,3
+"613","Malignant mast cell tumor of lymph nodes of inguinal region AND/OR lower limb",198705,3
+"614","Hodgkin's disease, lymphocytic depletion of lymph nodes of axilla AND/OR upper limb",442151,5
+"615","Hodgkin's disease, lymphocytic-histiocytic predominance of lymph nodes of head, face AND/OR neck",442163,482
+"616","Hodgkin's disease of intrapelvic lymph nodes",195761,216
+"617","Hodgkin's disease of lymph nodes of head, face AND/OR neck",437818,2170
+"618","Hodgkin's sarcoma of intrapelvic lymph nodes",195196,1
+"619","Malignant melanoma of skin of lip",140048,128
+"620","Malignant melanoma of skin of lower limb",139757,3207
+"621","Primary malignant neoplasm of anal canal",436348,5637
+"622","Primary malignant neoplasm of body of stomach",193422,2448
+"623","Primary malignant neoplasm of cauda equina",4246029,22
+"624","Primary malignant neoplasm of craniopharyngeal duct",442134,31
+"625","Primary malignant neoplasm of isthmus of uterus",192847,159
+"626","Erythroleukemia, FAB M6",138099,100
+"627","Hodgkin's disease, mixed cellularity of lymph nodes of axilla AND/OR upper limb",434299,64
+"628","Hodgkin's disease, mixed cellularity of lymph nodes of head, face AND/OR neck",442161,282
+"629","Hodgkin's disease of lymph nodes of multiple sites",316356,2044
+"630","Hodgkin's sarcoma of lymph nodes of head, face AND/OR neck",442146,6
+"631","Hodgkin's sarcoma of lymph nodes of inguinal region AND/OR lower limb",442145,2
+"632","Primary malignant neoplasm of adrenal gland",198104,1573
+"633","Primary malignant neoplasm of body of penis",79749,114
+"634","Primary malignant neoplasm of central nervous system",4247822,445
+"635","Primary malignant neoplasm of conjunctiva of eye",373151,120
+"636","Primary malignant neoplasm of endometrium",4247238,18431
+"637","Primary malignant neoplasm of exocervix",436358,1966
+"638","Primary malignant neoplasm of floor of mouth",135750,1320
+"639","Primary malignant neoplasm of inner aspect of lower lip",137219,253
+"640","Primary malignant neoplasm of islets of Langerhans",25486,808
+"641","Primary malignant neoplasm of lateral wall of oropharynx",440345,351
+"642","Malignant neoplasm of liver",4246127,4740
+"643","Primary malignant neoplasm of long bone of lower limb",436640,1321
+"644","Lymphoid leukemia in remission",134596,269
+"645","Malignant histiocytosis of intrathoracic lymph nodes",441812,5
+"646","Malignant lymphoma of intra-abdominal lymph nodes",200349,8920
+"647","Malignant lymphoma of lymph nodes of multiple sites",132841,12512
+"648","Malignant melanoma of skin of face",133713,5482
+"649","Hodgkin's disease, lymphocytic depletion of lymph nodes of inguinal region AND/OR lower limb",442150,5
+"650","Hodgkin's disease, lymphocytic-histiocytic predominance of lymph nodes of axilla AND/OR upper limb",438703,167
+"651","Hodgkin's disease, nodular sclerosis of lymph nodes of inguinal region AND/OR lower limb",442157,131
+"652","Hodgkin's disease of intra-abdominal lymph nodes",200355,1115
+"653","Hodgkin's disease of spleen",198704,70
+"654","Hodgkin's granuloma of lymph nodes of inguinal region AND/OR lower limb",442153,4
+"655","Hodgkin's granuloma of spleen",196355,1
+"656","Primary malignant neoplasm of anterior portion of floor of mouth",438982,509
+"657","Primary malignant neoplasm of anterior wall of nasopharynx",438080,98
+"658","Primary malignant neoplasm of anus",80045,5311
+"659","Primary malignant neoplasm of brain",380055,13571
+"660","Primary malignant neoplasm of central portion of female breast",432845,30964
+"661","Primary malignant neoplasm of endocervix",441805,4798
+"662","Primary malignant neoplasm of jejunum",436913,747
+"663","Primary malignant neoplasm of labia minora",441802,222
+"664","Primary malignant neoplasm of lateral wall of nasopharynx",438692,226
+"665","Primary malignant neoplasm of lingual tonsil",434289,595
+"666","Leukemia",317510,2348
+"667","Malignant histiocytosis of lymph nodes of axilla AND/OR upper limb",435200,2
+"668","Malignant histiocytosis of extranodal AND/OR solid organ site",436929,128
+"669","Malignant mast cell tumor of intra-abdominal lymph nodes",4245916,9
+"670","Hodgkin's disease, lymphocytic-histiocytic predominance of spleen",198381,21
+"671","Hodgkin's disease, mixed cellularity of lymph nodes of inguinal region AND/OR lower limb",442160,44
+"672","Hodgkin's granuloma of intrathoracic lymph nodes",440354,10
+"673","Hodgkin's granuloma of lymph nodes of head, face AND/OR neck",442154,15
+"674","Malignant melanoma of skin of nose",4244488,377
+"675","Primary malignant neoplasm of anterior mediastinum",432844,251
+"676","Primary malignant neoplasm of anterior wall of urinary bladder",40649300,708
+"677","Primary malignant neoplasm of base of tongue",256633,6650
+"678","Primary malignant neoplasm of bone of skull",4246802,686
+"679","Primary malignant neoplasm of brain stem",441806,958
+"680","Primary malignant neoplasm of dorsal surface of tongue",434587,436
+"681","Primary malignant neoplasm of female breast",137809,207850
+"682","Primary malignant neoplasm of frontal lobe",441233,5272
+"683","Primary malignant neoplasm of glottis",260336,4892
+"684","Malignant histiocytosis of lymph nodes of inguinal region AND/OR lower limb",197232,8
+"685","Malignant lymphoma of extranodal AND/OR solid organ site",440058,5793
+"686","Hodgkin's disease, lymphocytic depletion of lymph nodes of head, face AND/OR neck",433161,32
+"687","Hodgkin's sarcoma of intra-abdominal lymph nodes",198372,7
+"688","Malignant melanoma of skin of trunk",133714,4959
+"689","Primary malignant neoplasm of appendix",433143,3988
+"690","Primary malignant neoplasm of ascending colon",4247719,24240
+"691","Primary malignant neoplasm of bladder",196360,40676
+"692","Primary malignant neoplasm of broad ligament",432264,32
+"693","Primary malignant neoplasm of carotid body",27235,68
+"694","Primary malignant neoplasm of cerebral meninges",436926,5404
+"695","Primary malignant neoplasm of duodenum",435752,2401
+"696","Primary malignant neoplasm of face",442132,186
+"697","Primary malignant neoplasm of head",442131,1246
+"698","Primary malignant neoplasm of heart",316644,69
+"699","Primary malignant neoplasm of inner aspect of lip",132832,24
+"700","Primary malignant neoplasm of kidney",198985,46734
+"701","Primary malignant neoplasm of labia majora",437501,503
+"702","Primary malignant neoplasm of lesser curvature of stomach",434292,871
+"703","Leukemia in remission",135766,406
+"704","Hairy cell leukemia of spleen",4245460,65
+"705","Malignant lymphoma of lymph nodes of inguinal region AND/OR lower limb",192560,3353
+"706","Malignant lymphoma of spleen",200343,1754
+"707","Malignant melanoma of skin of breast",4244051,358
+"708","Hodgkin's disease, lymphocytic depletion of extranodal AND/OR solid organ site",432267,10
+"709","Hodgkin's disease, lymphocytic-histiocytic predominance of intra-abdominal lymph nodes",201242,155
+"710","Hodgkin's disease, mixed cellularity of spleen",442159,3
+"711","Hodgkin's disease, nodular sclerosis of spleen",193157,28
+"712","Hodgkin's disease of lymph nodes of axilla AND/OR upper limb",434877,537
+"713","Hodgkin's sarcoma of intrathoracic lymph nodes",433156,7
+"714","Malignant melanoma of skin of upper limb",438983,4022
+"715","Primary malignant neoplasm of cerebral ventricle",432848,366
+"716","Primary malignant neoplasm of cerebrum",380661,786
+"717","Primary malignant neoplasm of cornea of eye",375490,41
+"718","Primary malignant neoplasm of cranial nerve",433975,369
+"719","Primary malignant neoplasm of ethmoidal sinus",140046,248
+"720","Primary malignant neoplasm of fundus of stomach",435751,1110
+"721","Primary malignant neoplasm of greater curvature of stomach",437224,644
+"722","Primary malignant neoplasm of hepatic flexure of colon",438979,4269
+"723","Primary malignant neoplasm of hypopharyngeal aspect of aryepiglottic fold",434577,214
+"724","Primary malignant neoplasm of inner aspect of upper lip",138351,44
+"725","Primary malignant neoplasm of intra-abdominal organs",197804,720
+"726","Primary malignant neoplasm of lateral portion of floor of mouth",440344,282
+"727","Malignant histiocytosis of spleen",193721,2
+"728","Malignant lymphoma of lymph nodes of axilla AND/OR upper limb",441521,3112
+"729","Malignant lymphoma of lymph nodes of head, face AND/OR neck",438698,10385
+"730","Hodgkin's disease, lymphocytic-histiocytic predominance of intrapelvic lymph nodes",194876,36
+"731","Hodgkin's disease, lymphocytic-histiocytic predominance of lymph nodes of inguinal region AND/OR lower limb",442162,103
+"732","Hodgkin's disease, lymphocytic-histiocytic predominance of extranodal AND/OR solid organ site",438373,50
+"733","Hodgkin's disease, nodular sclerosis of lymph nodes of axilla AND/OR upper limb",314600,248
+"734","Hodgkin's disease, nodular sclerosis of extranodal AND/OR solid organ site",434302,210
+"735","Hodgkin's disease of lymph nodes of inguinal region AND/OR lower limb",436652,486
+"736","Hodgkin's granuloma of lymph nodes of axilla AND/OR upper limb",442155,7
+"737","Hodgkin's paragranuloma of lymph nodes of inguinal region AND/OR lower limb",442144,15
+"738","Malignant melanoma of skin",141232,23549
+"739","Primary malignant neoplasm of bone",76914,1995
+"740","Primary malignant neoplasm of cardia of stomach",432838,5477
+"741","Primary malignant neoplasm of cerebellum",433149,1274
+"742","Primary malignant neoplasm of frontal sinus",132258,59
+"743","Primary malignant neoplasm of large intestine",4246125,1773
+"744","Primary malignant neoplasm of lateral wall of urinary bladder",40650072,4186
+"745","Primary malignant neoplasm of lower inner quadrant of female breast",432263,18797
+"746","Primary malignant neoplasm of myometrium",4247842,254
+"747","Primary malignant neoplasm of parametrium",196047,56
+"748","Primary malignant neoplasm of parietal lobe",438086,2617
+"749","Primary malignant neoplasm of postcricoid region",436922,107
+"750","Primary malignant neoplasm of posterior mediastinum",435487,51
+"751","Primary malignant neoplasm of posterior wall of oropharynx",439739,344
+"752","Primary malignant neoplasm of short bone of lower limb",434880,136
+"753","Primary malignant neoplasm of soft tissues of abdomen",197807,1507
+"754","Primary malignant neoplasm of spleen",193418,138
+"755","Primary malignant neoplasm of supraglottis",261514,4373
+"756","Primary malignant neoplasm of tonsillar fossa",433709,2086
+"757","Primary malignant neoplasm of undescended testis",436054,731
+"758","Primary malignant neoplasm of ureteric orifice of urinary bladder",76924,1542
+"759","Primary malignant neoplasm of vulva",195197,5902
+"760","Megakaryocytic leukemia in remission",136930,6
+"761","Secondary malignant neoplasm of bone marrow",4246450,2667
+"762","Secondary malignant neoplasm of cerebral meninges",4312290,176
+"763","Secondary malignant neoplasm of skin",136354,3179
+"764","Secondary malignant neoplasm of small intestine",198371,1226
+"765","Mycosis fungoides of intrapelvic lymph nodes",442169,4
+"766","Mycosis fungoides of extranodal AND/OR solid organ site",135204,1200
+"767","Myeloid leukemia in remission",132850,331
+"768","Neoplasm of uncertain behavior of adrenal gland",196365,275
+"769","Neoplasm of uncertain behavior of bladder",198401,4998
+"770","Primary malignant neoplasm of lower limb",201518,4801
+"771","Primary malignant neoplasm of main bronchus",257503,10822
+"772","Primary malignant neoplasm of Meckel's diverticulum",432256,37
+"773","Primary malignant neoplasm of mediastinum",438693,477
+"774","Primary malignant neoplasm of renal pelvis",195480,4502
+"775","Primary malignant neoplasm of retromolar area",433704,524
+"776","Primary malignant neoplasm of round ligament of uterus",441520,16
+"777","Primary malignant neoplasm of sphenoidal sinus",136639,108
+"778","Primary malignant neoplasm of splenic flexure of colon",437798,2325
+"779","Primary malignant neoplasm of tail of pancreas",432843,4993
+"780","Primary malignant neoplasm of temporal lobe",433976,3552
+"781","Primary malignant neoplasm of retroperitoneum",198091,3013
+"782","Primary malignant neoplasm of tongue",437498,4950
+"783","Primary malignant neoplasm of trunk",4312698,2274
+"784","Primary malignant neoplasm of uterine adnexa",200052,1248
+"785","Primary malignant neoplasm of vallecula",438360,322
+"786","Primary malignant neoplasm of vermilion border of lip",133969,307
+"787","Primary malignant neoplasm of vestibule of mouth",261808,78
+"788","Secondary malignant neoplasm of bone",78097,96652
+"789","Mycosis fungoides of intrathoracic lymph nodes",134879,18
+"790","Neoplasm of uncertain behavior of cranial nerve",4313379,10
+"791","Primary malignant neoplasm of pancreatic duct",433423,1729
+"792","Primary malignant neoplasm of pharynx",28083,1969
+"793","Primary malignant neoplasm of posterior hypopharyngeal wall",435474,193
+"794","Primary malignant neoplasm of pylorus",192255,322
+"795","Primary malignant neoplasm of rectosigmoid junction",438699,10299
+"796","Primary malignant neoplasm of rectum",74582,34197
+"797","Primary malignant neoplasm of retina",377811,103
+"798","Primary malignant neoplasm of short bone of upper limb",435493,162
+"799","Primary malignant neoplasm of skin of breast",4247348,118
+"800","Primary malignant neoplasm of skin",139750,27985
+"801","Primary malignant neoplasm of soft tissues of thorax",317801,729
+"802","Primary malignant neoplasm of subglottis",259755,252
+"803","Primary malignant neoplasm of upper inner quadrant of female breast",440956,37809
+"804","Primary malignant neoplasm of upper respiratory tract",252840,112
+"805","Secondary malignant neoplasm of brain",4246451,19772
+"806","Secondary malignant neoplasm of female breast",140960,529
+"807","Secondary malignant neoplasm of intrapelvic lymph nodes",200959,2467
+"808","Secondary malignant neoplasm of intrathoracic lymph nodes",439751,5546
+"809","Secondary malignant neoplasm of lung",254591,28966
+"810","Secondary malignant neoplasm of peritoneum",4315805,105
+"811","Secondary malignant neoplasm of urinary system",78987,1096
+"812","Multiple myeloma in remission",436059,4445
+"813","Mycosis fungoides of intra-abdominal lymph nodes",201813,20
+"814","Neoplasm of uncertain behavior of appendix",4314207,198
+"815","Primary malignant neoplasm of major salivary gland",4247836,1088
+"816","Primary malignant neoplasm of oropharynx",432833,3962
+"817","Primary malignant neoplasm of pelvic bone",4246141,432
+"818","Primary malignant neoplasm of pelvis",198988,846
+"819","Primary malignant neoplasm of prostate",200962,160499
+"820","Primary malignant neoplasm of pyriform sinus",435190,649
+"821","Primary malignant neoplasm of respiratory tract",4311499,93827
+"822","Primary malignant neoplasm of sigmoid colon",436635,29216
+"823","Primary malignant neoplasm of skin of ear",4247350,1407
+"824","Primary malignant neoplasm of skin of lower limb",4312685,5482
+"825","Primary malignant neoplasm of tonsillar pillar",440047,814
+"826","Primary malignant neoplasm of urethra",196049,973
+"827","Neoplasm of uncertain behavior of central nervous system",4315940,30
+"828","Neoplasm of uncertain behavior of endocrine gland",140357,356
+"829","Neoplasm of uncertain behavior of female genital organ",193437,146
+"830","Primary malignant neoplasm of lower outer quadrant of female breast",441515,28754
+"831","Primary malignant neoplasm of male breast",135489,4526
+"832","Primary malignant neoplasm of occipital lobe",432559,610
+"833","Primary malignant neoplasm of orbit",441809,117
+"834","Primary malignant neoplasm of paraganglion",442122,161
+"835","Primary malignant neoplasm of parathyroid gland",139753,191
+"836","Primary malignant neoplasm of parietal pleura",441510,26
+"837","Primary malignant neoplasm of pyloric antrum",438089,1541
+"838","Primary malignant neoplasm of skin of face",136917,8878
+"839","Primary malignant neoplasm of soft tissues of trunk",197808,345
+"840","Primary malignant neoplasm of spinal meninges",134295,413
+"841","Primary malignant neoplasm of upper outer quadrant of female breast",436353,132537
+"842","Secondary malignant neoplasm of intra-abdominal lymph nodes",192568,5936
+"843","Secondary malignant neoplasm of lymph nodes of lower limb",442182,1244
+"844","Secondary malignant neoplasm of lymph nodes of multiple sites",320342,2638
+"845","Secondary malignant neoplasm of lymph nodes of upper limb",434298,8605
+"846","Mycosis fungoides of lymph nodes of head, face AND/OR neck",138377,112
+"847","Mycosis fungoides of spleen",442168,3
+"848","Myeloid sarcoma in remission",132575,48
+"849","Myeloid sarcoma",140967,208
+"850","Neoplasm of uncertain behavior of soft tissues",374313,5690
+"851","Primary malignant neoplasm of male genital organ",197507,138
+"852","Primary malignant neoplasm of maxillary sinus",137800,938
+"853","Primary malignant neoplasm of ovary",200051,33292
+"854","Primary malignant neoplasm of paraurethral glands",200963,18
+"855","Primary malignant neoplasm of pleura",78093,809
+"856","Primary malignant neoplasm of posterior wall of urinary bladder",40650479,4300
+"857","Primary malignant neoplasm of soft tissues of pelvis",4247358,834
+"858","Primary malignant neoplasm of sublingual gland",439738,37
+"859","Primary malignant neoplasm of submaxillary gland",4312691,311
+"860","Primary malignant neoplasm of superior wall of nasopharynx",441223,118
+"861","Primary malignant neoplasm of trachea",432262,918
+"862","Primary malignant neoplasm of transverse colon",432257,8969
+"863","Primary malignant neoplasm of upper limb",81239,4755
+"864","Primary malignant neoplasm of urachus",201517,136
+"865","Primary malignant neoplasm of urinary bladder neck",436923,2131
+"866","Malignant otitis externa",437881,198
+"867","Secondary malignant neoplasm of bladder",4312802,535
+"868","Secondary malignant neoplasm of nervous system",373425,5684
+"869","Secondary malignant neoplasm of ovary",199752,1130
+"870","Secondary malignant neoplasm of respiratory tract",253717,421
+"871","Neoplasm of uncertain behavior of colon",4317409,459
+"872","Primary malignant neoplasm of mandible",379756,790
+"873","Primary malignant neoplasm of nasal cavity",438367,1215
+"874","Primary malignant neoplasm of nervous system",376918,270
+"875","Primary malignant neoplasm of optic nerve",4246137,245
+"876","Primary malignant neoplasm of posterior wall of nasopharynx",436344,404
+"877","Primary malignant neoplasm of skin of lip",136915,1181
+"878","Primary malignant neoplasm of skin of upper limb",440658,1594
+"879","Primary malignant neoplasm of small intestine",192836,2175
+"880","Primary malignant neoplasm of spinal cord",135491,1094
+"881","Primary malignant neoplasm of testis",433716,11918
+"882","Primary malignant neoplasm of trigone of urinary bladder",435484,3667
+"883","Primary malignant neoplasm of urinary system",76349,2536
+"884","Primary malignant neoplasm of uvula",434285,89
+"885","Primary malignant neoplasm of Waldeyer's ring",432254,29
+"886","Secondary malignant neoplasm of adrenal gland",193144,5396
+"887","Secondary malignant neoplasm of liver",198700,24600
+"888","Secondary malignant neoplasm of lymph node",318096,12453
+"889","Secondary malignant neoplasm of mediastinum",434875,2592
+"890","Neoplasm of uncertain behavior of brain",4313365,3517
+"891","Neoplasm of uncertain behavior of carotid body",4314634,88
+"892","Neoplasm of uncertain behavior of craniopharyngeal duct",442167,64
+"893","Primary malignant neoplasm of middle ear",4247336,28
+"894","Primary malignant neoplasm of pineal gland",26361,194
+"895","Primary malignant neoplasm of pituitary gland",24296,609
+"896","Primary malignant neoplasm of skin of eyelid",435755,1655
+"897","Primary malignant neoplasm of skin of trunk",133147,6809
+"898","Primary malignant neoplasm of soft palate",254282,681
+"899","Primary malignant neoplasm of soft tissues of lower limb",438094,1367
+"900","Primary malignant neoplasm of thymus",438368,1289
+"901","Primary malignant neoplasm of thyroid gland",133424,28301
+"902","Primary malignant neoplasm of ureter",200054,3206
+"903","Primary malignant neoplasm of ventral surface of tongue",437220,472
+"904","Primary malignant neoplasm of visceral pleura",441230,15
+"905","Secondary malignant neoplasm of intra-abdominal organs",4312023,1866
+"906","Secondary malignant neoplasm of kidney",196053,620
+"907","Secondary malignant neoplasm of large intestine",200348,1355
+"908","Secondary malignant neoplasm of pleura",72266,3901
+"909","Secondary malignant neoplasm of trunk",4314071,2125
+"910","Mycosis fungoides of lymph nodes of axilla AND/OR upper limb",141524,79
+"911","Neoplasm of uncertain behavior of cerebral meninges",4314637,92
+"912","Neoplasm of uncertain behavior of ovary",200675,1023
+"913","Neoplasm of uncertain behavior of pharynx",4316619,124
+"914","Nodular lymphoma of spleen",198374,140
+"915","Neoplasm of uncertain behavior of lip",4317548,105
+"916","Neoplasm of uncertain behavior of renal pelvis",4316995,95
+"917","Neoplasm of uncertain behavior of uterus",195793,202
+"918","Nodular lymphoma of intra-abdominal lymph nodes",200338,1831
+"919","Plasma cell leukemia in remission",133158,68
+"920","Reticulosarcoma of lymph nodes of multiple sites",139759,835
+"921","Neoplasm of uncertain behavior of larynx",22274,231
+"922","Neoplasm of uncertain behavior of testis",440971,241
+"923","Neoplasm of uncertain behavior of thyroid gland",4317826,349
+"924","Nodular lymphoma of intrathoracic lymph nodes",435492,459
+"925","Primary malignant neoplasm of liver",201519,9922
+"926","Neoplasm of uncertain behavior of male genital organ",197518,50
+"927","Neoplasm of uncertain behavior of kidney",198402,339
+"928","Neoplasm of uncertain behavior of pineal gland",22871,38
+"929","Neoplasm of uncertain behavior of retroperitoneum",4315953,93
+"930","Neoplasm of uncertain behavior of tongue",4317827,186
+"931","Neoplasm of uncertain behavior of ureter",442129,65
+"932","Neoplasm of uncertain behavior of urethra",4316746,6
+"933","Plasma cell leukemia",133154,403
+"934","Reticulosarcoma of intra-abdominal lymph nodes",200659,553
+"935","Neoplasm of uncertain behavior of nervous system",376660,15
+"936","Neoplasm of uncertain behavior of placenta",194598,30
+"937","Neoplasm of uncertain behavior of skin",135777,60219
+"938","Neoplasm of uncertain behavior of trunk",4317829,104
+"939","Reticulosarcoma of spleen",442128,71
+"940","Neoplasm of uncertain behavior of minor salivary gland",4316506,5
+"941","Neoplasm of uncertain behavior of parathyroid gland",4316887,5
+"942","Neoplasm of uncertain behavior of pleura",442140,11
+"943","Neoplasm of uncertain behavior of prostate",201527,1282
+"944","Neoplasm of uncertain behavior of rectum",442141,193
+"945","Neoplasm of uncertain behavior of small intestine",4317816,71
+"946","Neoplasm of uncertain behavior of spinal cord",4317822,64
+"947","Neoplasm of uncertain behavior of sublingual gland",4316733,1
+"948","Neoplasm of uncertain behavior of urinary system",79765,1049
+"949","Nodular lymphoma of lymph nodes of multiple sites",320347,3096
+"950","Nodular lymphoma of extranodal AND/OR solid organ site",194878,704
+"951","Neoplasm of uncertain behavior of mediastinum",442147,73
+"952","Neoplasm of uncertain behavior of parotid gland",4313657,203
+"953","Neoplasm of uncertain behavior of pituitary gland",27835,243
+"954","Neoplasm of uncertain behavior of respiratory tract",4317685,2947
+"955","Neoplasm of uncertain behavior of spinal meninges",4317020,2
+"956","Neoplasm of uncertain behavior of thymus",439773,24
+"957","Nodular lymphoma of intrapelvic lymph nodes",198088,261
+"958","Reticulosarcoma of intrapelvic lymph nodes",192265,73
+"959","Reticulosarcoma of intrathoracic lymph nodes",435193,222
+"960","Acinar cell tumor of parotid gland",36550957,9
+"961","Malignant neoplasm of rectum, rectosigmoid junction and anus",4095430,1072
+"962","Malignant neoplasm of auditory tube, middle ear and mastoid air cells",377229,37
+"963","Malignant neoplasm of connective and soft tissue of upper limb and shoulder",4092235,1107
+"964","Malignant neoplasm of connective and soft tissue of thorax",4092358,521
+"965","Malignant neoplasm of scalp and/or skin of neck",4092382,82
+"966","Malignant neoplasm of peripheral nerve of abdomen",4091621,9
+"967","Secondary malignant neoplasm of retroperitoneum and peritoneum",196925,5297
+"968","Lymphosarcoma",200662,464
+"969","Burkitt's lymphoma of lymph nodes of multiple sites",315481,191
+"970","Hodgkin's disease, mixed cellularity of lymph nodes of multiple sites",315202,302
+"971","Hodgkin's disease, lymphocytic depletion of intrapelvic lymph nodes",439282,3
+"972","Malignant tumor of nasopharynx",4095312,868
+"973","Malignant tumor of Meckel's diverticulum",4094863,8
+"974","Malignant neoplasm of middle lobe of lung",4089754,9905
+"975","Malignant melanoma of ear and/or external auditory canal",4095589,1516
+"976","Malignant neoplasm, overlapping lesion of cervix uteri",4092515,1171
+"977","Malignant neoplasm of anterior wall of urinary bladder",77812,1063
+"978","Malignant neoplasm of cerebrum (excluding lobes and ventricles)",4091490,422
+"979","Lymphosarcoma of intrathoracic lymph nodes",135194,58
+"980","Burkitt's lymphoma of intra-abdominal lymph nodes",4097560,195
+"981","Burkitt's lymphoma of lymph nodes of inguinal region and lower limb",196055,34
+"982","Hodgkin's disease, mixed cellularity of intrapelvic lymph nodes",194594,21
+"983","Malignant neoplasm of connective and soft tissue of hip and lower limb",4089777,2720
+"984","Malignant neoplasm of connective and soft tissue of abdomen",4095018,1312
+"985","Malignant neoplasm of skin of ear and external auditory canal",4095598,1471
+"986","Malignant neoplasm of axillary tail of female breast",4091467,1174
+"987","Choriocarcinoma",4092517,1
+"988","Malignant neoplasm of corpus uteri, excluding isthmus",194286,23999
+"989","Malignant neoplasm of peripheral nerves and autonomic nervous system",4094260,136
+"990","Hodgkin's disease, mixed cellularity of intra-abdominal lymph nodes",192268,69
+"991","Hodgkin's disease, lymphocytic depletion of intrathoracic lymph nodes",141243,11
+"992","Hodgkin's disease, lymphocytic depletion of spleen",439281,6
+"993","Nodular lymphoma of lymph nodes of head, face and neck",435207,1348
+"994","Malignant neoplasm of liver and intrahepatic bile ducts",4095432,5
+"995","Malignant melanoma of lip",4089860,268
+"996","Malignant neoplasm of nipple and areola of male breast",4091469,758
+"997","Malignant neoplasm of fundus of corpus uteri",4095748,278
+"998","Malignant neoplasm of overlapping lesion of urinary organs",4091486,191
+"999","Malignant neoplasm of peripheral nerves of head, face and neck",4095892,21
+"1000","Reticulosarcoma of lymph nodes of inguinal region and lower limb",200660,160
+"1001","Lymphosarcoma of lymph nodes of inguinal region and lower limb",198702,42
+"1002","Hodgkin's paragranuloma of lymph nodes of multiple sites",140663,68
+"1003","Hodgkin's granuloma of intra-abdominal lymph nodes",439291,5
+"1004","Hodgkin's granuloma of lymph nodes of multiple sites",320337,22
+"1005","Hodgkin's disease, lymphocytic-histiocytic predominance of lymph nodes of multiple sites",321522,293
+"1006","Hodgkin's disease, nodular sclerosis of intrathoracic lymph nodes",136928,1180
+"1007","Hodgkin's disease, nodular sclerosis of intrapelvic lymph nodes",199760,40
+"1008","Nodular lymphoma of lymph nodes of axilla and upper limb",437505,457
+"1009","Mycosis fungoides of lymph nodes of multiple sites",135764,199
+"1010","Malignant neoplasm of orbital bone",4092223,292
+"1011","Malignant neoplasm of connective and soft tissue of pelvis",201231,534
+"1012","Malignant neoplasm of abdomen",197506,579
+"1013","Reticulosarcoma of lymph nodes of axilla and upper limb",441241,123
+"1014","Burkitt's lymphoma of intrapelvic lymph nodes",193428,25
+"1015","Hodgkin's paragranuloma of intrapelvic lymph nodes",198986,10
+"1016","Nodular lymphoma of lymph nodes of inguinal region and lower limb",198707,591
+"1017","Malignant neoplasm of upper lobe of lung",4092216,89755
+"1018","Kaposi's sarcoma of soft tissue",375479,119
+"1019","Malignant melanoma of scalp and/or neck",4095592,4578
+"1020","Malignant neoplasm of skin of nose (external)",4092380,445
+"1021","Malignant neoplasm, overlapping lesion of bladder",4095168,5230
+"1022","Malignant neoplasm of peripheral nerves of lower limb, including hip",4097283,76
+"1023","Malignant neoplasm of peripheral nerve of pelvis",4097284,14
+"1024","Lymphosarcoma of lymph nodes of axilla and upper limb",441803,32
+"1025","Hodgkin's sarcoma of lymph nodes of multiple sites",316649,9
+"1026","Hodgkin's disease, mixed cellularity of intrathoracic lymph nodes",136655,116
+"1027","Hodgkin's disease, lymphocytic depletion of lymph nodes of multiple sites",313980,26
+"1028","Malignant neoplasm of tongue, tip and lateral border",440655,532
+"1029","Malignant neoplasm of nipple and areola of female breast",4091464,9539
+"1030","Malignant neoplasm of lateral wall of urinary bladder",73153,4094
+"1031","Malignant neoplasm of pituitary gland and craniopharyngeal duct",4095304,2736
+"1032","Malignant neoplasm of thorax",80665,406
+"1033","Lymphosarcoma of lymph nodes of head, face and neck",438380,134
+"1034","Burkitt's lymphoma of intrathoracic lymph nodes",4091768,29
+"1035","Burkitt's lymphoma of spleen",439293,6
+"1036","Hodgkin's paragranuloma of intrathoracic lymph nodes",438709,120
+"1037","Hodgkin's disease, nodular sclerosis of intra-abdominal lymph nodes",193434,172
+"1038","Hodgkin's disease, nodular sclerosis of lymph nodes of multiple sites",315763,1381
+"1039","Malignant neoplasm, overlapping lesion of breast",4092513,17615
+"1040","Malignant neoplasm of eyeball excluding conjunctiva, cornea, retina and choroid",374297,42
+"1041","Malignant neoplasm of peripheral nerve of thorax",4094262,19
+"1042","Secondary malignant neoplasm of brain and spinal cord",378087,15373
+"1043","Lymphosarcoma and reticulosarcoma",440957,1579
+"1044","Reticulosarcoma of lymph nodes of head, face and neck",438106,472
+"1045","Lymphosarcoma of intra-abdominal lymph nodes",197228,148
+"1046","Lymphosarcoma of intrapelvic lymph nodes",201810,13
+"1047","Lymphosarcoma of spleen",195201,10
+"1048","Lymphosarcoma of lymph nodes of multiple sites",318697,326
+"1049","Burkitt's lymphoma of lymph nodes of axilla and upper limb",4097561,23
+"1050","Hodgkin's disease, lymphocytic depletion of intra-abdominal lymph nodes",439285,8
+"1051","Megakaryocytic leukemia",313159,14
+"1052","Neoplasm of uncertain behavior of digestive and respiratory systems",193998,83
+"1053","Lymphoid leukemia",132853,4963
+"1054","Monocytic leukemia",321526,64
+"1055","Subacute monocytic leukemia",313430,15
+"1056","Benign neoplasm of fallopian tubes and uterine ligaments",198108,63
+"1057","Benign neoplasm of brain, supratentorial",4093950,149
+"1058","Neoplasm of uncertain behavior of retroperitoneum and peritoneum",193733,113
+"1059","Benign tumor of nasopharynx",432860,28
+"1060","Carcinoma in situ of breast",81250,14166
+"1061","Neoplasm of uncertain or unknown behavior of brain, supratentorial",4094118,40
+"1062","Benign neoplasm of rectum and anal canal",434303,2424
+"1063","Carcinoma in situ of scalp and skin of neck",139766,2578
+"1064","Myeloid leukemia",140666,1623
+"1065","Subacute myeloid leukemia",135499,53
+"1066","Chronic monocytic leukemia",136056,342
+"1067","Benign neoplasm of scapula and long bones of upper limb",77517,79
+"1068","Benign neoplasm of long bones of lower limb",440973,179
+"1069","Neoplasm of uncertain behavior of major salivary gland",30061,146
+"1070","Neoplasm of uncertain behavior of genitourinary organs",4094114,150
+"1071","Extramedullary plasmacytoma",4094548,208
+"1072","Subacute lymphoid leukemia",136656,45
+"1073","Benign neoplasm of pelvic bones, sacrum and coccyx",75206,45
+"1074","Melanoma in situ of skin structure of scalp and/or neck",4098922,328
+"1075","Neoplasm of uncertain behavior of peritoneum",4099495,81
+"1076","Benign neoplasm of pancreas, excluding islets of Langerhans",440063,204
+"1077","Benign neoplasm of peritoneum and retroperitoneum",198991,94
+"1078","Carcinoma in situ of skin of eyelid including canthus",434883,147
+"1079","Neoplasm of uncertain behavior of submandibular gland",4099492,23
+"1080","Neoplasm of uncertain behavior of paraganglia",27516,262
+"1081","Neoplasm of uncertain behavior of brain and spinal cord",440676,545
+"1082","Neoplasm of uncertain or unknown behavior of brain, infratentorial",4096519,23
+"1083","Carcinoma in situ of bronchus and lung",4093960,261
+"1084","Waldenström macroglobulinemia",4098597,2870
+"1085","Macroglobulinemia",435502,997
+"1086","Malignant secondary renovascular hypertension",4110947,340
+"1087","Visual cortex disorder due to neoplasm",4109398,2
+"1088","Paget's disease of humerus",4001445,3
+"1089","Paget's disease-multiple sites",4002994,35
+"1090","Paget's disease of skull",4001632,12
+"1091","Paget's disease-femur",4002990,9
+"1092","Pathologic fracture of bone at site of neoplasm",4067766,502
+"1093","Malignant hyperpyrexia due to anesthetic",4020879,38
+"1094","Tumor of body of uterus affecting pregnancy",196758,41
+"1095","Primary malignant neoplasm of nasopharynx",36684473,1072
+"1096","Sebaceous adenocarcinoma of eyelid",4335884,1
+"1097","Basal cell carcinoma of eyelid",4335883,3259
+"1098","Malignant tumor of eyelid",4338758,45
+"1099","Squamous cell carcinoma of eyelid",4338759,778
+"1100","Benign tumor of eyelid",4333986,317
+"1101","Malignant ascites",192735,6556
+"1102","Neuroendocrine tumor",434300,2025
+"1103","Benign neuroendocrine tumor",438990,1535
+"1104","Benign tumor of digestive organ",193431,51
+"1105","Malignant melanoma of lower limb",4151263,4544
+"1106","Secondary malignant neoplasm of unknown site",4158910,12885
+"1107","Dermatomyositis with malignant disease",4344161,15
+"1108","Benign tumor of soft tissue of head, face and neck",4113129,1388
+"1109","Secondary malignant neoplasm of respiratory and digestive systems",4147162,163
+"1110","Malignant neoplasm of lip, oral cavity and pharynx",436045,352
+"1111","Neoplasm of uncertain behavior of lip, oral cavity and pharynx",436080,240
+"1112","Benign neoplasm of liver and/or biliary ducts",195209,216
+"1113","B-cell acute lymphoblastic leukemia",4173963,25
+"1114","Merkel cell carcinoma",4100425,1284
+"1115","Carcinoid tumor of appendix",437238,815
+"1116","Post-transplant neoplasia",443252,29
+"1117","Non-small cell lung cancer",4115276,33769
+"1118","Squamous cell carcinoma of skin",4111921,15337
+"1119","Benign neoplasm of respiratory system",4114353,2
+"1120","Tumor of uterine body - baby delivered",196181,6
+"1121","Malignant tumor of lymphoid hemopoietic and related tissue",4147164,1568
+"1122","Benign neoplasm of vertebral column, excluding sacrum and coccyx",77815,26
+"1123","Benign tumor of breast",72576,2748
+"1124","Neoplasm of uncertain behavior of endocrine glands and nervous system",132277,1652
+"1125","Malignant melanoma of trunk",4153890,7077
+"1126","Benign neoplasm of skull and facial bones",434885,86
+"1127","Neoplasm of uncertain behavior of liver and/or biliary passages",199767,1327
+"1128","T-cell prolymphocytic leukemia",4079683,95
+"1129","Acute megakaryoblastic leukemia",4079686,24
+"1130","Small cell carcinoma of lung",4110591,5635
+"1131","Prostatic intraepithelial neoplasia",192681,5
+"1132","Squamous cell carcinoma of anal margin",4116241,290
+"1133","Tumor of uterine body complicating antenatal care, baby not yet delivered",192385,9
+"1134","Malignant melanoma of upper limb",4149851,6202
+"1135","Benign neoplasm of nose, middle ear and accessory sinuses",4154632,196
+"1136","Benign neoplasm of short bones of lower limb",438116,69
+"1137","Benign neoplasm of pituitary gland and craniopharyngeal duct",437251,1243
+"1138","Carcinoid tumor of stomach",194306,138
+"1139","Tumor lysis syndrome",4079687,1446
+"1140","Cutaneous/peripheral T-cell lymphoma",4082487,1131
+"1141","B-cell prolymphocytic leukemia",4173974,77
+"1142","Benign tumor of endocrine pancreas",193722,124
+"1143","Carcinoid tumor of lung",257513,365
+"1144","Basal cell carcinoma of skin",4112752,30373
+"1145","Malignant tumor of acoustic vestibular nerve",4110889,614
+"1146","Malignant tumor of head and neck",4114222,14340
+"1147","Neoplasm of uncertain behavior of oral cavity",4116233,114
+"1148","Tumor of uterine body in pregnancy, childbirth and the puerperium",4145940,65
+"1149","Nodular lymphoma",4149840,3900
+"1150","Benign neoplasm of ribs and/or sternum and/or clavicle",434301,43
+"1151","Enteropathy-associated T-cell lymphoma",4082627,25
+"1152","Carcinoma of lip",4153887,24
+"1153","Immunoproliferative neoplasm",441523,641
+"1154","Vaginal intraepithelial neoplasia grade 1",4174892,94
+"1155","Vaginal intraepithelial neoplasia grade 2",4174893,59
+"1156","Atypical chronic myeloid leukemia",4079282,137
+"1157","Lymphoproliferative disorder following transplantation",435514,214
+"1158","Sarcoma of liver",4115271,53
+"1159","Benign lipomatous tumor",4112852,1883
+"1160","Benign neoplasm of respiratory system and intrathoracic organ",433979,5
+"1161","Neoplasm of uncertain behavior of breast",72578,1901
+"1162","Carcinoid tumor of small intestine",198100,1222
+"1163","Vulval intraepithelial neoplasia grade 2",198810,243
+"1164","B-cell chronic lymphocytic leukemia",4082311,24141
+"1165","Large cell anaplastic lymphoma",441235,394
+"1166","Malignant mesothelioma of pleura",4111917,208
+"1167","Fibrohistiocytic tumor",4115942,87
+"1168","Benign tumor of mesothelial tissue",4112851,4
+"1169","Malignant tumor of olfactory tract",4114198,10
+"1170","Malignant tumor of salivary gland",4116235,157
+"1171","Benign neoplasm of face bone",4114356,133
+"1172","Benign neoplasm of bronchus and lung",261255,536
+"1173","Carcinoma in situ of liver and/or biliary system",192292,55
+"1174","Carcinoid tumor of intestine",194307,1
+"1175","Carcinoid tumor of large intestine",193155,469
+"1176","Vulval intraepithelial neoplasia grade 1",197932,197
+"1177","Myelodysplastic syndrome with isolated del(5q)",136950,1238

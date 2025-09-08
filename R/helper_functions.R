@@ -32,14 +32,17 @@ check_tables <- function(conn, sql_dialect) {
                         "sqlserver" = tables$table_name,
                         "redshift" = tables$table_name)
   
-  # check for presence of specific tables
+  table_names_upper <- toupper(table_names)
+  
   results <- data.frame(
     Table = c("EPISODE", "EPISODE_EVENT"),
-    Present = c("EPISODE" %in% table_names, "EPISODE_EVENT" %in% table_names)
+    Present = c("EPISODE" %in% table_names_upper, "EPISODE_EVENT" %in% table_names_upper)
   )
+  
   
   return(results)
 }
+
 
 ###############################################################################
 
