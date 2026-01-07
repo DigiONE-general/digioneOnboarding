@@ -513,7 +513,7 @@
       "includeDescendants": false,
       "includeMapped": false
     },
-        {
+    {
       "concept": {
         "CONCEPT_CLASS_ID": "Procedure",
         "CONCEPT_CODE": "29827000",
@@ -589,8 +589,6 @@
       "includeDescendants": false,
       "includeMapped": false
     },
-    {
-  "items": [
     {
       "concept": {
         "CONCEPT_CLASS_ID": "Procedure",
@@ -1142,8 +1140,6 @@
       "includeDescendants": true,
       "includeMapped": false
     },
-    {
-  "items": [
     {
       "concept": {
         "CONCEPT_CLASS_ID": "Procedure",

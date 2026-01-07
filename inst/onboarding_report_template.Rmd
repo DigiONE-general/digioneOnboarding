@@ -21,6 +21,7 @@ library(knitr)
 library(kableExtra)
 library(flextable)
 library(dplyr)
+library(DT)
 
 is_word <- knitr::is_latex_output() == FALSE && knitr::pandoc_to() == "docx"
 
@@ -57,6 +58,39 @@ render_table <- function(df, caption, header = NULL) {
   }
 }
 
+
+```
+# MEDOC MVP
+
+```{r cdm_mvp, echo = FALSE}
+
+if (knitr::is_html_output()) {
+  medoc_mvp_updated %>%
+    datatable(options = list(pageLength = 50)) %>%
+    formatStyle(
+      'Variable is present',
+      target = 'row',
+      backgroundColor = styleEqual(
+        c(TRUE, FALSE),
+        c('#d4f7d4', '#f7d4d4')
+      )
+    )
+} else {
+  render_table(
+    medoc_mvp_updated,
+    "MVP result"
+  )
+}
+
+```
+```{r cdm_coverage, echo = FALSE}
+
+
+render_table(
+ coverage_row,
+ "MVP result",
+ c(" " = 1, "Result of MEDOC Minimum viable product (MVP)" = ncol(coverage_row) - 1)
+)
 
 ```
 
@@ -128,7 +162,7 @@ render_table(
 
 # MEDOC to OMOP mapping
 
-```{r, echo = FALSE}
+```{r medoc_to_omop, echo = FALSE}
 render_table(
   medoc_concept_table,
   "Table 5.1 : MEDOC concept has valid concept id and locations",
@@ -145,26 +179,26 @@ render_table(
 # Cancer phenotype
 
 ## Cancer diagnosis
-```{r, echo = FALSE}
+```{r cancer_pheno, echo = FALSE}
 render_table(
   primary_snap_sliced,
   "Table 6.1 : Primary diagnosis -  concept ids",
-  c(" " = 1, "Diagnosis by number of patients and domain (full list as csv in results folder)" = ncol(mets_snap_sliced_meas) - 1)
+  c(" " = 1, "Diagnosis by number of patients and domain (full list as csv in results folder)" = ncol(primary_snap_sliced) - 1)
 )
 
 ```
 
 ## Metastasis diagnosis
-```{r, echo = FALSE}
+```{r mets_diag, echo = FALSE}
 render_table(
-  mets_snap_sliced_meas,
+  mets_snapshot_meas,
   "Table 6.2 : Metastasis diagnosis - Measurement concept ids",
-  c(" " = 1, "Metastasis diagnosis by number of patients and domain (full list as csv in results folder)" = ncol(mets_snap_sliced_meas) - 1)
+  c(" " = 1, "Metastasis diagnosis by number of patients and domain (full list as csv in results folder)" = ncol(mets_snapshot_meas) - 1)
 )
 
 ```
 
-```{r, echo = FALSE}
+```{r mets_diag_cond, echo = FALSE}
 render_table(
   mets_snap_sliced_condition,
   "Table 6.3 : Metastasis diagnosis - Condition Occurrence concept ids",
@@ -174,7 +208,7 @@ render_table(
 ```
 
 ## Genomic check 
-```{r, echo = FALSE}
+```{r genomic_check, echo = FALSE}
 render_table(
   gene_snap_sliced,
   "Table 6.4 : Genomic readiness - genes of interest present",
@@ -247,7 +281,7 @@ render_table(
 ```
 # TNM check
 
-```{r, echo = FALSE}
+```{r tnm_check, echo = FALSE}
 render_table(
  tnm_result,
  "Table 9.1 : TNM code check",

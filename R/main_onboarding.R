@@ -15,6 +15,8 @@ library(gt)
 library(purrr)
 library(cli)
 library(tidyr)
+library(PatientProfiles)
+library(CodelistGenerator)
 
 ###############################################################################
 # GET CDM DETAILS FROM CDM_SOURCE
@@ -53,7 +55,8 @@ cdm_snapshot_clinical_meas <- cdm_snapshot_clinical %>%
 
 cdm_snapshot_obs <- OmopSketch::summariseObservationPeriod(cdm$observation_period) %>%
                     tableObservationPeriod() %>%
-                    as.data.frame(cdm_snapshot_obs['_data'])
+                    as.data.frame(cdm_snapshot_obs['_data']) %>%
+                    select(-`Variable level`)
 colnames(cdm_snapshot_obs) <- c("Observation Period", "Variable", "Measurement", "Value")
 
 cli::cli_alert("Creating clinical snapshot tables - complete! - {Sys.time()}")
@@ -336,7 +339,96 @@ cli::cli_alert("Summarising genomic concept coverage - {Sys.time()}")
    select(-person_id_count)
  
  cli::cli_alert("Summarising genomic concept coverage - complete! - {Sys.time()}")
- 
+
+###############################################################################
+
+
+#anti cancer treatment name and molecule generic name and drug dates and dose comes from summary drugs
+medoc_mvp <- medoc_concept_table %>% filter(`MEDOC concept` == 'date_of_birth'| 
+                                            `MEDOC concept` == 'sex'|
+                                            `MEDOC concept` == 'primary_cancer_diagnosis' | 
+                                            `MEDOC concept` == 'primary_diagnosis_date' |
+                                            `MEDOC concept` == 'disease_stage' | #histological cell type - get from other table 
+                                            `MEDOC concept` == 'radiotherapy_start_date' |
+                                            `MEDOC concept` == 'surgery_type' |
+                                            `MEDOC concept` == 'date_of_death' |
+                                            `MEDOC concept` == 'metastasis_presence' |
+                                            `MEDOC concept` == 'metastasis_location') 
+
+medoc_mvp_hist <- histological_cell_type 
+names(medoc_mvp_hist) <- names(medoc_mvp)
+
+medoc_mvp <- rbind(medoc_mvp, medoc_mvp_hist)
+
+total_cohort_patients <- cdm$main_cohort %>% 
+  distinct(subject_id) %>% 
+  count() %>% 
+  pull(n)
+
+all_drugs <- bind_rows(
+  summary_therapy_drugs,
+  summary_chemo_drugs,
+  summary_immuno_drugs
+)
+
+all_drugs <- all_drugs %>%
+  mutate(
+    dose_form_count = as.numeric(str_extract(
+      proportion_of_records_with_dose_form, "^[0-9]+"
+    ))
+  )
+
+total_drug_patients <- sum(all_drugs$n_patients, na.rm = TRUE)
+
+pct_molecule_generic <- (total_drug_patients / total_cohort_patients) * 100
+
+pct_anti_cancer_treatment <- pct_molecule_generic
+
+total_dose_form_count <- sum(all_drugs$dose_form_count, na.rm = TRUE)
+total_records <- sum(all_drugs$n_records, na.rm = TRUE)
+
+pct_dose_form <- (total_dose_form_count / total_records) * 100
+
+new_rows <- tibble(
+  `MEDOC concept` = c(
+    "molecule generic name",
+    "anti cancer treatment name",
+    "drug dose"
+  ),
+  Check = c(
+    "derived from drug summary tables",
+    "derived from molecule generic name",
+    "derived from drug summary tables"
+  ),
+  `OMOP Table` = c("drug_exposure", "drug_exposure", "drug_exposure"),
+  Result = c(TRUE, TRUE, TRUE),
+  `Percentage of patients` = c(
+    round(pct_molecule_generic, 2),
+    round(pct_anti_cancer_treatment, 2),
+    round(pct_dose_form, 2)
+  )
+)
+
+medoc_mvp_updated <- bind_rows(medoc_mvp, new_rows)
+
+medoc_mvp_updated <- medoc_mvp_updated %>% 
+                     select(-Check, -`OMOP Table`) %>%
+                     rename(`Variable is present` = Result)
+
+
+n_true <- sum(medoc_mvp_updated$`Variable is present`, na.rm = TRUE)
+n_total <- nrow(medoc_mvp_updated)
+pct_total_coverage <- (n_true / n_total) * 100
+
+coverage_row <- tibble(
+  `MVP total coverage` = "MVP total coverage",
+  `Percentage of patients` = round(pct_total_coverage, 2)
+)
+
+coverage_row <- coverage_row %>% mutate(`MVP result` = case_when(`Percentage of patients` >= 75.0 ~ 'Pass: MVP exceeded',
+                                                                 `Percentage of patients` >= 50.0 & `Percentage of patients` < 75.0 ~ 'Pass: MVP reached',
+                                                                 `Percentage of patients` < 50.0 ~ 'MVP not reached'))
+
 ###############################################################################
 # CREATE OUTPUT REPORT AND CODELISTS 
  
