@@ -341,94 +341,279 @@ cli::cli_alert("Summarising genomic concept coverage - {Sys.time()}")
  cli::cli_alert("Summarising genomic concept coverage - complete! - {Sys.time()}")
 
 ###############################################################################
+### MVP table #####
 
+ if (!exists("medoc_concept_table") || is.null(medoc_concept_table) || nrow(as.data.frame(medoc_concept_table)) == 0) {
+   table5 <- tibble(
+     `MEDOC concept` = character(),
+     Result = logical(),
+     `Percentage of patients` = numeric()
+   )
+ } else {
+   
+   df <- as.data.frame(medoc_concept_table)
+   cn <- names(df)
+   cn_lower <- tolower(cn)
+   
+   medoc_col <- cn[cn_lower %in% c("medoc concept", "medoc_concept", "medocconcept")]
+   if (length(medoc_col) == 0) {
+     idx <- which(str_detect(cn_lower, "medoc"))
+     medoc_col <- if (length(idx) > 0) cn[idx[1]] else NA_character_
+   } else {
+     medoc_col <- medoc_col[1]
+   }
+   
+   result_col <- cn[cn_lower %in% c("result", "present", "variable is present", "variable_is_present")]
+   if (length(result_col) == 0) {
+     idx <- which(str_detect(cn_lower, "result|present"))
+     result_col <- if (length(idx) > 0) cn[idx[1]] else NA_character_
+   } else {
+     result_col <- result_col[1]
+   }
+   
+   pct_col <- cn[cn_lower %in% c("percentage of patients", "percent of patients", "pct_patients", "percent_patients")]
+   if (length(pct_col) == 0) {
+     idx <- which(str_detect(cn_lower, "percent|percentage"))
+     pct_col <- if (length(idx) > 0) cn[idx[1]] else NA_character_
+   } else {
+     pct_col <- pct_col[1]
+   }
+   
+   if (is.na(medoc_col)) df$`MEDOC concept` <- NA_character_
+   if (is.na(result_col)) df$Result <- NA
+   if (is.na(pct_col)) df$`Percentage of patients` <- NA_real_
+   
+   table5 <- df %>%
+     {
+       tmp <- .
+       if (!is.na(medoc_col)) tmp <- tmp %>% rename(`MEDOC concept` = !!medoc_col)
+       if (!is.na(result_col)) tmp <- tmp %>% rename(Result = !!result_col)
+       if (!is.na(pct_col)) tmp <- tmp %>% rename(`Percentage of patients` = !!pct_col)
+       tmp
+     } %>%
+     mutate(
+       `MEDOC concept` = as.character(`MEDOC concept`),
+       Result = as.logical(Result),
+       `Percentage of patients` = suppressWarnings(as.numeric(`Percentage of patients`))
+     ) %>%
+     select(`MEDOC concept`, Result, `Percentage of patients`) %>%
+     distinct()
+ }
+ 
+ mvp_concepts <- c(
+   "date_of_birth",
+   "sex",
+   "primary_cancer_diagnosis",
+   "primary_diagnosis_date",
+   "disease_stage",
+   "histological_cell_type",
+   "radiotherapy_start_date",
+   "surgery_type",
+   "date_of_death",
+   "metastasis_presence",
+   "metastasis_location"
+ )
 
-#anti cancer treatment name and molecule generic name and drug dates and dose comes from summary drugs
-medoc_mvp <- medoc_concept_table %>% filter(`MEDOC concept` == 'date_of_birth'| 
-                                            `MEDOC concept` == 'sex'|
-                                            `MEDOC concept` == 'primary_cancer_diagnosis' | 
-                                            `MEDOC concept` == 'primary_diagnosis_date' |
-                                            `MEDOC concept` == 'disease_stage' | #histological cell type - get from other table 
-                                            `MEDOC concept` == 'radiotherapy_start_date' |
-                                            `MEDOC concept` == 'surgery_type' |
-                                            `MEDOC concept` == 'date_of_death' |
-                                            `MEDOC concept` == 'metastasis_presence' |
-                                            `MEDOC concept` == 'metastasis_location') 
+ medoc_mvp <- table5 %>%
+   filter(`MEDOC concept` %in% mvp_concepts)
+ 
+ missing_from_table5 <- setdiff(mvp_concepts, medoc_mvp$`MEDOC concept`)
 
-medoc_mvp_hist <- histological_cell_type 
-names(medoc_mvp_hist) <- names(medoc_mvp)
+ if ("histological_cell_type" %in% missing_from_table5) {
+   
+   if (exists("histological_cell_type") && !is.null(histological_cell_type) && nrow(as.data.frame(histological_cell_type)) > 0) {
+     
+     hdf <- as.data.frame(histological_cell_type)
+     hcn <- names(hdf)
+     hcn_lower <- tolower(hcn)
+     
+     h_medoc_col <- hcn[hcn_lower %in% c("medoc concept", "medoc_concept", "medocconcept", "medoc_concept")]
+     if (length(h_medoc_col) == 0) {
+       idx <- which(str_detect(hcn_lower, "medoc"))
+       h_medoc_col <- if (length(idx) > 0) hcn[idx[1]] else NA_character_
+     } else {
+       h_medoc_col <- h_medoc_col[1]
+     }
+     
+     h_result_col <- hcn[hcn_lower %in% c("result", "present", "variable is present", "variable_is_present")]
+     if (length(h_result_col) == 0) {
+       idx <- which(str_detect(hcn_lower, "result|present"))
+       h_result_col <- if (length(idx) > 0) hcn[idx[1]] else NA_character_
+     } else {
+       h_result_col <- h_result_col[1]
+     }
+     
+     h_pct_col <- hcn[hcn_lower %in% c("percent_pass", "percentage of patients", "percent of patients", "pct_patients", "percent_patients")]
+     if (length(h_pct_col) == 0) {
+       idx <- which(str_detect(hcn_lower, "percent|percentage"))
+       h_pct_col <- if (length(idx) > 0) hcn[idx[1]] else NA_character_
+     } else {
+       h_pct_col <- h_pct_col[1]
+     }
 
-medoc_mvp <- rbind(medoc_mvp, medoc_mvp_hist)
+     hist_any_pass <- hdf %>%
+       mutate(
+         .res = if (!is.na(h_result_col)) as.logical(.data[[h_result_col]]) else NA,
+         .pct = if (!is.na(h_pct_col)) suppressWarnings(as.numeric(.data[[h_pct_col]])) else NA_real_
+       ) %>%
+       summarise(
+         any_pass = any(.res %in% TRUE, na.rm = TRUE),
+         pct = suppressWarnings(max(.pct, na.rm = TRUE))
+       )
+     
+     hist_pct <- hist_any_pass$pct
+     if (is.infinite(hist_pct)) hist_pct <- NA_real_ 
+     
+     hist_row <- tibble(
+       `MEDOC concept` = "histological_cell_type",
+       Result = hist_any_pass$any_pass,
+       `Percentage of patients` = hist_pct
+     )
+     
+     medoc_mvp <- bind_rows(medoc_mvp, hist_row)
+     
+   } else {
+     medoc_mvp <- bind_rows(
+       medoc_mvp,
+       tibble(`MEDOC concept` = "histological_cell_type",
+              Result = NA,
+              `Percentage of patients` = NA_real_)
+     )
+   }
+ }
 
-total_cohort_patients <- cdm$main_cohort %>% 
-  distinct(subject_id) %>% 
-  count() %>% 
-  pull(n)
+ if ("disease_stage" %in% missing_from_table5) {
+   
+   stage_row <- tibble(`MEDOC concept` = "disease_stage",
+                       Result = NA,
+                       `Percentage of patients` = NA_real_)
+   
+   if (exists("cdm") &&
+       !is.null(cdm) &&
+       "main_cohort" %in% names(cdm) &&
+       exists("tumour_stage_codes") &&
+       !is.null(tumour_stage_codes) &&
+       length(tumour_stage_codes) > 0) {
+     
+     total_cohort_patients <- tryCatch({
+       cdm$main_cohort %>% distinct(subject_id) %>% count() %>% pull(n)
+     }, error = function(e) NA_integer_)
+     
+     if (!is.na(total_cohort_patients) && total_cohort_patients > 0 && "measurement" %in% names(cdm)) {
+       
+       stage_patients <- tryCatch({
+         cdm$measurement %>%
+           inner_join(cdm$main_cohort, by = c("person_id" = "subject_id")) %>%
+           filter(
+             measurement_concept_id %in% tumour_stage_codes |
+               value_as_concept_id %in% tumour_stage_codes |
+               measurement_concept_id == 4111627
+           ) %>%
+           distinct(person_id) %>%
+           count() %>%
+           pull(n)
+       }, error = function(e) NA_integer_)
+       
+       if (!is.na(stage_patients)) {
+         stage_row <- tibble(
+           `MEDOC concept` = "disease_stage",
+           Result = (stage_patients > 0),
+           `Percentage of patients` = round((stage_patients / total_cohort_patients) * 100, 2)
+         )
+       }
+     }
+   }
+   
+   medoc_mvp <- bind_rows(medoc_mvp, stage_row)
+ }
 
-all_drugs <- bind_rows(
-  summary_therapy_drugs,
-  summary_chemo_drugs,
-  summary_immuno_drugs
-)
-
-all_drugs <- all_drugs %>%
-  mutate(
-    dose_form_count = as.numeric(str_extract(
-      proportion_of_records_with_dose_form, "^[0-9]+"
-    ))
-  )
-
-total_drug_patients <- sum(all_drugs$n_patients, na.rm = TRUE)
-
-pct_molecule_generic <- (total_drug_patients / total_cohort_patients) * 100
-
-pct_anti_cancer_treatment <- pct_molecule_generic
-
-total_dose_form_count <- sum(all_drugs$dose_form_count, na.rm = TRUE)
-total_records <- sum(all_drugs$n_records, na.rm = TRUE)
-
-pct_dose_form <- (total_dose_form_count / total_records) * 100
-
-new_rows <- tibble(
-  `MEDOC concept` = c(
-    "molecule generic name",
-    "anti cancer treatment name",
-    "drug dose"
-  ),
-  Check = c(
-    "derived from drug summary tables",
-    "derived from molecule generic name",
-    "derived from drug summary tables"
-  ),
-  `OMOP Table` = c("drug_exposure", "drug_exposure", "drug_exposure"),
-  Result = c(TRUE, TRUE, TRUE),
-  `Percentage of patients` = c(
-    round(pct_molecule_generic, 2),
-    round(pct_anti_cancer_treatment, 2),
-    round(pct_dose_form, 2)
-  )
-)
-
-medoc_mvp_updated <- bind_rows(medoc_mvp, new_rows)
-
-medoc_mvp_updated <- medoc_mvp_updated %>% 
-                     select(-Check, -`OMOP Table`) %>%
-                     rename(`Variable is present` = Result)
-
-
-n_true <- sum(medoc_mvp_updated$`Variable is present`, na.rm = TRUE)
-n_total <- nrow(medoc_mvp_updated)
-pct_total_coverage <- (n_true / n_total) * 100
-
-coverage_row <- tibble(
-  `MVP total coverage` = "MVP total coverage",
-  `Percentage of patients` = round(pct_total_coverage, 2)
-)
-
-coverage_row <- coverage_row %>% mutate(`MVP result` = case_when(`Percentage of patients` >= 75.0 ~ 'Pass: MVP exceeded',
-                                                                 `Percentage of patients` >= 50.0 & `Percentage of patients` < 75.0 ~ 'Pass: MVP reached',
-                                                                 `Percentage of patients` < 50.0 ~ 'MVP not reached'))
-
+ pct_molecule_generic <- if (exists("pct_molecule_generic")) pct_molecule_generic else NA_real_
+ pct_anti_cancer_treatment <- if (exists("pct_anti_cancer_treatment")) pct_anti_cancer_treatment else NA_real_
+ pct_dose_form <- if (exists("pct_dose_form")) pct_dose_form else NA_real_
+ 
+ if (is.na(pct_molecule_generic) || is.na(pct_anti_cancer_treatment) || is.na(pct_dose_form)) {
+   
+   total_cohort_patients <- if (exists("total_cohort_patients")) total_cohort_patients else NA_integer_
+   if (is.na(total_cohort_patients) && exists("cdm") && !is.null(cdm) && "main_cohort" %in% names(cdm)) {
+     total_cohort_patients <- tryCatch({
+       cdm$main_cohort %>% distinct(subject_id) %>% count() %>% pull(n)
+     }, error = function(e) NA_integer_)
+   }
+   
+   if (exists("all_drugs") &&
+       !is.null(all_drugs) &&
+       nrow(as.data.frame(all_drugs)) > 0) {
+     
+     ad <- as.data.frame(all_drugs)
+     req_cols <- c("n_patients", "n_records", "proportion_of_records_with_dose_form")
+     has_cols <- all(req_cols %in% names(ad))
+     
+     if (has_cols && !is.na(total_cohort_patients) && total_cohort_patients > 0) {
+       
+       all_drugs2 <- as_tibble(ad) %>%
+         mutate(
+           dose_form_count = suppressWarnings(as.numeric(str_extract(
+             as.character(proportion_of_records_with_dose_form), "^[0-9]+"
+           )))
+         )
+       
+       total_drug_patients <- sum(all_drugs2$n_patients, na.rm = TRUE)
+       
+       pct_molecule_generic <- round((total_drug_patients / total_cohort_patients) * 100, 2)
+       pct_anti_cancer_treatment <- pct_molecule_generic
+       
+       total_dose_form_count <- sum(all_drugs2$dose_form_count, na.rm = TRUE)
+       total_records <- sum(all_drugs2$n_records, na.rm = TRUE)
+       
+       pct_dose_form <- if (!is.na(total_records) && total_records > 0) {
+         round((total_dose_form_count / total_records) * 100, 2)
+       } else {
+         NA_real_
+       }
+       
+     } else {
+       pct_molecule_generic <- pct_molecule_generic
+       pct_anti_cancer_treatment <- pct_anti_cancer_treatment
+       pct_dose_form <- pct_dose_form
+     }
+     
+   } else {
+     pct_molecule_generic <- ifelse(is.na(pct_molecule_generic), 0, pct_molecule_generic)
+     pct_anti_cancer_treatment <- ifelse(is.na(pct_anti_cancer_treatment), 0, pct_anti_cancer_treatment)
+     pct_dose_form <- ifelse(is.na(pct_dose_form), 0, pct_dose_form)
+   }
+ }
+ 
+ derived_rows <- tibble(
+   `MEDOC concept` = c("molecule_generic_name", "anti_cancer_treatment_name", "drug_dose"),
+   Result = c(TRUE, TRUE, TRUE),
+   `Percentage of patients` = c(pct_molecule_generic, pct_anti_cancer_treatment, pct_dose_form)
+ )
+ 
+ medoc_mvp_updated <- bind_rows(medoc_mvp, derived_rows) %>%
+   rename(`Variable is present` = Result) %>%
+   arrange(match(`MEDOC concept`,
+                 c(mvp_concepts, "molecule_generic_name", "anti_cancer_treatment_name", "drug_dose")))
+ 
+ n_true <- sum(medoc_mvp_updated$`Variable is present` == TRUE, na.rm = TRUE)
+ n_total <- sum(!is.na(medoc_mvp_updated$`Variable is present`))
+ 
+ pct_total_coverage <- ifelse(n_total > 0, (n_true / n_total) * 100, NA_real_)
+ 
+ coverage_row <- tibble(
+   `MVP total coverage` = "MVP total coverage",
+   `Percentage of patients` = round(pct_total_coverage, 2)
+ ) %>%
+   mutate(
+     `MVP result` = case_when(
+       `Percentage of patients` >= 75.0 ~ "Pass: MVP exceeded",
+       `Percentage of patients` >= 50.0 & `Percentage of patients` < 75.0 ~ "Pass: MVP reached",
+       `Percentage of patients` < 50.0 ~ "MVP not reached",
+       TRUE ~ "MVP coverage not computable"
+     )
+   )
+ 
+ 
 ###############################################################################
 # CREATE OUTPUT REPORT AND CODELISTS 
  
