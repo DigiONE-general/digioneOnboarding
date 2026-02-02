@@ -14,8 +14,13 @@ The goal of the code is to scan the OMOP instance and compile key information re
 
 ## How to run
 
-The only script which requires interaction from the user is /extras/CodeToRun.R.
+1. Clone this repo to your R environment
+2. Ensure you open using R projects (double clicking on .Rproj file or open using Rstudio or application menu)
+3. The only script which requires interaction from the user is /extras/CodeToRun.R.
 An example is provided which provides connection details for using dbConnect for your database ( see: https://dbi.r-dbi.org/reference/dbConnect.html )
+Please complete the CodeToRun.R script according to your database server specifications.
+4. Run the complete CodeToRun.R script (ensuring you have activated the environment, completed pacakge installations)
+5. Once complete (estimated time between 30minutes to 1.5 hour depending on database size, disk space etc), find the outputs as detailed below
 
 
 ## Output
