@@ -914,9 +914,8 @@ coverage_row <- tibble(
 ) %>%
   mutate(
     `MVP result` = case_when(
-      `Percentage of patients` >= 75.0 ~ "Pass: MVP exceeded",
-      `Percentage of patients` >= 50.0 & `Percentage of patients` < 75.0 ~ "Pass: MVP reached",
-      `Percentage of patients` < 50.0 ~ "MVP not reached",
+      `Percentage of patients` >= 70.0 ~ "MVP has been reached",
+      `Percentage of patients` < 70.0 ~ "MVP not reached",
       TRUE ~ "MVP coverage not computable"
     )
   )
