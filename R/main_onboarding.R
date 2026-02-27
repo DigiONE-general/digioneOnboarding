@@ -722,6 +722,13 @@ mvp_concepts <- c(
   "metastasis_location"
 )
 
+table5 <- table5 %>%
+  mutate(
+    Result = (Result %in% TRUE) &
+      !is.na(`Percentage of patients`) &
+      (`Percentage of patients` > 0)
+  )
+
 medoc_mvp <- table5 %>%
   filter(`MEDOC concept` %in% mvp_concepts)
 
@@ -765,16 +772,18 @@ if ("histological_cell_type" %in% missing_from_table5) {
         .pct = if (!is.na(h_pct_col)) suppressWarnings(as.numeric(.data[[h_pct_col]])) else NA_real_
       ) %>%
       summarise(
-        any_pass = any(.res %in% TRUE, na.rm = TRUE),
+        any_present = any(.res %in% TRUE, na.rm = TRUE),
         pct = suppressWarnings(max(.pct, na.rm = TRUE))
       )
     
     hist_pct <- hist_any_pass$pct
-    if (is.infinite(hist_pct)) hist_pct <- NA_real_ 
+    if (is.infinite(hist_pct)) hist_pct <- NA_real_
     
     hist_row <- tibble(
       `MEDOC concept` = "histological_cell_type",
-      Result = hist_any_pass$any_pass,
+      Result = (hist_any_pass$any_present %in% TRUE) &
+        !is.na(hist_pct) &
+        (hist_pct > 0),
       `Percentage of patients` = hist_pct
     )
     
@@ -894,17 +903,25 @@ if (is.na(pct_molecule_generic) || is.na(pct_anti_cancer_treatment) || is.na(pct
 
 derived_rows <- tibble(
   `MEDOC concept` = c("molecule_generic_name", "anti_cancer_treatment_name", "drug_dose"),
-  Result = c(TRUE, TRUE, TRUE),
   `Percentage of patients` = c(pct_molecule_generic, pct_anti_cancer_treatment, pct_dose_form)
-)
+) %>%
+  mutate(
+    Result = !is.na(`Percentage of patients`) & (`Percentage of patients` > 0)
+  )
 
 medoc_mvp_updated <- bind_rows(medoc_mvp, derived_rows) %>%
   rename(`Variable is present` = Result) %>%
+  mutate(
+    `Percentage of patients` = suppressWarnings(as.numeric(`Percentage of patients`)),
+    `MVP pass` = (`Variable is present` %in% TRUE) &
+      !is.na(`Percentage of patients`) &
+      (`Percentage of patients` > 0)
+  ) %>%
   arrange(match(`MEDOC concept`,
                 c(mvp_concepts, "molecule_generic_name", "anti_cancer_treatment_name", "drug_dose")))
 
-n_true <- sum(medoc_mvp_updated$`Variable is present` == TRUE, na.rm = TRUE)
-n_total <- sum(!is.na(medoc_mvp_updated$`Variable is present`))
+n_true  <- sum(medoc_mvp_updated$`MVP pass`, na.rm = TRUE)
+n_total <- sum(!is.na(medoc_mvp_updated$`MVP pass`))
 
 pct_total_coverage <- ifelse(n_total > 0, (n_true / n_total) * 100, NA_real_)
 
