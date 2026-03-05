@@ -16,7 +16,7 @@ sql_dialect <- "" #either: 'snowflake', 'mysql', 'postgresql', 'sqlite', 'sqlser
 conn <- DBI::dbConnect(odbc::odbc(),
                        Driver = "",
                        server = "",
-                       port = 433, #for postgres: 5432, for snowflake: 433, for  oracle: 1521, for sql server: 1433
+                       port = 443, #for postgres: 5432, for snowflake: 443, for  oracle: 1521, for sql server: 1433
                        Role = "",
                        Database = cdmSchema,
                        Warehouse = '',
