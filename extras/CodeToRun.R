@@ -78,3 +78,4 @@ if (exists("medoc_mvp_updated") &&
             paste0(resultsFolder, "/medoc_mvp.csv"),
             row.names = FALSE)
 }
+

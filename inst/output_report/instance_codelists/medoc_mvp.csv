@@ -1,0 +1,15 @@
+"MEDOC concept","Variable is present","Percentage of patients","MVP pass"
+"date_of_birth",TRUE,100,TRUE
+"sex",TRUE,99.96,TRUE
+"primary_cancer_diagnosis",TRUE,100,TRUE
+"primary_diagnosis_date",TRUE,100,TRUE
+"disease_stage",FALSE,0,FALSE
+"histological_cell_type",FALSE,0,FALSE
+"radiotherapy_start_date",FALSE,0,FALSE
+"surgery_type",FALSE,0,FALSE
+"date_of_death",TRUE,25.56,TRUE
+"metastasis_presence",TRUE,10.46,TRUE
+"metastasis_location",TRUE,10.46,TRUE
+"molecule_generic_name",FALSE,0,FALSE
+"anti_cancer_treatment_name",FALSE,0,FALSE
+"drug_dose",FALSE,0,FALSE
