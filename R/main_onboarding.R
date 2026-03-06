@@ -149,15 +149,17 @@ slice_top_counts_safe <- function(df, n = 20, count_col = "person_id_count") {
 }
 
 render_safe <- function(...) {
-  ok <- tryCatch({
+  tryCatch({
     rmarkdown::render(...)
     TRUE
   }, error = function(e) {
-    cli::cli_alert_warning("Render failed: {conditionMessage(e)}")
+    message("❌ Render failed: ", conditionMessage(e))
+    message("---- TRACEBACK ----")
+    print(sys.calls())
     FALSE
   })
-  ok
 }
+
 
 ###############################################################################
 # GET CDM DETAILS FROM CDM_SOURCE
