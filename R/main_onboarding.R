@@ -378,7 +378,7 @@ genomic_codes <- safe_eval(
     cdm = cdm,
     keywords = c("PD-L1","PDL1","EGFR","KRAS","ALK1","ROS1","BRAF","NTRK",
                  "ERBB2","TP53","BRCA1","BRCA2","CDH1","PALB2","PTEN","TP53",
-                 "PIK3CA","AKT","ESR1","STK11","HER2", "PSA", ),
+                 "PIK3CA","AKT","ESR1","STK11","HER2", "PSA"),
     domains = "Measurement",
     includeDescendants = FALSE
   ) %>% dplyr::pull("concept_id"),
