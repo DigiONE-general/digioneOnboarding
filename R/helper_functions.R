@@ -220,6 +220,9 @@ get_cdm_counts <- function(cdm) {
 # check_icdo3_matches
 # -----------------------------------------------------------------------------
 
+# -----------------------------------------------------------------------------
+# check_icdo3_matches
+# -----------------------------------------------------------------------------
 check_icdo3_matches <- function(cdm) {
   
   empty_out <- tibble(
@@ -230,60 +233,80 @@ check_icdo3_matches <- function(cdm) {
     percent_pass = c(NA_real_, NA_real_)
   )
   
-  if (is.null(cdm) || !.has_cdm_table(cdm, "main_cohort") || !.has_cdm_table(cdm, "concept")) return(empty_out)
+  if (is.null(cdm) || !.has_cdm_table(cdm, "main_cohort") || !.has_cdm_table(cdm, "concept")) {
+    return(empty_out)
+  }
   
-  cohort_ids <- cdm$main_cohort %>% select(subject_id)
+  cohort_ids <- cdm$main_cohort %>%
+    select(subject_id) %>%
+    distinct()
   
-  total <- .safe_eval(cohort_ids %>% summarise(n = n()) %>% collect() %>% pull(n), NA_integer_)
+  total <- .safe_eval(
+    cohort_ids %>%
+      summarise(n = n_distinct(subject_id)) %>%
+      collect() %>%
+      pull(n),
+    NA_integer_
+  )
+  
   if (is.na(total) || total == 0) {
     return(empty_out %>% mutate(result = FALSE, percent_pass = 0))
   }
   
-  icdo3_concepts <- cdm$concept %>%
-    filter(vocabulary_id == "ICDO3") %>%
-    select(concept_id)
-
+  icdo3_ids <- .safe_eval(
+    cdm$concept %>%
+      filter(vocabulary_id == "ICDO3") %>%
+      distinct(concept_id) %>%
+      collect() %>%
+      pull(concept_id),
+    numeric()
+  )
+  
+  if (!length(icdo3_ids)) {
+    return(empty_out %>% mutate(result = FALSE, percent_pass = 0))
+  }
+  
   obs_passed <- if (.has_cdm_table(cdm, "observation")) {
     .safe_eval(
       cdm$observation %>%
-        inner_join(cohort_ids, by = c("person_id" = "subject_id")) %>%
-        semi_join(icdo3_concepts, by = c("observation_concept_id" = "concept_id")) %>%
+        semi_join(cohort_ids, by = c("person_id" = "subject_id")) %>%
+        filter(.data[["observation_concept_id"]] %in% icdo3_ids) %>%
         summarise(passed = n_distinct(person_id)) %>%
         collect() %>%
         pull(passed),
-      0L
+      NA_integer_
     )
-  } else 0L
+  } else NA_integer_
   
-  obs_percent <- round(100 * obs_passed / total, 2)
+  obs_percent <- if (is.na(obs_passed)) NA_real_ else round(100 * obs_passed / total, 2)
   
   observation_result <- tibble(
     medoc_concept = "histological cell type",
     omop_table = "observation",
     check = "concepts present in omop tables",
-    result = obs_passed > 0,
+    result = ifelse(is.na(obs_passed), NA, obs_passed > 0),
     percent_pass = obs_percent
   )
   
   cond_passed <- if (.has_cdm_table(cdm, "condition_occurrence")) {
     .safe_eval(
       cdm$condition_occurrence %>%
-        inner_join(cohort_ids, by = c("person_id" = "subject_id")) %>%
-        semi_join(icdo3_concepts, by = c("condition_concept_id" = "concept_id")) %>%
+        semi_join(cohort_ids, by = c("person_id" = "subject_id")) %>%
+        filter(.data[["condition_concept_id"]] %in% icdo3_ids) %>%
         summarise(passed = n_distinct(person_id)) %>%
         collect() %>%
         pull(passed),
-      0L
+      NA_integer_
     )
-  } else 0L
+  } else NA_integer_
   
-  cond_percent <- round(100 * cond_passed / total, 2)
+  cond_percent <- if (is.na(cond_passed)) NA_real_ else round(100 * cond_passed / total, 2)
   
   condition_result <- tibble(
     medoc_concept = "histological cell type",
     omop_table = "condition_occurrence",
     check = "concepts present in omop tables",
-    result = cond_passed > 0,
+    result = ifelse(is.na(cond_passed), NA, cond_passed > 0),
     percent_pass = cond_percent
   )
   
@@ -350,15 +373,26 @@ evaluate_concept <- function(concept, visited = character()) {
     if (concept == "biomarker_measure") {
       if (length(genomic_codes) == 0) return(safe_row(check_label, FALSE, 0, omop_table))
       
+      vars <- present_rows$omop_variable
+      
+      condition <- purrr::reduce(
+        lapply(vars, function(v) rlang::expr(!is.na(.data[[!!v]]))),
+        function(x, y) rlang::expr(!!x | !!y)
+      )
+      
       passed <- .safe_eval(
         cdm[[omop_table]] %>%
-          inner_join(cdm$main_cohort, by = c("person_id" = "subject_id")) %>%
-          filter(measurement_concept_id %in% genomic_codes) %>%
-          filter(if_any(all_of(present_rows$omop_variable), ~ !is.na(.))) %>%
+          inner_join(
+            cdm$main_cohort %>%
+              distinct(subject_id),
+            by = c("person_id" = "subject_id")
+          ) %>%
+          filter(.data[["measurement_concept_id"]] %in% genomic_codes) %>%
+          filter(!!condition) %>%
           summarise(passed = n_distinct(person_id)) %>%
           collect() %>%
           pull(passed),
-        0L
+        NA_integer_
       )
       
       pct <- round(100 * passed / total, 2)
@@ -452,8 +486,16 @@ postprocess_concept_table <- function(medoc_concept_table) {
   summary_table <- medoc_concept_table %>%
     group_by(medoc_concept) %>%
     summarise(
-      result = any(result %in% TRUE, na.rm = TRUE),
-      percent_pass = if (all(is.na(percent_pass))) NA_real_ else max(percent_pass, na.rm = TRUE),
+      result = case_when(
+        any(result %in% TRUE, na.rm = TRUE) ~ TRUE,
+        all(is.na(result)) ~ NA,
+        TRUE ~ FALSE
+      ),
+      percent_pass = case_when(
+        all(is.na(percent_pass)) ~ NA_real_,
+        any(is.finite(percent_pass)) ~ max(percent_pass, na.rm = TRUE),
+        TRUE ~ NA_real_
+      ),
       omop_table = dplyr::first(na.omit(omop_table), default = NA_character_),
       check = dplyr::first(na.omit(check), default = NA_character_),
       .groups = "drop"
@@ -560,7 +602,7 @@ execute_drug_checks <- function(drug_class) {
     DrugExposureDiagnostics::executeChecks(
       cdm = cdm,
       ingredients = ingr,
-      byConcept = FALSE,
+      byConcept = TRUE,
       checks = c("exposureDuration", "diagnosticsSummary")
     ),
     error = function(e) NULL
@@ -714,40 +756,83 @@ execute_surgery_checks <- function(cdm, medoc_concept_codes) {
 }
 
 # -----------------------------------------------------------------------------
+# check tnm
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # check_tnm
 # -----------------------------------------------------------------------------
 check_tnm <- function(cdm, tnm_codes) {
   
-  if (is.null(cdm) || !.has_cdm_table(cdm, "measurement") || !.has_cdm_table(cdm, "main_cohort")) return(tibble())
-  if (is.null(tnm_codes) || !"measurement_concept_id" %in% names(tnm_codes)) return(tibble())
+  if (is.null(cdm) || !.has_cdm_table(cdm, "measurement") || !.has_cdm_table(cdm, "main_cohort")) {
+    return(tibble())
+  }
   
-  measurement_data <- .safe_eval(
+  if (is.null(tnm_codes) || !"measurement_concept_id" %in% names(tnm_codes)) {
+    return(tibble())
+  }
+  
+  tnm_ids <- unique(stats::na.omit(tnm_codes$measurement_concept_id))
+  if (!length(tnm_ids)) return(tibble())
+  
+  cohort_ids <- cdm$main_cohort %>%
+    select(subject_id) %>%
+    distinct()
+  
+  # Match on measurement_concept_id only
+  measurement_hits <- .safe_eval(
     cdm$measurement %>%
-      inner_join(cdm$main_cohort, by = c("person_id" = "subject_id")) %>%
-      filter(measurement_concept_id %in% tnm_codes$measurement_concept_id |
-               value_as_concept_id %in% tnm_codes$measurement_concept_id) %>%
+      semi_join(cohort_ids, by = c("person_id" = "subject_id")) %>%
+      filter(.data[["measurement_concept_id"]] %in% tnm_ids) %>%
+      distinct(measurement_concept_id) %>%
       collect(),
-    data.frame()
+    tibble(measurement_concept_id = numeric())
   )
   
-  if (nrow(measurement_data) == 0) return(tibble())
+  # Match on value_as_concept_id only
+  value_hits <- .safe_eval(
+    cdm$measurement %>%
+      semi_join(cohort_ids, by = c("person_id" = "subject_id")) %>%
+      filter(.data[["value_as_concept_id"]] %in% tnm_ids) %>%
+      distinct(value_as_concept_id) %>%
+      collect(),
+    tibble(value_as_concept_id = numeric())
+  )
   
-  result_measurement <- measurement_data %>%
-    filter(measurement_concept_id %in% tnm_codes$measurement_concept_id) %>%
-    left_join(tnm_codes, by = "measurement_concept_id") %>%
-    select(measurement_concept_id, concept_name) %>%
-    distinct() %>%
-    mutate(variable = "measurement_concept_id")
+  result_measurement <- tibble()
+  if (nrow(measurement_hits) > 0) {
+    result_measurement <- measurement_hits %>%
+      left_join(
+        tnm_codes %>%
+          distinct(measurement_concept_id, concept_name),
+        by = "measurement_concept_id"
+      ) %>%
+      transmute(
+        measurement_concept_id,
+        concept_name,
+        variable = "measurement_concept_id"
+      ) %>%
+      distinct()
+  }
   
-  result_value <- measurement_data %>%
-    filter(value_as_concept_id %in% tnm_codes$measurement_concept_id) %>%
-    left_join(tnm_codes, by = c("value_as_concept_id" = "measurement_concept_id")) %>%
-    select(value_as_concept_id, concept_name) %>%
-    distinct() %>%
-    mutate(variable = "value_as_concept_id")
+  result_value <- tibble()
+  if (nrow(value_hits) > 0) {
+    result_value <- value_hits %>%
+      left_join(
+        tnm_codes %>%
+          distinct(measurement_concept_id, concept_name),
+        by = c("value_as_concept_id" = "measurement_concept_id")
+      ) %>%
+      transmute(
+        value_as_concept_id,
+        concept_name,
+        variable = "value_as_concept_id"
+      ) %>%
+      distinct()
+  }
   
   bind_rows(result_measurement, result_value)
 }
+
 
 # -----------------------------------------------------------------------------
 # summarise_concept_counts

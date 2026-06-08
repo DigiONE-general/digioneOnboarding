@@ -3,7 +3,7 @@
 renv::restore()
 renv::activate()
 
-cdmSchema = c("EXT_OMOPV5_USA_ONCEMR", "FULL_M202112_OMOP_V5")
+cdmSchema = c("EXT_OMOPV5_USA_ONCEMR", "FULL_M202511_OMOP_V5")
 writeSchema = c("PA_USA_ONCEMR", "STUDY_REFERENCE")
 tablePrefix <- "test_"
 db_name <- "EXT_OMOPV5_USA_ONCEMR"

@@ -153,7 +153,7 @@ render_safe <- function(...) {
     rmarkdown::render(...)
     TRUE
   }, error = function(e) {
-    message("❌ Render failed: ", conditionMessage(e))
+    message("Render failed: ", conditionMessage(e))
     message("---- TRACEBACK ----")
     print(sys.calls())
     FALSE
@@ -376,11 +376,27 @@ cli::cli_alert("Assessing MEDOC concept coverage - {Sys.time()}")
 genomic_codes <- safe_eval(
   CodelistGenerator::getCandidateCodes(
     cdm = cdm,
-    keywords = c("PD-L1","PDL1","EGFR","KRAS","ALK1","ROS1","BRAF","NTRK",
-                 "ERBB2","TP53","BRCA1","BRCA2","CDH1","PALB2","PTEN","TP53",
-                 "PIK3CA","AKT","ESR1","STK11","HER2", "PSA"),
+    keywords = 
+      c("PD-L1", "PDL1", "PDCD1L1", "PD-1",
+        "EGFR", "ERBB1", "ALK1",
+        "KRAS", "NRAS", "HRAS",
+        "BRAF", "V600E", "PIK3CA", "PI3KCA",
+        "AKT1", "PTEN",
+        "BRCA1", "BRCA2", "PALB2",
+        "TP53", "CDH1", "ERBB2", "HER2",
+        "ROS1", "NTRK", "NTRK1", "NTRK2", "NTRK3",
+        "Androgen receptor",
+        "PSA", "Prostate specific antigen",
+        "Testosterone", "Tumor mutational burden", "Mismatch repair",
+        "Microsatellite instability",
+        "ESR1", "Estrogen receptor",
+        "Progesterone receptor",
+        "KI67", "Ki-67", "AFP",
+        "hCG", "beta-hCG", "LDH",
+        "CEA", "CA19-9", "CA125"),
     domains = "Measurement",
-    includeDescendants = FALSE
+    includeDescendants = FALSE,
+    searchInSynonyms = FALSE
   ) %>% dplyr::pull("concept_id"),
   fallback = integer(),
   msg = "getCandidateCodes (genomic) failed"
@@ -388,6 +404,13 @@ genomic_codes <- safe_eval(
 
 tnm_codes <- safe_read_csv(here::here("inst/code_lists/tnm_codes.csv"), fileEncoding = "UTF-8-BOM")
 tumour_stage_codes <- if ("measurement_concept_id" %in% names(tnm_codes)) tnm_codes$measurement_concept_id else integer()
+
+tnm_concept_check <- safe_eval(
+  check_tnm(cdm, tnm_codes),
+  fallback = tibble(),
+  msg = "check_tnm failed"
+)
+
 
 histological_cell_type <- safe_eval(
   check_icdo3_matches(cdm),
@@ -529,53 +552,35 @@ cli::cli_alert("Summarising metastasis codes - complete! - {Sys.time()}")
 ###############################################################################
 # ASSESS CANCER STAGING CODES (backend-safe booleans)
 ###############################################################################
+###############################################################################
+# ASSESS CANCER STAGING CODES (derived from check_tnm)
+###############################################################################
 cli::cli_alert("Summarising Cancer staging checks - {Sys.time()}")
 
-staging_stored_as_value <- FALSE
-value_as_concept_id_contains_tumour_stage <- FALSE
-tumour_stage_stored_in_measurement_concept_id <- FALSE
-
-if (cdm_has(cdm, "measurement")) {
+tnm_result <- {
   
-  staging_stored_as_value <- safe_eval(
-    cdm$measurement %>%
-      dplyr::summarise(flag = max(dplyr::if_else(measurement_concept_id == 4111627, 1L, 0L))) %>%
-      dplyr::pull(flag) == 1L,
-    fallback = FALSE,
-    msg = "staging stored-as-value check failed"
-  )
-  
-  if (cdm_has(cdm, "main_cohort") && length(tumour_stage_codes) > 0) {
+  if (nrow(tnm_concept_check) == 0) {
     
-    value_as_concept_id_contains_tumour_stage <- safe_eval(
-      cdm$measurement %>%
-        dplyr::inner_join(cdm$main_cohort, by = c("person_id" = "subject_id")) %>%
-        dplyr::mutate(is_match = value_as_concept_id %in% tumour_stage_codes) %>%
-        dplyr::summarise(flag = max(dplyr::if_else(is_match, 1L, 0L))) %>%
-        dplyr::pull(flag) == 1L,
-      fallback = FALSE,
-      msg = "value_as_concept_id staging check failed"
+    tibble(
+      `staging stored as value` = FALSE,
+      `value_as_concept_id contains tumour stage` = FALSE,
+      `tumour stage stored in measurement_concept_id` = FALSE
     )
     
-    tumour_stage_stored_in_measurement_concept_id <- safe_eval(
-      cdm$measurement %>%
-        dplyr::inner_join(cdm$main_cohort, by = c("person_id" = "subject_id")) %>%
-        dplyr::mutate(is_match = measurement_concept_id %in% tumour_stage_codes) %>%
-        dplyr::summarise(flag = max(dplyr::if_else(is_match, 1L, 0L))) %>%
-        dplyr::pull(flag) == 1L,
-      fallback = FALSE,
-      msg = "measurement_concept_id staging check failed"
+  } else {
+    
+    tibble(
+      `staging stored as value` =
+        any(tnm_concept_check$variable == "value_as_concept_id"),
+      
+      `value_as_concept_id contains tumour stage` =
+        any(tnm_concept_check$variable == "value_as_concept_id"),
+      
+      `tumour stage stored in measurement_concept_id` =
+        any(tnm_concept_check$variable == "measurement_concept_id")
     )
   }
 }
-
-tnm_result <- tibble(
-  `staging stored as value` = staging_stored_as_value,
-  `value_as_concept_id contains tumour stage` = value_as_concept_id_contains_tumour_stage,
-  `tumour stage stored in measurement_concept_id` = tumour_stage_stored_in_measurement_concept_id
-)
-
-cli::cli_alert("Summarising Cancer staging checks - complete! - {Sys.time()}")
 
 ###############################################################################
 # ASSESS CANCER DRUG CONCEPTS AND COVERAGE (safe even if none)
@@ -626,6 +631,19 @@ summary_procedure <- safe_eval(
 cli::cli_alert("Summarising all procedure concept checks - complete! - {Sys.time()}")
 
 ###############################################################################
+# ASSESS SURGERY COVERAGE
+###############################################################################
+cli::cli_alert("Summarising all surgery concept checks - {Sys.time()}")
+
+summary_surgery <- safe_eval(
+  execute_surgery_checks(cdm),
+  fallback = tibble(),
+  msg = "execute_surgery_checks failed"
+)
+
+cli::cli_alert("Summarising all surgery concept checks - complete! - {Sys.time()}")
+
+###############################################################################
 # ASSESS GENOMIC CONCEPT COVERAGE
 ###############################################################################
 cli::cli_alert("Summarising genomic concept coverage - {Sys.time()}")
@@ -646,14 +664,14 @@ gene_snapshot <- gene_snap %>%
     !grepl("stool", concept_name, ignore.case = TRUE)
   )
 
+###############################################################################
+# --------------------------------------------------------------------------
 gene_snap_sliced <- slice_top_counts_safe(gene_snapshot, n = 20)
 
 cli::cli_alert("Summarising genomic concept coverage - complete! - {Sys.time()}")
 
 ###############################################################################
-# MVP TABLE 
-###############################################################################
-# -----------------------------------------------------------------------------
+# MVP TABLE ---
 # Total cohort patients (used by MVP logic)
 # -----------------------------------------------------------------------------
 total_cohort_patients <- tryCatch({
@@ -851,6 +869,56 @@ if ("disease_stage" %in% missing_from_table5) {
         )
       }
     }
+  }
+  
+  if ("date_of_death" %in% mvp_concepts) {
+    
+    dod_row <- tibble(
+      `MEDOC concept` = "date_of_death",
+      Result = NA,
+      `Percentage of patients` = NA_real_
+    )
+    
+    if (exists("cdm") &&
+        !is.null(cdm) &&
+        "death" %in% names(cdm) &&
+        "main_cohort" %in% names(cdm)) {
+      
+      total_cohort_patients <- tryCatch({
+        cdm$main_cohort %>%
+          distinct(subject_id) %>%
+          count() %>%
+          pull(n)
+      }, error = function(e) NA_integer_)
+      
+      if (!is.na(total_cohort_patients) && total_cohort_patients > 0) {
+        
+        valid_death_patients <- tryCatch({
+          cdm$death %>%
+            inner_join(cdm$main_cohort, by = c("person_id" = "subject_id")) %>%
+            filter(
+              !is.na(death_date),
+              death_date >= as.Date("1900-01-01"),
+              death_date <= Sys.Date()
+            ) %>%
+            distinct(person_id) %>%
+            count() %>%
+            pull(n)
+        }, error = function(e) NA_integer_)
+        
+        if (!is.na(valid_death_patients)) {
+          dod_row <- tibble(
+            `MEDOC concept` = "date_of_death",
+            Result = (valid_death_patients > 0),
+            `Percentage of patients` = round((valid_death_patients / total_cohort_patients) * 100, 2)
+          )
+        }
+      }
+    }
+    
+    medoc_mvp <- medoc_mvp %>%
+      filter(`MEDOC concept` != "date_of_death") %>%
+      bind_rows(dod_row)
   }
   
   medoc_mvp <- bind_rows(medoc_mvp, stage_row)
